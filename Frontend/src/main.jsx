@@ -10,6 +10,8 @@ import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 
+import "./index.css"
+
 function Layout({ children }) {
   const location = useLocation();
 
