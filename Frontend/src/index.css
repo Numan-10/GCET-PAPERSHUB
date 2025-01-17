@@ -37,3 +37,8 @@
         font-size: clamp(1rem, 25vw, 3.5rem);
     }
 } 
+
+.SocialHome{
+  width: 7rem;
+  height: auto;
+}
