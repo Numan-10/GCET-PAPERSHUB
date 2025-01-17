@@ -8,21 +8,35 @@ import Updates from "./Components/updates/UpdatePage.jsx";
 import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 
-import { BrowserRouter, Routes, Route } from "react-router";
+function Layout({ children }) {
+  const location = useLocation();
+
+  const noNavbarFooterRoute = ["/"];
+
+  return (
+    <>
+      {!noNavbarFooterRoute.includes(location.pathname) && <Navbar />}
+      {children}
+      {!noNavbarFooterRoute.includes(location.pathname) && <Footer />}
+    </>
+  );
+}
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Gcet />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/contributors" element={<Contributors />} />
-        <Route path="/updates" element={<Updates />} />
-        <Route path="/about" element={<About />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-      <Footer />
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Gcet />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/contributors" element={<Contributors />} />
+          <Route path="/updates" element={<Updates />} />
+          <Route path="/about" element={<About />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Layout>
     </BrowserRouter>
   </StrictMode>
 );
