@@ -1,5 +1,15 @@
 import React from "react";
 function Footer() {
-  return <div>Footer</div>;
+  return (
+    <>
+      <div className="Footer border-top text-center mt-3">
+        <div className="mt-4">&copy; GCET-UNOFFICIALS</div>
+        <div className="">
+          <a href="#">Privacy |</a>
+          <a href="#">Terms</a>
+        </div>
+      </div>
+    </>
+  );
 }
 export default Footer;

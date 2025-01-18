@@ -21,7 +21,7 @@ function Social() {
             <i class="fa-brands fa-discord"></i> |
           </div>
           <div className="p-2">
-            <i class="fa-brands fa-telegram"></i> 
+            <i class="fa-brands fa-telegram"></i> |
           </div>
         </div>
       </div>
