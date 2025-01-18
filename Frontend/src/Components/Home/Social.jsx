@@ -26,7 +26,7 @@ function Social() {
         </div>
       </div>
       <div className="row mt-4">
-        <div className="col-12 mt-5">
+        <div className="col-12 mt-md-5">
           <h1 className="fs-1 fw-bolder mt-5">Latest Uploads</h1>
         </div>
       </div>
