@@ -5,6 +5,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  background-color: #eeeeee;
 }
 .gcet {
   background-image: url(/Assets/gcet.jpeg);
@@ -15,30 +16,27 @@
   height: 100vh;
 }
 
- .GCET {
+.GCET {
   font-size: clamp(1rem, 25vw, 4rem);
   font-weight: 600;
   color: white;
- 
 }
 
-
 @media (min-width: 768px) {
-    .GCET{
-        font-size: 7rem !important;
-        letter-spacing: 1rem
-        
-    }
-} 
+  .GCET {
+    font-size: 7rem !important;
+    letter-spacing: 1rem;
+  }
+}
 @media (max-width: 768px) {
-    .GCET{
-        letter-spacing: 0;
-        letter-spacing: 0.1rem;
-        font-size: clamp(1rem, 25vw, 3.5rem);
-    }
-} 
+  .GCET {
+    letter-spacing: 0;
+    letter-spacing: 0.1rem;
+    font-size: clamp(1rem, 25vw, 3.5rem);
+  }
+}
 
-.SocialHome{
+.SocialHome {
   width: 7rem;
   height: auto;
 }
