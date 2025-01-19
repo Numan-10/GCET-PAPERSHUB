@@ -51,8 +51,8 @@
 .Home {
   font-weight: bold;
   font-size: 1.8rem;
-  border-top: 3px solid black;
-  border-bottom: 3px solid black;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
 .join {
@@ -61,7 +61,7 @@
   color: black;
 }
 .socials {
-  font-size: 2.3rem;
+  font-size: 2rem;
 }
 .Footer {
   height: 15vh;
@@ -127,4 +127,9 @@
 
 .aboutus {
   font-weight: 600;
+}
+
+
+.pnf{
+  height: 80vh;
 }
