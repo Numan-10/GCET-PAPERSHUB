@@ -3,7 +3,7 @@ function Footer() {
   return (
     <>
       <div className="Footer border-top text-center mt-3">
-        <div className="mt-4">&copy; GCET-UNOFFICIALS</div>
+        <div className="mt-4">&copy; GCET-UNOFFICIALS 2025</div>
         <div className="">
           <a href="#">Privacy |</a>
           <a href="#">Terms</a>

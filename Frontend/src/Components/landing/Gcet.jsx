@@ -1,6 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Gcet() {
+  const Navigate = useNavigate();
+
+  let home=()=>{
+    Navigate("/home")
+  }
+
   return (
     <>
       <div className="gcet img-fluid">
@@ -12,7 +19,9 @@ function Gcet() {
             </div>
 
             <div>
-              <button className="btn btn-primary mt-5 px-5 py-2 ">GET STARTED</button>
+              <button className="btn btn-primary mt-5 px-5 py-2 " onClick={home}>
+                GET STARTED
+              </button>
             </div>
           </div>
         </div>

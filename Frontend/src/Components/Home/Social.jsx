@@ -1,5 +1,13 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
 function Social() {
+  const Navigate = useNavigate();
+
+  let contribute = () => {
+    Navigate("/contributors");
+  };
+
   return (
     <div className="container mt-5 mb-5">
       <div className="row text-center ">
@@ -8,6 +16,8 @@ function Social() {
             src="/Assets/Contributors.svg"
             alt="contributors"
             className="SocialHome img-fluid"
+            onClick={contribute}
+            
           />
         </div>
         <div className="col-4 ">
