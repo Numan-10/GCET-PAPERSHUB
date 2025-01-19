@@ -3,7 +3,7 @@ import Update from "./update";
 
 function UpdatesPage() {
   return (
-    <div className="container ">
+    <div className="container  mb-5">
       <Update
         msg={
           "Lorem tem ullam tenetur perspiciatis ipsam enim. Magnam dolori isnxnsnxnxxk tfssvcd ugsv xuhsvsabbvsabs sbbhhbbbbi"
@@ -13,7 +13,7 @@ function UpdatesPage() {
       <Update msg={"Projects!"} />
 
       <div className="">
-        <h2 className="text-center mt-5" style={{fontWeight:"bolder"}}>ALL CAUGHT UP!</h2>
+        <h2 className="text-center mt-5 mb-5" style={{fontWeight:"bolder"}}>ALL CAUGHT UP!</h2>
       </div>
     </div>
   );

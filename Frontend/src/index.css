@@ -5,6 +5,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 .gcet {
   background-image: url(/Assets/gcet.jpeg);
@@ -63,6 +66,10 @@
 .Footer {
   height: 15vh;
   background: #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 /* -------------> Navbar <----------------- */
@@ -106,7 +113,6 @@
   margin: 20px 0;
   border-bottom: 1px solid black;
 }
-
 
 .close-btn {
   background: none;
