@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const togglerDrawer = () => {
     setIsOpen(!isOpen);
   };
-
+  const setopenfalse = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div className="Navbar d-flex justify-content-between  ">
       <button className="p-3 hamburger " onClick={togglerDrawer}>
@@ -20,22 +23,43 @@ function Navbar() {
         </button>
 
         <ul>
-          <li>Home</li>
-          <li>Content</li>
-          <li>Contribute</li>
+          <Link
+            to="/Home"
+            style={{ textDecoration: "none", color: "black" }}
+            onClick={setopenfalse}
+          >
+            {" "}
+            <li>Home</li>{" "}
+          </Link>
+          <Link
+            to="/Content"
+            style={{ textDecoration: "none", color: "black" }}  onClick={setopenfalse}
+          >
+            {" "}
+            <li>Content</li>
+          </Link>
+          <Link
+            to="/Contributors"
+            style={{ textDecoration: "none", color: "black" }}  onClick={setopenfalse}
+          >
+            {" "}
+            <li>Contributors</li>
+          </Link>
         </ul>
 
-        <a href="">
+        <Link to="/About" style={{ textDecoration: "none", color: "black" }} onClick={setopenfalse}>
           <h2 className="text-center link-underline-dark  aboutus">About us</h2>
-        </a>
+        </Link>
       </div>
 
       <button className="p-3 " style={{ border: "none" }}>
-        <img
-          src="/Assets/bell-outline.svg"
-          alt="Notification"
-          className="img-fluid"
-        />
+        <Link to="/updates">
+          <img
+            src="/Assets/bell-outline.svg"
+            alt="Notification"
+            className="img-fluid"
+          />
+        </Link>
       </button>
     </div>
   );

@@ -21,11 +21,14 @@ function Social() {
           />
         </div>
         <div className="col-4 ">
+          <a href="https://github.com/GCET-CSE2022/" target="_black" style={{textDecoration:"none"}}>
           <img
             src="/Assets/Github.svg"
             alt="contributors"
             className="SocialHome img-fluid"
           />
+          </a>
+          
         </div>
         <div className="col-4 ">
           <img

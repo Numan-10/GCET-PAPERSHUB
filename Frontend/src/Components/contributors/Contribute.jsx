@@ -3,7 +3,7 @@ function Contribute({ name, role,src }) {
   return (
     <>
  
-    <div className="col-12 col-lg-4 col-md-6  col-sm-6  mb-5 d-flex justify-content-center" >
+    <div className="col-12 col-lg-4 col-md-6  col-sm-6 mt-3  mb-5 d-flex justify-content-center" >
       <div className="card " style={{
           borderRadius: "20px",
           overflow: "hidden",
