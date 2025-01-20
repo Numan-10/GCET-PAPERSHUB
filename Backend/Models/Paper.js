@@ -18,11 +18,6 @@ const paperSchema = new Schema({
   Pdf: {
     Url: String,
     filename: String,
-    required: true,
-  },
-  Department: {
-    type: String,
-    required: true,
   },
   UploadedAt: {
     type: Date,
