@@ -9,6 +9,7 @@ import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
+import Uplaod from "./Components/upload/uploadPage.jsx";
 
 import "./index.css"
 
@@ -36,6 +37,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/updates" element={<Updates />} />
           <Route path="/about" element={<About />} />
+          <Route path="/upload" element={<Uplaod />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>
