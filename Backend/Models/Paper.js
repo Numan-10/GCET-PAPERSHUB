@@ -17,6 +17,7 @@ const paperSchema = new Schema({
   },
   Pdf: {
     Url: String,
+    filename: String,
   },
   UploadedAt: {
     type: Date,

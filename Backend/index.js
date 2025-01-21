@@ -38,32 +38,21 @@ app.get("/subjects", async (req, res) => {
   }
 });
 
-// app.get("/products", async (req, res) => {
-//   // res.send("Working")
-//   const data = await Paper.find({});
 
-//   if (req.query.search) {
-//     const filterProducts = data.filter((Paper) =>
-//       Paper.Title.includes(req.query.search.toUpperCase())
-//     );
-//     res.send(filterProducts);
-//     return;
-//   }
-//   res.send(data);
-// });
 
 // Upload
 app.post("/upload", upload.single("Pdf"), async (req, res) => {
   try {
-    console.log(req);
+    // console.log(req);
     const { Title, Subject, Semester } = req.body.paper;
-    let Pdf = req.file.path;
+    let Url = req.file.path;
+    let filename = req.file.filename;
     const newdata = new Paper({
       Title,
       Subject,
       Semester,
-      Pdf,
     });
+    newdata.Pdf = { Url, filename };
     await newdata
       .save()
       .then(() =>

@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
 function Upload() {
+  const Navigate = useNavigate();
   const [inputValue, setIsInputValue] = useState({
     Title: "",
     Subject: "",
     Semester: "",
     Pdf: null,
   });
+
+  const [isloading, setisLoading] = useState(false);
 
   const { Title, Subject, Semester, Pdf } = inputValue;
 
@@ -43,6 +47,14 @@ function Upload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setisLoading(true);
+
+    if (!Title || !Subject || !Semester || !Pdf) {
+      handleError("All fields are required!");
+      setisLoading(false);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("paper[Title]", Title);
     formData.append("paper[Subject]", Subject);
@@ -59,10 +71,11 @@ function Upload() {
 
       //Destructuring Data
       const { success, message } = Data.data;
+      setisLoading(false);
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/home");
+          Navigate("/Upload");
         }, 1000);
       } else {
         handleError(message);
@@ -151,11 +164,20 @@ function Upload() {
                 className="form-control"
               />
             </div>
-            <div>
+
+            {isloading ? (
+              <button class="btn btn-success mb-5" type="button" disabled>
+                <span role="status">Uploading...</span> &nbsp;
+                <span
+                  class="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            ) : (
               <button type="submit" className="btn btn-success mb-5">
                 Submit
               </button>
-            </div>
+            )}
           </form>
         </div>
         <div className="col-1"></div>
