@@ -7,16 +7,26 @@ function Upload() {
     Title: "",
     Subject: "",
     Semester: "",
+    Pdf: null,
   });
-  const { Title, Subject, Semester } = inputValue;
+
+  const { Title, Subject, Semester, Pdf } = inputValue;
 
   const handleOnChange = (evt) => {
-    // console.log(evt)
-    const { name, value } = evt.target;
-    setIsInputValue({
-      ...inputValue,
-      [name]: value,
-    });
+    console.log(evt);
+    const { name, value, files } = evt.target;
+    if (name === "Pdf") {
+      console.log(evt);
+      setIsInputValue({
+        ...inputValue,
+        [name]: files[0],
+      });
+    } else {
+      setIsInputValue({
+        ...inputValue,
+        [name]: value,
+      });
+    }
   };
 
   //Toast
@@ -33,16 +43,19 @@ function Upload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("paper[Title]", Title);
+    formData.append("paper[Subject]", Subject);
+    formData.append("paper[Semester]", Semester);
+    formData.append("Pdf", Pdf);
+
     try {
-      // console.log(inputValue);
-      const Data = await axios.post(
-        "http://localhost:3000/upload",
-        {
-          ...inputValue,
+      console.log(formData);
+      const Data = await axios.post("http://localhost:3000/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-        { withCredentials: true }
-      );
-      // console.log(Data);
+      });
 
       //Destructuring Data
       const { success, message } = Data.data;
@@ -61,6 +74,8 @@ function Upload() {
         Title: "",
         Subject: "",
         Semester: "",
+        Pdf: null,
+        // Pdf: "",
       });
     } catch (err) {
       console.log(err);
@@ -73,7 +88,11 @@ function Upload() {
         <div className="col-1"></div>
         <div className="col mt-5">
           <h1 className="text-center">Upload Paper</h1>
-          <form method="post" onSubmit={handleSubmit}>
+          <form
+            method="post"
+            onSubmit={handleSubmit}
+            encType="multipart/form-data"
+          >
             <div className="mb-3">
               <label htmlFor="title" className="form-label">
                 Title
@@ -87,19 +106,38 @@ function Upload() {
                 className="form-control"
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="subject" className="form-label">
-                Subject
-              </label>
-              <input
-                type="text"
-                value={Subject}
-                onChange={handleOnChange}
-                name="Subject"
-                className="form-control"
-                id="subject"
-              />
+            <div className="row">
+              <div className="col-12 col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="subject" className="form-label">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    value={Subject}
+                    onChange={handleOnChange}
+                    name="Subject"
+                    className="form-control"
+                    id="subject"
+                  />
+                </div>
+              </div>
+              <div className="col-12 col-md-6">
+                <div className="mb-3">
+                  <label htmlFor="file" className="form-label">
+                    Upload pdf
+                  </label>
+                  <input
+                    type="file"
+                    onChange={handleOnChange}
+                    name="Pdf"
+                    className="form-control"
+                    id="file"
+                  />
+                </div>
+              </div>
             </div>
+
             <div className="mb-3">
               <label htmlFor="sem" className="form-label">
                 Semester

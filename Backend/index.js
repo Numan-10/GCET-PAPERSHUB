@@ -2,6 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Paper = require("./Models/Paper");
 const cors = require("cors");
+const multer = require("multer");
+const { storage } = require("./cloudConfig");
+const upload = multer({ storage });
 
 const app = express();
 
@@ -50,24 +53,29 @@ app.get("/subjects", async (req, res) => {
 // });
 
 // Upload
-app.post("/upload", async (req, res) => {
-  const newdata = new Paper({
-    Title: req.body.Title,
-    Subject: req.body.Subject,
-    Semester: req.body.Semester,
-  });
-  await newdata
-    .save()
-    .then(() =>
-      res
-        .status(200)
-        .json({ success: true, message: "Data Uploaded Successfully" })
-    )
-    .catch((err) =>
-      res
-        .status(500)
-        .json({ success: false, message: "Failed to save the Data" })
-    );
+app.post("/upload", upload.single("Pdf"), async (req, res) => {
+  try {
+    console.log(req);
+    const { Title, Subject, Semester } = req.body.paper;
+    let Pdf = req.file.path;
+    const newdata = new Paper({
+      Title,
+      Subject,
+      Semester,
+      Pdf,
+    });
+    await newdata
+      .save()
+      .then(() =>
+        res
+          .status(200)
+          .json({ success: true, message: "Data Uploaded Successfully" })
+      );
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to save the Data" });
+  }
 });
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);
