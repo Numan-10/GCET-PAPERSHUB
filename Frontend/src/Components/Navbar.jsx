@@ -11,8 +11,13 @@ function Navbar() {
   };
   return (
     <div className="Navbar d-flex justify-content-between  ">
-      <button className="p-3 hamburger " onClick={togglerDrawer}>
-        <img src="/Assets/More.svg" alt="Hamburger" className="img-fluid" />
+      <button className="p-3 hamburger ms-2 " onClick={togglerDrawer}>
+        <img
+          src="/Assets/More.svg"
+          alt="Hamburger"
+          className="img-fluid"
+          style={{ width: "3rem" }}
+        />
       </button>
 
       {/* --------------> Drawer <------------------- */}
@@ -28,36 +33,40 @@ function Navbar() {
             style={{ textDecoration: "none", color: "black" }}
             onClick={setopenfalse}
           >
-            {" "}
             <li>Home</li>{" "}
           </Link>
           <Link
             to="/Content"
-            style={{ textDecoration: "none", color: "black" }}  onClick={setopenfalse}
+            style={{ textDecoration: "none", color: "black" }}
+            onClick={setopenfalse}
           >
-            {" "}
             <li>Content</li>
           </Link>
           <Link
             to="/Contributors"
-            style={{ textDecoration: "none", color: "black" }}  onClick={setopenfalse}
+            style={{ textDecoration: "none", color: "black" }}
+            onClick={setopenfalse}
           >
-            {" "}
             <li>Contributors</li>
           </Link>
         </ul>
 
-        <Link to="/About" style={{ textDecoration: "none", color: "black" }} onClick={setopenfalse}>
+        <Link
+          to="/About"
+          style={{ textDecoration: "none", color: "black" }}
+          onClick={setopenfalse}
+        >
           <h2 className="text-center link-underline-dark  aboutus">About us</h2>
         </Link>
       </div>
 
-      <button className="p-3 " style={{ border: "none" }}>
+      <button className="p-3 me-2" style={{ border: "none" }}>
         <Link to="/updates">
           <img
             src="/Assets/bell-outline.svg"
             alt="Notification"
             className="img-fluid"
+            style={{ width: "4rem" }}
           />
         </Link>
       </button>
