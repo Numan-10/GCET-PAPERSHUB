@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const Paper = require("./Models/Paper");
@@ -8,7 +10,10 @@ const upload = multer({ storage });
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+const Url = process.env.MONGO_URL;
+
 app.use(express.json());
 app.use(
   cors({
@@ -19,7 +24,7 @@ app.use(
 );
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/papers");
+  await mongoose.connect(Url);
 }
 main()
   .then((res) => {
@@ -37,8 +42,6 @@ app.get("/subjects", async (req, res) => {
     console.log(err);
   }
 });
-
-
 
 // Upload
 app.post("/upload", upload.single("Pdf"), async (req, res) => {
