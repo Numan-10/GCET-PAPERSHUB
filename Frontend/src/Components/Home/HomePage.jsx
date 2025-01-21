@@ -11,7 +11,7 @@ function HomePage() {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get("http://localhost:3000/subjects");
-        console.log("Subjects"+response.data);
+        // console.log("Subjects"+response.data);
         setIsData(response.data);
       } catch (err) {
         setIsError("Failed to load subjects. Please try again.");

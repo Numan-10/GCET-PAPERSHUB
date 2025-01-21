@@ -26,15 +26,30 @@ main()
     console.log(err);
   });
 
-try {
-  app.get("/subjects", async (req, res) => {
+app.get("/subjects", async (req, res) => {
+  try {
     const data = await Paper.find({});
     res.send(data);
-  });
-} catch (Err) {
-  console.log(Err);
-}
+  } catch (err) {
+    console.log(err);
+  }
+});
 
+// app.get("/products", async (req, res) => {
+//   // res.send("Working")
+//   const data = await Paper.find({});
+
+//   if (req.query.search) {
+//     const filterProducts = data.filter((Paper) =>
+//       Paper.Title.includes(req.query.search.toUpperCase())
+//     );
+//     res.send(filterProducts);
+//     return;
+//   }
+//   res.send(data);
+// });
+
+// Upload
 app.post("/upload", async (req, res) => {
   const newdata = new Paper({
     Title: req.body.Title,
@@ -43,8 +58,16 @@ app.post("/upload", async (req, res) => {
   });
   await newdata
     .save()
-    .then(() => res.status(200).send("Data received successfully"))
-    .catch((err) => res.status(500).send("Failed to save order: " + err));
+    .then(() =>
+      res
+        .status(200)
+        .json({ success: true, message: "Data Uploaded Successfully" })
+    )
+    .catch((err) =>
+      res
+        .status(500)
+        .json({ success: false, message: "Failed to save the Data" })
+    );
 });
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);

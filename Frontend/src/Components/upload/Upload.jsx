@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 function Upload() {
   const [inputValue, setIsInputValue] = useState({
@@ -18,10 +19,22 @@ function Upload() {
     });
   };
 
+  //Toast
+  const handleSuccess = (msg) => {
+    toast.success(msg, {
+      position: "top-center",
+    });
+  };
+  const handleError = (msg) => {
+    toast.error(msg, {
+      position: "top-center",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(inputValue);
+      // console.log(inputValue);
       const Data = await axios.post(
         "http://localhost:3000/upload",
         {
@@ -29,7 +42,26 @@ function Upload() {
         },
         { withCredentials: true }
       );
-      console.log(Data);
+      // console.log(Data);
+
+      //Destructuring Data
+      const { success, message } = Data.data;
+      if (success) {
+        handleSuccess(message);
+        setTimeout(() => {
+          navigate("/home");
+        }, 1000);
+      } else {
+        handleError(message);
+      }
+      // console.log(Data);
+      //Reseting the values
+      setIsInputValue({
+        ...inputValue,
+        Title: "",
+        Subject: "",
+        Semester: "",
+      });
     } catch (err) {
       console.log(err);
     }
@@ -90,6 +122,7 @@ function Upload() {
         </div>
         <div className="col-1"></div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
