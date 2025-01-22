@@ -11,6 +11,9 @@ import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import Uplaod from "./Components/upload/uploadPage.jsx";
 
+import Login from "./Components/Login/Login.jsx";
+import Signup from "./Components/Signup/Signup.jsx";
+
 import "./index.css";
 
 function Layout({ children }) {
@@ -38,6 +41,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/updates" element={<Updates />} />
           <Route path="/about" element={<About />} />
           <Route path="/upload" element={<Uplaod />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>

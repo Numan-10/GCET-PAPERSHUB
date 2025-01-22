@@ -1,10 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from "react-toastify";
 
 function Upload() {
   const Navigate = useNavigate();
+
+  const [cookies, removeCookie] = useCookies([]);
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    const verifyCookie = async () => {
+      if (!cookies.token) {
+        Navigate("/login");
+      }
+      const { data } = await axios.post(
+        "http://localhost:3000/verify",
+        {},
+        { withCredentials: true }
+      );
+      const { status, user } = data;
+      setUsername(user);
+      return status
+        ? toast(`Hello ${user}`, {
+            position: "top-right",
+          })
+        : (removeCookie("token"), Navigate("/login"));
+    };
+    verifyCookie();
+  }, [cookies, Navigate, removeCookie]);
+  const Logout = () => {
+    removeCookie("token");
+    Navigate("/signup");
+  };
+
   const [inputValue, setIsInputValue] = useState({
     Title: "",
     Subject: "",

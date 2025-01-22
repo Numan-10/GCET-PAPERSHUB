@@ -7,6 +7,9 @@ const cors = require("cors");
 const multer = require("multer");
 const { storage } = require("./cloudConfig");
 const upload = multer({ storage });
+const { Signup, Login } = require("./controllers/AuthController");
+const cookieParser = require("cookie-parser");
+const { userVerification } = require("./Middlewares/AuthMiddleware");
 
 const app = express();
 
@@ -21,6 +24,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cookieParser());
 
 async function main() {
   await mongoose.connect(Url);
@@ -41,8 +46,12 @@ app.get("/subjects", async (req, res) => {
     console.log(err);
   }
 });
-
+// console.log(typeof userVerification); // Should output 'function'
+// console.log(userVerification);
 // Upload
+
+app.post("/verify", userVerification);
+
 app.post("/upload", upload.single("Pdf"), async (req, res) => {
   try {
     // console.log(req);
@@ -63,11 +72,17 @@ app.post("/upload", upload.single("Pdf"), async (req, res) => {
           .json({ success: true, message: "Data Uploaded Successfully" })
       );
   } catch (err) {
+    console.log(err);
     res
       .status(500)
       .json({ success: false, message: "Failed to save the Data" });
   }
 });
+
+// ------------> Auth <---------------
+app.post("/signup", Signup);
+app.post("/login", Login);
+
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);
 });
