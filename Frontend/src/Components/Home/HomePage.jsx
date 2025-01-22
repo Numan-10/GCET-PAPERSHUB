@@ -31,6 +31,7 @@ function HomePage() {
           {data.map((subject, index) => (
             <Subject
               key={index}
+              id={subject._id}
               sub={subject.Subject}
               img="/Assets/gcet.jpeg"
             />

@@ -83,6 +83,24 @@ app.post("/upload", upload.single("Pdf"), async (req, res) => {
 app.post("/signup", Signup);
 app.post("/login", Login);
 
+// ------------> Endpoint for fetching sun details <---------------
+
+app.get("/subjects/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    // console.log("backend " + id);
+    const subject = await Paper.findById(id);
+    // console.log(subject);
+    if (subject) {
+      res.json(subject);
+    } else {
+      res.json({ message: "Subject Not Found" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);
 });

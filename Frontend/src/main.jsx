@@ -15,6 +15,8 @@ import Login from "./Components/Login/Login.jsx";
 import Signup from "./Components/Signup/Signup.jsx";
 
 import "./index.css";
+import SubDetails from "./Components/Details/SubDetails.jsx";
+// import Subject from "./Components/Home/subject.jsx";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -37,6 +39,7 @@ createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/" element={<Gcet />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/home/:id" element={<SubDetails />} />
           <Route path="/contributors" element={<Contributors />} />
           <Route path="/updates" element={<Updates />} />
           <Route path="/about" element={<About />} />
