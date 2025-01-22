@@ -29,7 +29,11 @@ function HomePage() {
         {error && <p className="text-danger text-center">{error}</p>}
         <div className="row">
           {data.map((subject, index) => (
-            <Subject key={index} sub={subject.Subject} img="/Assets/gcet.jpeg" />
+            <Subject
+              key={index}
+              sub={subject.Subject}
+              img="/Assets/gcet.jpeg"
+            />
           ))}
         </div>
       </div>

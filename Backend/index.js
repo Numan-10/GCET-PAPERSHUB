@@ -13,7 +13,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const Url = process.env.MONGO_URL;
-console.log("MongoDB URL:", Url);
 app.use(express.json());
 app.use(
   cors({

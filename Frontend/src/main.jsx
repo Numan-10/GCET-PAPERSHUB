@@ -11,7 +11,7 @@ import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import Uplaod from "./Components/upload/uploadPage.jsx";
 
-import "./index.css"
+import "./index.css";
 
 function Layout({ children }) {
   const location = useLocation();
