@@ -1,13 +1,16 @@
+require("dotenv").config();
+console.log("Loaded Environment Variables:", process.env);
 const express = require("express");
 const mongoose = require("mongoose");
-const Papers = require("../Models/Paper");
+const Paper = require("../Models/Paper");
 const initData = require("../init/data");
 const app = express();
 
 const PORT = 3000;
-
+// const Url = "mongodb+srv://PapersHub:PapersHub123@cluster0.pmn76.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+console.log("MongoDB URL:", Url);
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/papers");
+  await mongoose.connect(Url);
 }
 main()
   .then((res) => {
@@ -18,8 +21,8 @@ main()
   });
 
 const initDb = async () => {
-  await Papers.deleteMany({});
-  await Papers.insertMany(initData.data);
+  await Paper.deleteMany({});
+  await Paper.insertMany(initData.data);
   console.log("Data uploaded");
 };
 initDb();
