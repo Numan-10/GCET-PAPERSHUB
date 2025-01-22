@@ -1,5 +1,4 @@
 import React from "react";
-import Individual from "./Individual";
 import { useNavigate } from "react-router-dom";
 
 function Subject({ sub, img, id }) {
@@ -21,7 +20,6 @@ function Subject({ sub, img, id }) {
           <h5 className="text-center text-white fw-bold">{sub}</h5>
         </div>
       </div>
-      <Individual id={id} />
     </div>
   );
 }
