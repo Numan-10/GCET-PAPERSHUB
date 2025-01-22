@@ -59,10 +59,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="form_container">
-      <h2>Signup Account</h2>
+    <div className="container mt-5 mb-5">
+      <h2 className="text-center">Signup Account</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="mt-5">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -70,19 +70,23 @@ const Signup = () => {
             value={email}
             placeholder="Enter your email"
             onChange={handleOnChange}
+            id="email"
+            class="form-control"
           />
         </div>
-        <div>
-          <label htmlFor="email">Username</label>
+        <div className="mt-3">
+          <label htmlFor="usernam">Username</label>
           <input
             type="text"
             name="username"
             value={username}
             placeholder="Enter your username"
             onChange={handleOnChange}
+            id="usernam"
+            class="form-control"
           />
         </div>
-        <div>
+        <div className="mt-3">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -90,12 +94,20 @@ const Signup = () => {
             value={password}
             placeholder="Enter your password"
             onChange={handleOnChange}
+            id="password"
+            class="form-control"
           />
         </div>
-        <button type="submit">Submit</button>
-        <span>
+        <div className="ms-2 mt-2" style={{fontSize:"13px"}}>
           Already have an account? <Link to={"/login"}>Login</Link>
-        </span>
+        </div>
+        <div>
+          <button type="submit" className="mt-3 btn btn-primary">
+            Submit
+          </button>
+        </div>
+
+       
       </form>
       <ToastContainer />
     </div>
