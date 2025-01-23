@@ -64,14 +64,19 @@
 .join {
   font-weight: bold;
   font-size: 0.6rem;
-  color: black;
 }
 .socials {
-  font-size: 1.5rem;
-  
+  font-size: 1.7rem;
 }
-.p-2{
-  cursor: pointer;
+.icon-link {
+  margin-right: 5px; 
+  color: black;
+  text-decoration: none;
+}
+
+.socials span {
+  margin-left: 5px; 
+  color: black; 
 }
 .Footer {
   height: 15vh;
