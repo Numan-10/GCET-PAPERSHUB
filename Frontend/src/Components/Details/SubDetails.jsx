@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function SubDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [subject, setSubject] = useState({});
   const [Error, setError] = useState("");
@@ -12,18 +15,39 @@ function SubDetails() {
     axios
       .get(`http://localhost:3000/subjects/${id}`)
       .then((response) => {
-        setSubject(response.data);
+        console.log(response);
+        if (response.data.status === false) {
+          toast.error(response.data.message, {
+            position: "top-center",
+            autoClose: 1500,
+            onClose: () => navigate("/login"),
+          });
+          return;
+        } else {
+          setSubject(response.data);
+        }
       })
       .catch((err) => {
         setError("Error fetching Subject details: " + err.message);
+        toast.error("Failed to fetch details. Please try again.", {
+          position: "top-center",
+        });
       });
-  }, [id]);
+  }, [id, navigate]);
 
-  if (Error) return <p className="text-danger">{Error}</p>;
+  if (Error)
+    return (
+      <p className="text-danger text-center mt-5">
+        {Error}
+        <ToastContainer />
+      </p>
+    );
+
   if (!subject.Title)
     return (
       <p className="d-flex justify-content-center align-items-center mt-5">
         Loading...
+        <ToastContainer />
       </p>
     );
 
@@ -39,12 +63,12 @@ function SubDetails() {
           <h5 className="card-title">{subject.Title}</h5>
           <p className="card-text">Subject: {subject.Subject}</p>
           <p className="card-text">Semester: {subject.Semester}</p>
-          {/* <p className="card-text">Filename: {subject.Pdf.filename}</p> */}
           <a href={subject.Pdf.Url} className="btn btn-primary" target="_blank">
             View PDF
           </a>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

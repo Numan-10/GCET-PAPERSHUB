@@ -6,7 +6,10 @@ module.exports.userVerification = (req, res, next) => {
   const token = req.cookies.token;
   try {
     if (!token) {
-      return res.json({ status: false, message: "Unauthorized" });
+      return res.json({
+        status: false,
+        message: "Oops! It seems you're not logged in",
+      });
     }
     jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
       if (err) {
