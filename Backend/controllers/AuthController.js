@@ -10,7 +10,7 @@ module.exports.Signup = async (req, res, next) => {
       return res.json({ message: "User already exists" });
     }
     const user = await User.create({ email, password, username, createdAt });
-    const token = createSecretToken(user._id);
+    const token = createSecretToken(user._id, user.username);
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,
@@ -38,7 +38,7 @@ module.exports.Login = async (req, res, next) => {
     if (!auth) {
       return res.json({ message: "Incorrect password or email" });
     }
-    const token = createSecretToken(user._id);
+    const token = createSecretToken(user._id, user.username);
     res.cookie("token", token, {
       withCredentials: true,
       httpOnly: false,

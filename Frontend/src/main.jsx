@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import About from "./Components/About/AboutPage.jsx";
 import Contributors from "./Components/contributors/contributePage.jsx";

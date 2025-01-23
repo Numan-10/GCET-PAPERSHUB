@@ -117,11 +117,6 @@ function Upload() {
     }
   };
 
-  const Logout = () => {
-    removeCookie("token");
-    Navigate("/signup");
-  };
-
   return (
     <div className="container">
       <div className="row">
