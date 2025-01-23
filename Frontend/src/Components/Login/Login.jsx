@@ -20,11 +20,11 @@ const Login = () => {
 
   const handleError = (err) =>
     toast.error(err, {
-      position: "bottom-left",
+      position: "top-center",
     });
   const handleSuccess = (msg) =>
     toast.success(msg, {
-      position: "bottom-left",
+      position: "top-center",
     });
 
   const handleSubmit = async (e) => {
@@ -62,7 +62,9 @@ const Login = () => {
       <h2 className="text-center">Login Account</h2>
       <form onSubmit={handleSubmit}>
         <div className="mt-5">
-          <label htmlFor="email" className="form-label">Email</label>
+          <label htmlFor="email" className="form-label">
+            Email
+          </label>
           <input
             type="email"
             name="email"
@@ -70,7 +72,7 @@ const Login = () => {
             placeholder="Enter your email"
             onChange={handleOnChange}
             id="email"
-              className="form-control"
+            className="form-control"
           />
         </div>
         <div className="mt-3">
@@ -85,10 +87,12 @@ const Login = () => {
             className="form-control"
           />
         </div>
-        <div className="ms-2 mt-2" style={{fontSize:"13px"}}>
+        <div className="ms-2 mt-2" style={{ fontSize: "13px" }}>
           Already have an account? <Link to={"/signup"}>Signup</Link>
         </div>
-        <button type="submit" className="btn btn-success mt-3">Submit</button>
+        <button type="submit" className="btn btn-success mt-3">
+          Submit
+        </button>
       </form>
       <ToastContainer />
     </div>

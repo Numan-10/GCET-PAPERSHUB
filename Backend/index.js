@@ -10,6 +10,7 @@ const upload = multer({ storage });
 const { Signup, Login } = require("./controllers/AuthController");
 const cookieParser = require("cookie-parser");
 const { userVerification } = require("./Middlewares/AuthMiddleware");
+const { isAdmin } = require("./Middlewares/isAdmin");
 
 const app = express();
 
@@ -50,7 +51,9 @@ app.get("/subjects", async (req, res) => {
 // console.log(userVerification);
 // Upload
 
-app.post("/verify", userVerification);
+app.post("/verify", userVerification, isAdmin, (req, res) => {
+  res.json({ status: true, message: "You are an admin" });
+});
 
 app.post("/upload", upload.single("Pdf"), async (req, res) => {
   try {

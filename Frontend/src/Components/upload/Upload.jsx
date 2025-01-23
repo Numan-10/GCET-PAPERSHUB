@@ -6,34 +6,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 function Upload() {
   const Navigate = useNavigate();
-
   const [cookies, removeCookie] = useCookies([]);
   const [username, setUsername] = useState("");
-  useEffect(() => {
-    const verifyCookie = async () => {
-      if (!cookies.token) {
-        Navigate("/login");
-      }
-      const { data } = await axios.post(
-        "http://localhost:3000/verify",
-        {},
-        { withCredentials: true }
-      );
-      const { status, user } = data;
-      setUsername(user);
-      return status
-        ? toast(`Hello ${user}`, {
-            position: "top-right",
-          })
-        : (removeCookie("token"), Navigate("/login"));
-    };
-    verifyCookie();
-  }, [cookies, Navigate, removeCookie]);
-  const Logout = () => {
-    removeCookie("token");
-    Navigate("/signup");
-  };
-
   const [inputValue, setIsInputValue] = useState({
     Title: "",
     Subject: "",
@@ -45,8 +19,38 @@ function Upload() {
 
   const { Title, Subject, Semester, Pdf } = inputValue;
 
+  useEffect(() => {
+    const verifyCookie = async () => {
+      try {
+        if (!cookies.token) {
+          return Navigate("/login");
+        }
+
+        const { data } = await axios.post(
+          "http://localhost:3000/verify",
+          {},
+          { withCredentials: true }
+        );
+
+        const { status, user, email } = data;
+
+        if (!status || email !== "9256fa@gmail.com") {
+          return Navigate("/home");
+        }
+
+        setUsername(user);
+        toast.success(`Welcome, ${user}`, { position: "top-right" });
+      } catch (err) {
+        console.error(err);
+        removeCookie("token");
+        Navigate("/home");
+      }
+    };
+
+    verifyCookie();
+  }, [cookies, Navigate, removeCookie]);
+
   const handleOnChange = (evt) => {
-    console.log(evt);
     const { name, value, files } = evt.target;
     if (name === "Pdf") {
       console.log(evt);
@@ -62,24 +66,20 @@ function Upload() {
     }
   };
 
-  //Toast
-  const handleSuccess = (msg) => {
-    toast.success(msg, {
-      position: "top-center",
-    });
-  };
-  const handleError = (msg) => {
-    toast.error(msg, {
-      position: "top-center",
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setisLoading(true);
 
     if (!Title || !Subject || !Semester || !Pdf) {
-      handleError("All fields are required!");
+      toast.error("All fields are required!", { position: "top-center" });
+      setisLoading(false);
+      return;
+    }
+    //----------------> Upload file Validation <----------------
+    if (Pdf.type !== "application/pdf") {
+      toast.error("Please upload a valid PDF file!", {
+        position: "top-center",
+      });
       setisLoading(false);
       return;
     }
@@ -91,37 +91,35 @@ function Upload() {
     formData.append("Pdf", Pdf);
 
     try {
-      console.log(formData);
-      const Data = await axios.post("http://localhost:3000/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data } = await axios.post(
+        "http://localhost:3000/upload",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
 
-      //Destructuring Data
-      const { success, message } = Data.data;
-      setisLoading(false);
+      const { success, message } = data;
       if (success) {
-        handleSuccess(message);
-        setTimeout(() => {
-          Navigate("/Upload");
-        }, 1000);
+        toast.success(message, { position: "top-center" });
+        setTimeout(() => Navigate("/Upload"), 1000);
       } else {
-        handleError(message);
+        toast.error(message, { position: "top-center" });
       }
-      // console.log(Data);
-      //Reseting the values
-      setIsInputValue({
-        ...inputValue,
-        Title: "",
-        Subject: "",
-        Semester: "",
-        Pdf: null,
-        // Pdf: "",
-      });
+      setIsInputValue({ Title: "", Subject: "", Semester: "", Pdf: null });
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      toast.error("Something went wrong. Please try again.", {
+        position: "top-center",
+      });
+    } finally {
+      setisLoading(false);
     }
+  };
+
+  const Logout = () => {
+    removeCookie("token");
+    Navigate("/signup");
   };
 
   return (
@@ -159,27 +157,26 @@ function Upload() {
                     value={Subject}
                     onChange={handleOnChange}
                     name="Subject"
-                    className="form-control"
                     id="subject"
+                    className="form-control"
                   />
                 </div>
               </div>
               <div className="col-12 col-md-6">
                 <div className="mb-3">
                   <label htmlFor="file" className="form-label">
-                    Upload pdf
+                    Upload PDF
                   </label>
                   <input
                     type="file"
                     onChange={handleOnChange}
                     name="Pdf"
-                    className="form-control"
                     id="file"
+                    className="form-control"
                   />
                 </div>
               </div>
             </div>
-
             <div className="mb-3">
               <label htmlFor="sem" className="form-label">
                 Semester
@@ -193,14 +190,10 @@ function Upload() {
                 className="form-control"
               />
             </div>
-
             {isloading ? (
-              <button class="btn btn-success mb-5" type="button" disabled>
-                <span role="status">Uploading...</span> &nbsp;
-                <span
-                  class="spinner-border spinner-border-sm"
-                  aria-hidden="true"
-                ></span>
+              <button className="btn btn-success mb-5" type="button" disabled>
+                Uploading... &nbsp;
+                <span className="spinner-border spinner-border-sm"></span>
               </button>
             ) : (
               <button type="submit" className="btn btn-success mb-5">

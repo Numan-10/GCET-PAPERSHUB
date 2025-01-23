@@ -33,22 +33,20 @@ function Layout({ children }) {
 }
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Gcet />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/home/:id" element={<SubDetails />} />
-          <Route path="/contributors" element={<Contributors />} />
-          <Route path="/updates" element={<Updates />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/upload" element={<Uplaod />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
-  </StrictMode>
+  <BrowserRouter>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Gcet />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/home/:id" element={<SubDetails />} />
+        <Route path="/contributors" element={<Contributors />} />
+        <Route path="/updates" element={<Updates />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/upload" element={<Uplaod />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Layout>
+  </BrowserRouter>
 );

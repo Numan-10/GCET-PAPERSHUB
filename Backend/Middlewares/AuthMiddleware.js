@@ -4,17 +4,27 @@ const jwt = require("jsonwebtoken");
 
 module.exports.userVerification = (req, res, next) => {
   const token = req.cookies.token;
-  if (!token) {
-    return res.json({ status: false, message: "Unauthorized" });
-  }
-  jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
-    if (err) {
-      return res.json({ status: false });
-    } else {
-      const user = await User.findById(data.id);
-      if (user) return res.json({ status: true, user: user.username });
-      else return res.json({ status: false });
+  try {
+    if (!token) {
+      return res.json({ status: false, message: "Unauthorized" });
     }
-  });
-//   next();
+    jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
+      if (err) {
+        return res
+          .status(403)
+          .json({ status: false, message: "Invalid token" });
+      }
+      const user = await User.findById(data.id);
+      if (!user) {
+        return res
+          .status(404)
+          .json({ status: false, message: "User not found" });
+      }
+      req.user = user;
+
+      next();
+    });
+  } catch (err) {
+    return res.status(403).json({ status: false, message: "Invalid token" });
+  }
 };

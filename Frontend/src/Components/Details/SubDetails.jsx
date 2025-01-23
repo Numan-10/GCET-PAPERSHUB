@@ -28,9 +28,12 @@ function SubDetails() {
     );
 
   return (
-    <div className="container">
+    <div className="container mt-4 mb-5 d-flex justify-content-center align-items-center flex-column">
       <h2 className="text-center">Subject Details</h2>
-      <div className="card" style={{ width: "18rem" }}>
+      <div
+        className="card mt-3"
+        style={{ width: "18rem", borderRadius: "12px", overflow: "hidden" }}
+      >
         <img src="/Assets/gcet.jpeg" className="card-img-top" alt="Subject" />
         <div className="card-body">
           <h5 className="card-title">{subject.Title}</h5>
