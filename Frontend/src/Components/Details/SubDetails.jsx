@@ -22,7 +22,7 @@ function SubDetails() {
   if (Error) return <p className="text-danger">{Error}</p>;
   if (!subject.Title)
     return (
-      <p className="d-flex justify-content-center align-items-center">
+      <p className="d-flex justify-content-center align-items-center mt-5">
         Loading...
       </p>
     );

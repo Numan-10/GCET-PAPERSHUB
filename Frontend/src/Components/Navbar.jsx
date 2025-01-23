@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import Box from "@mui/material/Box";
@@ -18,25 +19,25 @@ function Navbar() {
   const [isLoggedIn, setLogggedIn] = useState(false);
   const [cookies, removeCookie] = useCookies(["token"]);
   const [userData, setuserdata] = useState("");
-
+  const Navigate = useNavigate();
   //Material UI Avatar
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    try {
-      if (cookies.token) {
-        setLogggedIn(true);
+    if (cookies.token) {
+      try {
         const DecodeToken = jwtDecode(cookies.token);
+        setLogggedIn(true);
         const user = DecodeToken.user;
         setuserdata(user);
-      } else {
-        setLogggedIn(false);
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
+    } else {
+      setLogggedIn(false);
     }
-  }, []);
+  }, [cookies.token]);
 
   // Functions
 
@@ -59,15 +60,15 @@ function Navbar() {
     removeCookie();
     setLogggedIn(false);
     setuserdata("");
-    Navigate("/Signup");
+    Navigate("/home");
   };
 
-  const signup = () => {
-    Navigate("/Signup");
+  const login = () => {
+    Navigate("/login");
   };
 
   return (
-    <div className="Navbar d-flex justify-content-between  ">
+    <div className="Navbar d-flex justify-content-between align-items-center ">
       <div>
         <button className="p-3 hamburger ms-2 " onClick={togglerDrawer}>
           <img
@@ -120,119 +121,121 @@ function Navbar() {
           </Link>
         </div>
       </div>
-      <div></div>
 
       {/*--------------------------->  Avatar + Logoout starts here  <--------------------------------------*/}
 
       {/* {isLoggedIn && ( */}
-      <React.Fragment>
-        <Box
-          sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
-        >
-          <Tooltip title="Your Account">
-            <IconButton
-              onClick={handleClick}
-              size="small"
-              sx={{ ml: 2 }}
-              aria-controls={open ? "account-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-            >
-              <Avatar
-                sx={{
-                  width: 30,
-                  height: 30,
-                  color: "white",
-                  backgroundColor: "#360743",
-                  fontSize: "15px",
-                }}
+      <div className="d-flex justify-content-center align-items-center">
+        <React.Fragment>
+          <Box
+            sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
+          >
+            <Tooltip title="Your Account">
+              <IconButton
+                onClick={handleClick}
+                size="small"
+                sx={{ ml: 2 }}
+                aria-controls={open ? "account-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
               >
-                {AvatarName}
-              </Avatar>
-            </IconButton>
-          </Tooltip>
-        </Box>
-        <Menu
-          anchorEl={anchorEl}
-          id="account-menu"
-          open={open}
-          onClose={handleClose}
-          onClick={handleClose}
-          slotProps={{
-            paper: {
-              elevation: 0,
-              sx: {
-                overflow: "visible",
-                filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                mt: 1.5,
-                "& .MuiAvatar-root": {
-                  width: 32,
-                  height: 32,
-                  ml: -0.5,
-                  mr: 1,
-                },
-                "&::before": {
-                  content: '""',
-                  display: "block",
-                  position: "absolute",
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: "background.paper",
-                  transform: "translateY(-50%) rotate(45deg)",
-                  zIndex: 0,
+                <Avatar
+                  sx={{
+                    width: 30,
+                    height: 30,
+                    color: "white",
+                    backgroundColor: "#6f6e96",
+                    fontSize: "15px",
+                  }}
+                >
+                  {AvatarName}
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+          </Box>
+          <Menu
+            anchorEl={anchorEl}
+            id="account-menu"
+            open={open}
+            onClose={handleClose}
+            onClick={handleClose}
+            slotProps={{
+              paper: {
+                elevation: 0,
+                sx: {
+                  overflow: "visible",
+                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  mt: 1.5,
+                  "& .MuiAvatar-root": {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  "&::before": {
+                    content: '""',
+                    display: "block",
+                    position: "absolute",
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: "background.paper",
+                    transform: "translateY(-50%) rotate(45deg)",
+                    zIndex: 0,
+                  },
                 },
               },
-            },
-          }}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        >
-          {isLoggedIn && (
-            <MenuItem onClick={handleClose}>
-              <Avatar /> {userData}
-            </MenuItem>
-          )}
-
-          {!isLoggedIn && (
-            <>
-              <Divider />
-              <MenuItem onClick={logout}>
-                <ListItemIcon>
-                  <LoginIcon fontSize="small" />
-                </ListItemIcon>
-                Login
+            }}
+            transformOrigin={{ horizontal: "right", vertical: "top" }}
+            anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+          >
+            {isLoggedIn && (
+              <MenuItem onClick={handleClose}>
+                <Avatar /> {userData}
               </MenuItem>
-            </>
-          )}
-          {isLoggedIn && (
-            <>
-              <Divider />
-              <MenuItem onClick={signup}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
-            </>
-          )}
-        </Menu>
-      </React.Fragment>
-      {/* )} */}
+            )}
 
-      {/* --------------> Avatar + Logoout Ends here <----------------------- */}
+            {!isLoggedIn && (
+              <>
+                <Divider />
+                <MenuItem onClick={login}>
+                  <ListItemIcon>
+                    <LoginIcon fontSize="small" />
+                  </ListItemIcon>
+                  Login
+                </MenuItem>
+              </>
+            )}
+            {isLoggedIn && (
+              <>
+                <Divider />
+                <MenuItem onClick={logout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Logout
+                </MenuItem>
+              </>
+            )}
+          </Menu>
+        </React.Fragment>
 
-      <button className="p-3 me-2" style={{ border: "none" }}>
-        <Link to="/updates">
-          <img
-            src="/Assets/bell-outline.svg"
-            alt="Notification"
-            className="img-fluid"
-            style={{ width: "4rem" }}
-          />
-        </Link>
-      </button>
+        {/* --------------> Avatar + Logoout Ends here <----------------------- */}
+
+        <button className="p-3 me-2" style={{ border: "none" }}>
+          <Tooltip title="View Updates">
+            <Link to="/updates">
+              <img
+                src="/Assets/bell-outline.svg"
+                alt="Notification"
+                className="img-fluid"
+                style={{ width: "4rem" }}
+              />
+            </Link>
+          </Tooltip>
+        </button>
+      </div>
     </div>
   );
 }

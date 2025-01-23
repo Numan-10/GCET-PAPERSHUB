@@ -39,7 +39,7 @@ function Upload() {
         }
 
         setUsername(user);
-        toast.success(`Welcome, ${user}`, { position: "top-right" });
+        toast.success(`Welcome, ${user}`, { position: "top-center" });
       } catch (err) {
         console.error(err);
         removeCookie("token");
