@@ -56,9 +56,9 @@
 }
 .Home {
   font-weight: bold;
-  font-size: 1.8rem;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
+  font-size: 1.5rem;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
 .join {
@@ -67,7 +67,11 @@
   color: black;
 }
 .socials {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  
+}
+.p-2{
+  cursor: pointer;
 }
 .Footer {
   height: 15vh;
@@ -76,6 +80,12 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  margin-top: auto;
+}
+
+/* --------------> so that the content takes the remaining space : Footer Solved */
+.container {
+  flex: 1;
 }
 
 /* -------------> Navbar <----------------- */

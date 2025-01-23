@@ -11,17 +11,17 @@ function Social() {
       </div>
       <div className="row text-center ">
         <div className="socials d-flex justify-content-center">
-          <div className="p-2">
+          <div className="p-1">
             <i class="fa-brands fa-github"></i> |
           </div>
-          <div className="p-2">
+          <div className="p-1">
           <i class="fa-brands fa-whatsapp"></i> |
           </div>
-          <div className="p-2">
+          <div className="p-1">
             <i class="fa-brands fa-discord"></i> |
           </div>
-          <div className="p-2">
-            <i class="fa-brands fa-telegram"></i> |
+          <div className="p-1">
+            <i class="fa-brands fa-telegram"></i> 
           </div>
         </div>
       </div>
