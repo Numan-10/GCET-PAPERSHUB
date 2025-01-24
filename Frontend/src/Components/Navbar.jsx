@@ -57,7 +57,7 @@ function Navbar() {
     setIsOpen(!isOpen);
   };
   const logout = () => {
-    removeCookie();
+    removeCookie("token");
     setLogggedIn(false);
     setuserdata("");
     Navigate("/home");

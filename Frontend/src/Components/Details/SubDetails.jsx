@@ -13,7 +13,7 @@ function SubDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/subjects/${id}`)
+      .get(`http://localhost:3000/subjects/${id}`, { withCredentials: true })
       .then((response) => {
         console.log(response);
         if (response.data.status === false) {
@@ -29,8 +29,10 @@ function SubDetails() {
       })
       .catch((err) => {
         setError("Error fetching Subject details: " + err.message);
-        toast.error("Failed to fetch details. Please try again.", {
+        toast.error("Unable to fetch, Login again.", {
           position: "top-center",
+          autoClose: 1500,
+          onClose: () => navigate("/login"),
         });
       });
   }, [id, navigate]);
