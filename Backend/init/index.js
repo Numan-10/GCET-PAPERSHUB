@@ -7,8 +7,8 @@ const initData = require("../init/data");
 const app = express();
 
 const PORT = 3000;
-// const Url = "mongodb+srv://PapersHub:PapersHub123@cluster0.pmn76.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-console.log("MongoDB URL:", Url);
+const Url = "mongodb+srv://PapersHub:PapersHub123@cluster0.pmn76.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+// console.log("MongoDB URL:", Url);
 async function main() {
   await mongoose.connect(Url);
 }
