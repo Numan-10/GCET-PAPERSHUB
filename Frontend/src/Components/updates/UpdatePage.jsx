@@ -1,7 +1,7 @@
 import React from "react";
 import Update from "./Update";
 
-function UpdatesPage() {
+function UpdatePage() {
   return (
     <div className="container  mb-5">
       <Update
@@ -19,4 +19,4 @@ function UpdatesPage() {
   );
 }
 
-export default UpdatesPage;
+export default UpdatePage;
