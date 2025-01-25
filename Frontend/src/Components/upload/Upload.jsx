@@ -45,6 +45,7 @@ function Upload() {
         toast.success(`Welcome, ${user}`, {
           position: "top-center",
           style: { marginTop: "1rem", width: getToastWidth() },
+          autoClose:1500,
         });
       } catch (err) {
         console.error(err);
