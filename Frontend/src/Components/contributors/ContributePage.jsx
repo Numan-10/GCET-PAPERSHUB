@@ -1,5 +1,5 @@
 import React from "react";
-import Contribute from "./contribute";
+import Contribute from "./Contribute";
 function ContributePage() {
   return (
     <>
