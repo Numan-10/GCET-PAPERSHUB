@@ -54,19 +54,17 @@ function SubDetails() {
     );
 
   return (
-    <div className="container mt-4 mb-5 d-flex justify-content-center align-items-center flex-column">
-      <h2 className="text-center">Subject Details</h2>
-      <div
-        className="card mt-3"
-        style={{ width: "18rem", borderRadius: "12px", overflow: "hidden" }}
-      >
-        <img src="/Assets/gcet.jpeg" className="card-img-top" alt="Subject" />
-        <div className="card-body">
-          <h5 className="card-title">{subject.Title}</h5>
-          <p className="card-text">Subject: {subject.Subject}</p>
-          <p className="card-text">Semester: {subject.Semester}</p>
-          <a href={subject.Pdf.Url} className="btn btn-primary" target="_blank">
-            View PDF
+    <div className="container mt-4 mb-5">
+      <h2 className="text-center mb-4">Subject Information</h2>
+      <div className="card shadow-lg rounded">
+        <img src="/Assets/gcet.png" className="card-img-top" alt="Subject" style={{ height: "250px", objectFit: "cover" }} />
+        <div className="card-body text-center">
+          <h5 className="card-title  text-primary fs-1 ">{subject.Title}</h5>
+          <p className="card-text text-muted">{subject.Subject}</p>
+          <p className="card-text text-muted">Semester: {subject.Semester}</p>
+          <a href={subject.Pdf.Url} className="btn btn-primary btn-lg" target="_blank">
+            {/* Font awesome icon */}
+            <i class="fa-solid fa-file-pdf"></i> View PDF
           </a>
         </div>
       </div>
