@@ -9,7 +9,7 @@ const Login = () => {
     email: "",
     password: "",
   });
-  
+
   const { email, password } = inputValue;
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -89,7 +89,7 @@ const Login = () => {
           />
         </div>
         <div className="ms-2 mt-2" style={{ fontSize: "13px" }}>
-          Already have an account? <Link to={"/signup"}>Signup</Link>
+          Don't have an account yet?  <Link to={"/signup"}>Signup</Link>
         </div>
         <button type="submit" className="btn btn-success mt-3">
           Submit

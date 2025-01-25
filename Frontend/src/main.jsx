@@ -9,7 +9,7 @@ import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import Uplaod from "./Components/upload/uploadPage.jsx";
-
+import Content from "./Components/Content/Content.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Signup from "./Components/Signup/Signup.jsx";
 
@@ -44,6 +44,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/upload" element={<Uplaod />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/content" element={<Content />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Layout>
