@@ -24,10 +24,9 @@ function Subject({ sub, img, id }) {
           src={img}
           className="card-img-top"
           alt="card"
-          // style={{ width: "100%", height: "100%", objectFit: "cover", }}
         />
         <div className="card-img-overlay d-flex justify-content-center align-items-center">
-          <h5 className="text-center text-white fw-bold fs-5"style={{letterSpacing:"1px"}}>{sub}</h5>
+          <h5 className="text-center text-black fw-bold fs-4"style={{letterSpacing:"1px"}}>{sub}</h5>
         </div>
       </div>
     </div>

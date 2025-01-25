@@ -4,11 +4,9 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
-
   const getToastWidth = () => {
     return window.innerWidth > 768 ? "300px" : "90%";
   };
-
 
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
@@ -46,7 +44,6 @@ const Login = () => {
         },
         { withCredentials: true }
       );
-      console.log(data);
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
@@ -67,42 +64,59 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5 mb-5">
-      <h2 className="text-center">Login Account</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mt-5">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            placeholder="Enter your email"
-            onChange={handleOnChange}
-            id="email"
-            className="form-control"
-          />
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-6">
+          <div className="card shadow p-4">
+            <h2 className="text-center fw-bold text-success">
+              Login to Your Account
+            </h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label fw-semibold">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={email}
+                  placeholder="Enter your email"
+                  onChange={handleOnChange}
+                  id="email"
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label fw-semibold">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  value={password}
+                  placeholder="Enter your password"
+                  onChange={handleOnChange}
+                  id="password"
+                  className="form-control"
+                />
+              </div>
+              <div className="mb-3">
+                <p className="text-muted small">
+                  Don't have an account?{" "}
+                  <Link to="/signup" className="text-decoration-none text-success">
+                    Signup here
+                  </Link>
+                </p>
+              </div>
+              <div className="d-grid">
+                <button type="submit" className="btn btn-success">
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className="mt-3">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={handleOnChange}
-            id="password"
-            className="form-control"
-          />
-        </div>
-        <div className="ms-2 mt-2" style={{ fontSize: "13px" }}>
-          Don't have an account yet?  <Link to={"/signup"}>Signup</Link>
-        </div>
-        <button type="submit" className="btn btn-success mt-3">
-          Submit
-        </button>
-      </form>
+      </div>
       <ToastContainer />
     </div>
   );

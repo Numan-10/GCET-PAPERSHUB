@@ -6,7 +6,7 @@ const content = () => {
   const Navigate = useNavigate();
 
   const getToastWidth = () => {
-    return window.innerWidth > 768 ? "400px" : "90%";
+    return window.innerWidth > 768 ? "450px" : "90%";
   };
 
   toast.info("Designers are arguing about the colors. 🎨", {
