@@ -10,6 +10,11 @@ const Signup = () => {
     password: "",
     username: "",
   });
+
+  const getToastWidth = () => {
+    return window.innerWidth > 768 ? "400px" : "90%";
+  };
+
   const { email, password, username } = inputValue;
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -21,11 +26,14 @@ const Signup = () => {
 
   const handleError = (err) =>
     toast.error(err, {
-      position: "bottom-left",
+      position: "top-center",
+      style: { marginTop: "1rem", width: getToastWidth() },
+      autoClose: 2000,
     });
   const handleSuccess = (msg) =>
     toast.success(msg, {
-      position: "bottom-right",
+      position: "top-center",
+      style: { marginTop: "1rem", width: getToastWidth() },
     });
 
   const handleSubmit = async (e) => {
@@ -98,7 +106,7 @@ const Signup = () => {
             class="form-control"
           />
         </div>
-        <div className="ms-2 mt-2" style={{fontSize:"13px"}}>
+        <div className="ms-2 mt-2" style={{ fontSize: "13px" }}>
           Already have an account? <Link to={"/login"}>Login</Link>
         </div>
         <div>
@@ -106,8 +114,6 @@ const Signup = () => {
             Submit
           </button>
         </div>
-
-       
       </form>
       <ToastContainer />
     </div>

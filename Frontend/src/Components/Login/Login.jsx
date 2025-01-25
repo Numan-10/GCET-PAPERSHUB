@@ -4,6 +4,12 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
+
+  const getToastWidth = () => {
+    return window.innerWidth > 768 ? "300px" : "90%";
+  };
+
+
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -22,10 +28,12 @@ const Login = () => {
   const handleError = (err) =>
     toast.error(err, {
       position: "top-center",
+      style: { marginTop: "1rem", width: getToastWidth() },
     });
   const handleSuccess = (msg) =>
     toast.success(msg, {
       position: "top-center",
+      style: { marginTop: "1rem", width: getToastWidth() },
     });
 
   const handleSubmit = async (e) => {

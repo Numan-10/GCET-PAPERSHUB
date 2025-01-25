@@ -14,8 +14,11 @@ function Upload() {
     Semester: "",
     Pdf: null,
   });
-
   const [isloading, setisLoading] = useState(false);
+
+  const getToastWidth = () => {
+    return window.innerWidth > 768 ? "300px" : "90%";
+  };
 
   const { Title, Subject, Semester, Pdf } = inputValue;
 
@@ -39,7 +42,10 @@ function Upload() {
         }
 
         setUsername(user);
-        toast.success(`Welcome, ${user}`, { position: "top-center" });
+        toast.success(`Welcome, ${user}`, {
+          position: "top-center",
+          style: { marginTop: "1rem", width: getToastWidth() },
+        });
       } catch (err) {
         console.error(err);
         removeCookie("token");
@@ -71,7 +77,10 @@ function Upload() {
     setisLoading(true);
 
     if (!Title || !Subject || !Semester || !Pdf) {
-      toast.error("All fields are required!", { position: "top-center" });
+      toast.error("All fields are required!", {
+        position: "top-center",
+        style: { marginTop: "1rem", width: getToastWidth() },
+      });
       setisLoading(false);
       return;
     }
@@ -79,6 +88,7 @@ function Upload() {
     if (Pdf.type !== "application/pdf") {
       toast.error("Please upload a valid PDF file!", {
         position: "top-center",
+        style: { marginTop: "1rem", width: getToastWidth() },
       });
       setisLoading(false);
       return;
@@ -101,16 +111,23 @@ function Upload() {
 
       const { success, message } = data;
       if (success) {
-        toast.success(message, { position: "top-center" });
+        toast.success(message, {
+          position: "top-center",
+          style: { marginTop: "1rem", width: getToastWidth() },
+        });
         setTimeout(() => Navigate("/Upload"), 1000);
       } else {
-        toast.error(message, { position: "top-center" });
+        toast.error(message, {
+          position: "top-center",
+          style: { marginTop: "1rem", width: getToastWidth() },
+        });
       }
       setIsInputValue({ Title: "", Subject: "", Semester: "", Pdf: null });
     } catch (err) {
       console.error(err);
       toast.error("Something went wrong. Please try again.", {
         position: "top-center",
+        style: { marginTop: "1rem", width: getToastWidth() },
       });
     } finally {
       setisLoading(false);
