@@ -1,11 +1,11 @@
-import React from 'react'
-import Upload from './upload';
-function UplaodPage() {
-    return ( 
-        <div className="mb-2">
-            <Upload/>
-        </div>
-     );
+import React from "react";
+import Upload from "./Upload.jsx";
+function UploadPage() {
+  return (
+    <div className="mb-2">
+      <Upload />
+    </div>
+  );
 }
 
-export default UplaodPage;
+export default UploadPage;

@@ -8,7 +8,7 @@ import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
-import Uplaod from "./Components/upload/uploadPage.jsx";
+import Upload from "./Components/upload/UploadPage.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Signup from "./Components/Signup/Signup.jsx";
 import Content from "./Components/Content/content.jsx";
@@ -40,7 +40,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/contributors" element={<ContributePage />} />
         <Route path="/updates" element={<Updates />} />
         <Route path="/about" element={<About />} />
-        <Route path="/upload" element={<Uplaod />} />
+        <Route path="/upload" element={<Upload />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/content" element={<Content />} />

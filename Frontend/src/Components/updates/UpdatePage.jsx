@@ -1,5 +1,5 @@
 import React from "react";
-import Update from "./update";
+import Update from "./Update";
 
 function UpdatesPage() {
   return (
