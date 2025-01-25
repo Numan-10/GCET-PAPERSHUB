@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import AboutPage from "./Components/About/AboutPage.jsx";
-import Gcet from "./Components/Landing/Gcet.jsx" 
+import Landing from "./Components/Landing/Landing.jsx"; 
 import UpdatePage from "./Components/Update/UpdatePage.jsx";
 import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
@@ -35,7 +35,7 @@ createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Layout>
       <Routes>
-        <Route path="/" element={<Gcet />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/home" element={<Home />} />
         <Route path="/home/:id" element={<SubDetails />} />
         <Route path="/contributors" element={<ContributePage />} />

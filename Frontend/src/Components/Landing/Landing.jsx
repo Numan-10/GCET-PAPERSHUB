@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function Gcet() {
+function Landing() {
   const Navigate = useNavigate();
 
   let home=()=>{
@@ -30,4 +30,4 @@ function Gcet() {
   );
 }
 
-export default Gcet;
+export default Landing;
