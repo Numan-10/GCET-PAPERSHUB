@@ -47,7 +47,10 @@ function SubDetails() {
 
   if (!subject.Title)
     return (
-      <p className="d-flex justify-content-center align-items-center mt-5">
+      <p
+        className="d-flex justify-content-center align-items-center mt-5"
+        style={{ height: "80vh" }}
+      >
         Loading...
         <ToastContainer />
       </p>
@@ -57,12 +60,21 @@ function SubDetails() {
     <div className="container mt-4 mb-5">
       <h2 className="text-center mb-4">Subject Information</h2>
       <div className="card shadow-lg rounded">
-        <img src="/Assets/gcet.png" className="card-img-top" alt="Subject" style={{ height: "250px", objectFit: "cover" }} />
+        <img
+          src="/Assets/gcet.png"
+          className="card-img-top"
+          alt="Subject"
+          style={{ height: "250px", objectFit: "cover" }}
+        />
         <div className="card-body text-center">
           <h5 className="card-title  text-primary fs-1 ">{subject.Title}</h5>
           <p className="card-text text-muted">{subject.Subject}</p>
           <p className="card-text text-muted">Semester: {subject.Semester}</p>
-          <a href={subject.Pdf.Url} className="btn btn-primary btn-lg" target="_blank">
+          <a
+            href={subject.Pdf.Url}
+            className="btn btn-primary btn-lg"
+            target="_blank"
+          >
             {/* Font awesome icon */}
             <i class="fa-solid fa-file-pdf"></i> View PDF
           </a>
