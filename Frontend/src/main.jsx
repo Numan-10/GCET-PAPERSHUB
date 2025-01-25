@@ -3,7 +3,8 @@ import About from "./Components/About/AboutPage.jsx";
 // import Contributors from "./Components/Contributors/ContributePage.jsx";
 import Home from "./Components/Home/HomePage.jsx";
 import Gcet from "./Components/landing/Gcet.jsx";
-import Updates from "./Components/Updates/UpdatePage.jsx";
+// import Updates from "./Components/Updates/UpdatePage.jsx";
+import UpdatePage from "./Components/Update/UpdatePage.jsx";
 import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
@@ -11,7 +12,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import Upload from "./Components/upload/UploadPage.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Signup from "./Components/Signup/Signup.jsx";
-import Content from "./Components/Content/Content.jsx";
+// import Content from "./Components/Content/Content.jsx";
+import ContentPage from "./Components/Content/ContentPage.jsx";
 import "./index.css";
 import SubDetails from "./Components/Details/SubDetails.jsx";
 import ContributePage from "./Components/contributors/contributePage.jsx";
@@ -38,12 +40,12 @@ createRoot(document.getElementById("root")).render(
         <Route path="/home" element={<Home />} />
         <Route path="/home/:id" element={<SubDetails />} />
         <Route path="/contributors" element={<ContributePage />} />
-        <Route path="/updates" element={<Updates />} />
+        <Route path="/updates" element={<UpdatePage />} />
         <Route path="/about" element={<About />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/content" element={<Content />} />
+        <Route path="/content" element={<ContentPage />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Layout>
