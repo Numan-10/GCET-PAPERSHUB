@@ -2,7 +2,7 @@ import React from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const content = () => {
+const Content = () => {
   const Navigate = useNavigate();
 
   const getToastWidth = () => {
@@ -39,4 +39,4 @@ const content = () => {
   );
 };
 
-export default content;
+export default Content;
