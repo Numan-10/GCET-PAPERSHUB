@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import About from "./Components/About/AboutPage.jsx";
-import Contributors from "./Components/contributors/contributePage.jsx";
+import Contributors from "./Components/Contributors/ContributePage.jsx";
 import Home from "./Components/Home/HomePage.jsx";
 import Gcet from "./Components/landing/Gcet.jsx";
 import Updates from "./Components/updates/UpdatePage.jsx";
