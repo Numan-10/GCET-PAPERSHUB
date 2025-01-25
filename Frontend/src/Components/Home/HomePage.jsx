@@ -10,6 +10,20 @@ function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(6);
 
+  const Images = [
+    "/Assets/Frame 77 (1).svg",
+    "/Assets/Frame 78.svg",
+    "/Assets/Frame 80.svg",
+  ];
+
+  /* 
+  ---------> function for generating random image
+  const getRandomImage = () => {
+    const number = Math.floor(Math.random() * Images.length);
+    return Images[number];
+  };
+  */
+
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
@@ -40,7 +54,8 @@ function HomePage() {
               key={index}
               id={subject._id}
               sub={subject.Subject}
-              img="/Assets/gcet.jpeg"
+              img={Images[index % Images.length]}
+              // img={getRandomImage()}
             />
           ))}
           <Pagination

@@ -11,13 +11,23 @@ function Subject({ sub, img, id }) {
   return (
     <div className="col-12 col-md-4 mb-4">
       <div
-        className="card h-100"
-        style={{ borderRadius: "20px", overflow: "hidden" }}
+        className="card"
+        style={{
+          borderRadius: "38px",
+          overflow: "hidden",
+          height: "auto",
+          width: "auto",
+        }}
         onClick={handleOnClick}
       >
-        <img src={img} className="card-img-top" alt="card" />
+        <img
+          src={img}
+          className="card-img-top"
+          alt="card"
+          // style={{ width: "100%", height: "100%", objectFit: "cover", }}
+        />
         <div className="card-img-overlay d-flex justify-content-center align-items-center">
-          <h5 className="text-center text-white fw-bold">{sub}</h5>
+          <h5 className="text-center text-white fw-bold fs-5"style={{letterSpacing:"1px"}}>{sub}</h5>
         </div>
       </div>
     </div>

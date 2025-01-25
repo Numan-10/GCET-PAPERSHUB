@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Social() {
   const Navigate = useNavigate();
@@ -17,25 +18,29 @@ function Social() {
             alt="contributors"
             className="SocialHome img-fluid"
             onClick={contribute}
-            
           />
         </div>
         <div className="col-4 ">
-          <a href="https://github.com/GCET-CSE2022/" target="_black" style={{textDecoration:"none"}}>
-          <img
-            src="/Assets/Github.svg"
-            alt="contributors"
-            className="SocialHome img-fluid"
-          />
+          <a
+            href="https://github.com/GCET-CSE2022/"
+            target="_black"
+            style={{ textDecoration: "none" }}
+          >
+            <img
+              src="/Assets/Github.svg"
+              alt="contributors"
+              className="SocialHome img-fluid"
+            />
           </a>
-          
         </div>
         <div className="col-4 ">
-          <img
-            src="/Assets/Content.svg"
-            alt="contributors"
-            className="SocialHome img-fluid"
-          />
+          <Link to="/content">
+            <img
+              src="/Assets/Content.svg"
+              alt="contributors"
+              className="SocialHome img-fluid"
+            />
+          </Link>
         </div>
       </div>
       <div className="row mt-4">
