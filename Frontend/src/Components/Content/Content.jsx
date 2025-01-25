@@ -9,7 +9,7 @@ const content = () => {
     return window.innerWidth > 768 ? "450px" : "90%";
   };
 
-  toast.info("Designers are arguing about the colors. 🎨", {
+  toast.info("Designers are arguing about the colors.😆", {
     position: "top-center",
     autoClose: 3000,
     onClose: () => {
