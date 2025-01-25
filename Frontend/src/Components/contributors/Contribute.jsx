@@ -14,7 +14,7 @@ function Contribute({ name, role,src }) {
         <img
           src={src}
           className="card-img-top text-center"
-          alt="Numan"
+          alt="Contriutors image"
           style={{ height: "22rem", objectFit: "cover" }}
         />
         <div
