@@ -27,7 +27,9 @@ function HomePage() {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/subjects");
+        const response = await axios.get(
+          `${import.meta.VITE_APP_BACKEND_URL}/subjects`
+        );
         console.log(response.data);
         setIsData(response.data);
       } catch (err) {

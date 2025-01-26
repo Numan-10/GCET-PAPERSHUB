@@ -38,7 +38,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/login",
+        `${import.meta.VITE_APP_BACKEND_URL}/login`,
         {
           ...inputValue,
         },

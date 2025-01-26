@@ -30,7 +30,7 @@ function Upload() {
         }
 
         const { data } = await axios.post(
-          "http://localhost:3000/verify",
+          "https://gcet-papershub.onrender.com/verify",
           {},
           { withCredentials: true }
         );
@@ -103,7 +103,7 @@ function Upload() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/upload",
+        `${import.meta.env.VITE_APP_BACKEND_URL}/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

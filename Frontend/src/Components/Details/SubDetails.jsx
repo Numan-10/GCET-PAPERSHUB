@@ -16,7 +16,7 @@ function SubDetails() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3000/subjects/${id}`, { withCredentials: true })
+      .get(`${import.meta.VITE_APP_BACKEND_URL}/subjects/${id}`, { withCredentials: true })
       .then((response) => {
         console.log(response);
         if (response.data.status === false) {

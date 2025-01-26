@@ -40,7 +40,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/signup",
+        ` ${import.meta.VITE_APP_BACKEND_URL}/signup`,
         {
           ...inputValue,
         },
