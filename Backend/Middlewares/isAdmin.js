@@ -1,5 +1,6 @@
+require("dotenv").config();
 module.exports.isAdmin = (req, res, next) => {
-  const adminEmail = "9256fa@gmail.com";
+  const adminEmail = process.env.EMAIL_ID;
   const currUser = req.user;
   if (req.user && req.user.email === adminEmail) {
     res.json({ status: true, user: currUser.username, email: currUser.email });

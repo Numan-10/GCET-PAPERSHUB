@@ -45,7 +45,8 @@ function Navbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  console.log("Environment App ID:", import.meta.env.VITE_APP_ID);
+  console.log("User ID:", userData.id);
   const logout = () => {
     removeCookie("token");
     setLogggedIn(false);
@@ -72,7 +73,7 @@ function Navbar() {
             src="/Assets/More.svg"
             alt="Hamburger"
             className="img-fluid"
-            style={{ width: "3rem" }}
+            style={{ width: "3rem" ,cursor:"pointer"}}
           />
         </button>
 
@@ -118,12 +119,11 @@ function Navbar() {
           </Link>
         </div>
       </div>
-
       {/*--------------------------->  Avatar + Logoout starts here  <--------------------------------------*/}
-
       {/* {isLoggedIn && ( */}
+
       <div className="d-flex justify-content-center align-items-center">
-        {userData.id === "679266d2d7d33946c77f0503" && (
+        {userData.id === import.meta.env.VITE_APP_ID && (
           <Link to="/upload">
             <button className="btn btn-success btn-sm">Upload here</button>
           </Link>
@@ -164,13 +164,14 @@ function Navbar() {
         >
           {isLoggedIn && (
             <MenuItem>
-              <Avatar />&nbsp;<span className="fw-semibold">{userData.user}</span>
+              <Avatar />
+              &nbsp;<span className="fw-semibold">{userData.user}</span>
             </MenuItem>
           )}
           {!isLoggedIn && (
             <>
               <Divider />
-              <MenuItem onClick={login} >
+              <MenuItem onClick={login}>
                 <ListItemIcon>
                   <LoginIcon fontSize="small" />
                 </ListItemIcon>

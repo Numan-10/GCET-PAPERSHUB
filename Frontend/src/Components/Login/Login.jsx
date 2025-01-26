@@ -72,7 +72,7 @@ const Login = () => {
               Login to Your Account
             </h2>
             <form onSubmit={handleSubmit}>
-              <div className="mb-3">
+              <div className="mb-3 mt-4">
                 <label htmlFor="email" className="form-label fw-semibold">
                   Email Address
                 </label>
