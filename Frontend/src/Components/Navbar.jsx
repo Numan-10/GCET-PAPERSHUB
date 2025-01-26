@@ -26,9 +26,10 @@ function Navbar() {
   useEffect(() => {
     if (cookies.token) {
       try {
+        console.log("Token", cookies.token);
         const decodedToken = jwtDecode(cookies.token);
         setLogggedIn(true);
-        console.log(decodedToken);
+        console.log("DecodedToken" + decodedToken);
         setUserData({ id: decodedToken.id, user: decodedToken.user });
       } catch (err) {
         console.error(err);
@@ -73,7 +74,7 @@ function Navbar() {
             src="/Assets/More.svg"
             alt="Hamburger"
             className="img-fluid"
-            style={{ width: "3rem" ,cursor:"pointer"}}
+            style={{ width: "3rem", cursor: "pointer" }}
           />
         </button>
 

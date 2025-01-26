@@ -16,7 +16,9 @@ function SubDetails() {
 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, { withCredentials: true })
+      .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
+        withCredentials: true,
+      })
       .then((response) => {
         console.log(response);
         if (response.data.status === false) {
@@ -24,6 +26,7 @@ function SubDetails() {
             position: "top-center",
             autoClose: 1500,
             onClose: () => navigate("/login"),
+            width: getToastWidth(),
           });
           return;
         } else {
