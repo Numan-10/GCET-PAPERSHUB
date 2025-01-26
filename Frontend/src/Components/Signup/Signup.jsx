@@ -40,7 +40,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        ` ${import.meta.VITE_APP_BACKEND_URL}/signup`,
+        ` ${import.meta.env.VITE_APP_BACKEND_URL}/signup`,
         {
           ...inputValue,
         },

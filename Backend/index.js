@@ -26,6 +26,8 @@ app.use(
   })
 );
 
+console.log(process.env.MONGO_URL);
+
 app.use(cookieParser());
 
 async function main() {

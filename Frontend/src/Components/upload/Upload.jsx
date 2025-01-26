@@ -30,7 +30,7 @@ function Upload() {
         }
 
         const { data } = await axios.post(
-          "https://gcet-papershub.onrender.com/verify",
+          `${import.meta.env.VITE_APP_BACKEND_URL}/verify`,
           {},
           { withCredentials: true }
         );

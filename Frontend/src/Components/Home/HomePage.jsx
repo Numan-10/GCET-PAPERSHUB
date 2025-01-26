@@ -28,7 +28,7 @@ function HomePage() {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.VITE_APP_BACKEND_URL}/subjects`
+          `${import.meta.env.VITE_APP_BACKEND_URL}/subjects`
         );
         console.log(response.data);
         setIsData(response.data);
