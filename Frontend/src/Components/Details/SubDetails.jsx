@@ -26,7 +26,7 @@ function SubDetails() {
             position: "top-center",
             autoClose: 1500,
             onClose: () => navigate("/login"),
-            width: getToastWidth(),
+            style: { marginTop: "1rem", width: getToastWidth() },
           });
           return;
         } else {
