@@ -10,10 +10,13 @@ function SubDetails() {
 
   const [subject, setSubject] = useState({});
   const [Error, setError] = useState("");
+  const getToastWidth = () => {
+    return window.innerWidth > 768 ? "300px" : "90%";
+  };
 
   useEffect(() => {
     axios
-      .get(`https://gcet-papershub.onrender.com/${id}`, { withCredentials: true })
+      .get(`http://localhost:3000/subjects/${id}`, { withCredentials: true })
       .then((response) => {
         console.log(response);
         if (response.data.status === false) {
@@ -33,6 +36,7 @@ function SubDetails() {
           position: "top-center",
           autoClose: 1500,
           onClose: () => navigate("/login"),
+          width: getToastWidth(),
         });
       });
   }, [id, navigate]);

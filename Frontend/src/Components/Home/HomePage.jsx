@@ -27,7 +27,7 @@ function HomePage() {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get("https://gcet-papershub.onrender.com/subjects");
+        const response = await axios.get("http://localhost:3000/subjects");
         console.log(response.data);
         setIsData(response.data);
       } catch (err) {

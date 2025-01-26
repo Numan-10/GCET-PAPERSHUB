@@ -40,7 +40,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "https://gcet-papershub.onrender.com/signup",
+        "http://localhost:3000/signup",
         {
           ...inputValue,
         },
