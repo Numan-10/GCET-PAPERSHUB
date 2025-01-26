@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Social from "./social";
-import Subject from "./subject";
+import Social from "./Social.jsx";
+import Subject from "./Subject.jsx";
 import axios from "axios";
 import Pagination from "./Pagination";
 
