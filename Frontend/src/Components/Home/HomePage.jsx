@@ -44,6 +44,7 @@ function HomePage() {
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = data.slice(firstPostIndex, lastPostIndex);
+  console.log("Backend URL:", import.meta.env.VITE_APP_BACKEND_URL);
 
   return (
     <>
