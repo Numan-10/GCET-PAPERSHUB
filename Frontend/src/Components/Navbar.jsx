@@ -58,7 +58,7 @@ function Navbar() {
     ? userData.user.slice(0, 1).toUpperCase()
     : "U";
 
-  console.log("Logged In:", loggedIn);
+  console.log("Logged In:", isLoggedIn);
   console.log("User Data:", userData);
 
   return (
