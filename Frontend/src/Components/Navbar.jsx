@@ -24,6 +24,7 @@ function Navbar() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    console.log("Cookie" + cookies);
     if (cookies.token) {
       console.log(cookies);
       try {
