@@ -23,8 +23,9 @@ function Navbar() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    console.log(cookies.token);
-    console.log(cookies);
+    console.log("Cokkies.token"+cookies.token);
+    console.log("Cookies:", cookies);
+
     if (cookies.token) {
       try {
         const decodedToken = jwtDecode(cookies.token);
