@@ -33,6 +33,7 @@ function Navbar() {
         setUserData({ id: decodedToken.id, user: decodedToken.user });
       } catch (err) {
         console.error("Invalid token", err);
+        removeCookie("token");
       }
     } else {
       setLogggedIn(false);

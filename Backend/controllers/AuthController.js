@@ -20,7 +20,6 @@ module.exports.Signup = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
-      domain: ".onrender.com",
       path: "/",
       maxAge: 12 * 60 * 60 * 1000,
     });
@@ -53,7 +52,6 @@ module.exports.Login = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
-      domain: ".onrender.com",
       path: "/",
       maxAge: 12 * 60 * 60 * 1000,
     });

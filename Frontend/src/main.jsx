@@ -14,6 +14,7 @@ import ContentPage from "./Components/Content/ContentPage.jsx";
 import "./index.css";
 import SubDetails from "./Components/Details/SubDetails.jsx";
 import ContributePage from "./Components/contributors/ContributePage.jsx";
+import { CookiesProvider } from "react-cookie";
 
 
 function Layout({ children }) {
@@ -31,6 +32,7 @@ function Layout({ children }) {
 }
 
 createRoot(document.getElementById("root")).render(
+  <CookiesProvider>
   <BrowserRouter>
     <Layout>
       <Routes>
@@ -48,4 +50,5 @@ createRoot(document.getElementById("root")).render(
       </Routes>
     </Layout>
   </BrowserRouter>
+  </CookiesProvider>
 );
