@@ -51,7 +51,7 @@ module.exports.Login = async (req, res, next) => {
     const token = createSecretToken(user._id, user.username);
     res.cookie("token", token, {
       path: "/",
-      domain: "gcet-papershub.vercel.app", // your frontend domain
+      domain: "gcet-papershub.vercel.app", 
       withCredentials: true,
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
