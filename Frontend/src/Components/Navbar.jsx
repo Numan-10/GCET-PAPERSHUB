@@ -17,13 +17,14 @@ import LoginIcon from "@mui/icons-material/Login";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setLogggedIn] = useState(false);
-  const [cookies, removeCookie] = useCookies(["token"]);
+  const [cookies, removeCookie] =useCookies(["token"]);
   const [userData, setUserData] = useState({ id: "", user: "" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    console.log("Token", cookies);
     console.log("Token", cookies.token);
     if (cookies.token) {
       try {
