@@ -16,12 +16,15 @@ module.exports.Signup = async (req, res, next) => {
     const user = await User.create({ email, password, username, createdAt });
     const token = createSecretToken(user._id, user.username);
     res.cookie("token", token, {
+      path: "/",
+      domain: "gcet-papershub.vercel.app", // your frontend domain
       withCredentials: true,
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 12 * 60 * 60 * 1000,
     });
+
     res
       .status(201)
       .json({ message: "User signed in successfully", success: true, user });
@@ -47,12 +50,15 @@ module.exports.Login = async (req, res, next) => {
     }
     const token = createSecretToken(user._id, user.username);
     res.cookie("token", token, {
+      path: "/",
+      domain: "gcet-papershub.vercel.app", // your frontend domain
       withCredentials: true,
       httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 12 * 60 * 60 * 1000,
     });
+    
     res
       .status(201)
       .json({ message: "User logged in successfully", success: true });

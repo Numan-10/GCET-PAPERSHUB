@@ -16,7 +16,7 @@ import LoginIcon from "@mui/icons-material/Login";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setLogggedIn] = useState(false);
-  const [cookies, removeCookie] = useCookies(["token"]);
+  const [cookies, setCookies, removeCookie] = useCookies(["token"]);
   const [userData, setUserData] = useState({ id: "", user: "" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -58,7 +58,7 @@ function Navbar() {
     ? userData.user.slice(0, 1).toUpperCase()
     : "U";
 
-    console.log(cookies);
+  console.log(cookies);
   console.log("Logged In:", isLoggedIn);
   console.log("User Data:", userData);
 
