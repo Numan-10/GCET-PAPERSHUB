@@ -23,9 +23,12 @@ function Navbar() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    console.log(cookies.token);
+    console.log(cookies);
     if (cookies.token) {
       try {
         const decodedToken = jwtDecode(cookies.token);
+        console.log(decodedToken);
         setLogggedIn(true);
         setUserData({ id: decodedToken.id, user: decodedToken.user });
       } catch (err) {
