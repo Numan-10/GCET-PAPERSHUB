@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -17,21 +17,19 @@ import LoginIcon from "@mui/icons-material/Login";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setLogggedIn] = useState(false);
-  const [cookies, removeCookie] =useCookies(["token"]);
+  const [cookies, removeCookie] = useCookies(["token"]);
   const [userData, setUserData] = useState({ id: "", user: "" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    console.log("Token", cookies);
-    console.log("Token", cookies.token);
     if (cookies.token) {
+      console.log(cookies);
       try {
-        console.log("Token", cookies.token);
         const decodedToken = jwtDecode(cookies.token);
         setLogggedIn(true);
-        console.log("DecodedToken" + decodedToken);
+        console.log(decodedToken);
         setUserData({ id: decodedToken.id, user: decodedToken.user });
       } catch (err) {
         console.error(err);
