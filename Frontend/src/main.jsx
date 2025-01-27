@@ -36,6 +36,7 @@ createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Layout>
       <Routes>
+        <Route path="/" element={<Navbar/>} />
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/home/:id" element={<SubDetails />} />
