@@ -23,29 +23,19 @@ function Navbar() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    console.log(cookies.token);
+    console.log(cookies);
     if (cookies.token) {
       try {
         const decodedToken = jwtDecode(cookies.token);
-
-        // Check token validity
-        const isExpired = decodedToken.exp * 1000 < Date.now();
-        if (isExpired) {
-          console.warn("Token expired");
-          removeCookie("token");
-          setLogggedIn(false);
-          setUserData({ id: "", user: "" });
-        } else {
-          console.log("Decoded Token:", decodedToken);
-          setLogggedIn(true);
-          setUserData({ id: decodedToken.id, user: decodedToken.user });
-        }
+        console.log(decodedToken);
+        setLogggedIn(true);
+        setUserData({ id: decodedToken.id, user: decodedToken.user });
       } catch (err) {
-        console.error("Error decoding token", err);
-        setLogggedIn(false);
-        setUserData({ id: "", user: "" });
+        console.error("Invalid token", err);
+        removeCookie("token");
       }
     } else {
-      console.log("Token not found");
       setLogggedIn(false);
       setUserData({ id: "", user: "" });
     }
