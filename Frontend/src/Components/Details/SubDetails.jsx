@@ -13,7 +13,7 @@ function SubDetails() {
   const getToastWidth = () => {
     return window.innerWidth > 768 ? "300px" : "90%";
   };
-  console.log("Subdetails"+cookies);
+  console.log("Subdetails"+cookies.token);
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
