@@ -32,7 +32,6 @@ function Layout({ children }) {
 
 createRoot(document.getElementById("root")).render(
   <CookiesProvider>
-    <Route path="/" element={<Navbar />} />
     <BrowserRouter>
       <Layout>
         <Routes>
