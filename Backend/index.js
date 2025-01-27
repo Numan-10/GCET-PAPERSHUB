@@ -17,8 +17,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const Url = process.env.MONGO_URL;
-console.log("Frontend URL:", process.env.FRONTEND_URL);
-console.log("Environment Variables:", process.env);
+// console.log("Environment Variables:", process.env);
 
 app.use(express.json());
 app.use(
@@ -29,6 +28,7 @@ app.use(
   })
 );
 
+console.log("Frontend URL:", process.env.FRONTEND_URL);
 console.log(process.env.MONGO_URL);
 
 app.use(cookieParser());
