@@ -3,50 +3,53 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useCookies } from "react-cookie";
 
 function SubDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [subject, setSubject] = useState({});
-  const [Error, setError] = useState("");
-  const getToastWidth = () => {
-    return window.innerWidth > 768 ? "300px" : "90%";
-  };
+  const [error, setError] = useState("");
+  const [cookies] = useCookies(["token"]);
+
+  const getToastWidth = () => (window.innerWidth > 768 ? "300px" : "90%");
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.data.status === false) {
-          toast.error(response.data.message, {
+    if (cookies.token) {
+      axios
+        .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.status === false) {
+            toast.error(response.data.message, {
+              position: "top-center",
+              autoClose: 1500,
+              onClose: () => navigate("/login"),
+            });
+            return;
+          } else {
+            setSubject(response.data);
+          }
+        })
+        .catch((err) => {
+          setError("Error fetching subject details: " + err.message);
+          toast.error("Unable to fetch, Login again.", {
             position: "top-center",
             autoClose: 1500,
             onClose: () => navigate("/login"),
+            width: getToastWidth(),
           });
-          return;
-        } else {
-          setSubject(response.data);
-        }
-      })
-      .catch((err) => {
-        setError("Error fetching Subject details: " + err.message);
-        toast.error("Unable to fetch, Login again.", {
-          position: "top-center",
-          autoClose: 1500,
-          onClose: () => navigate("/login"),
-          width: getToastWidth(),
         });
-      });
-  }, [id, navigate]);
+    }
+  }, [id, navigate, cookies.token]);
 
-  if (Error)
+  if (error)
     return (
       <p className="text-danger text-center mt-5">
-        {Error}
+        {error}
         <ToastContainer />
       </p>
     );
@@ -73,7 +76,7 @@ function SubDetails() {
           style={{ height: "250px", objectFit: "cover" }}
         />
         <div className="card-body text-center">
-          <h5 className="card-title  text-primary fs-1 ">{subject.Title}</h5>
+          <h5 className="card-title text-primary fs-1">{subject.Title}</h5>
           <p className="card-text text-muted">{subject.Subject}</p>
           <p className="card-text text-muted">Semester: {subject.Semester}</p>
           <a
@@ -81,8 +84,7 @@ function SubDetails() {
             className="btn btn-primary btn-lg"
             target="_blank"
           >
-            {/* Font awesome icon */}
-            <i class="fa-solid fa-file-pdf"></i> View PDF
+            <i className="fa-solid fa-file-pdf"></i> View PDF
           </a>
         </div>
       </div>
