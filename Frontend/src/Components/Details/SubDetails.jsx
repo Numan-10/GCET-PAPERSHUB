@@ -43,6 +43,13 @@ function SubDetails() {
             width: getToastWidth(),
           });
         });
+    } else {
+      toast.error("Unable to fetch, Login again.", {
+        position: "top-center",
+        autoClose: 1500,
+        onClose: () => navigate("/login"),
+        width: getToastWidth(),
+      });
     }
   }, [id, navigate, cookies.token]);
 
