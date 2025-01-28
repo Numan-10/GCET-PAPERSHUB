@@ -3,17 +3,17 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useCookies } from "react-cookie";
+
 function SubDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies(["token"]);
+
   const [subject, setSubject] = useState({});
   const [Error, setError] = useState("");
   const getToastWidth = () => {
     return window.innerWidth > 768 ? "300px" : "90%";
   };
-  console.log("Subdetails"+cookies.token);
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
@@ -26,7 +26,6 @@ function SubDetails() {
             position: "top-center",
             autoClose: 1500,
             onClose: () => navigate("/login"),
-            style: { marginTop: "1rem", width: getToastWidth() },
           });
           return;
         } else {

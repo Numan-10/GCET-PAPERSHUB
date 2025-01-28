@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import Box from "@mui/material/Box";
@@ -16,34 +17,38 @@ import LoginIcon from "@mui/icons-material/Login";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setLogggedIn] = useState(false);
-  const [cookies, setCookies, removeCookie] = useCookies(["token"]);
+  const [cookies, removeCookie] = useCookies(["token"]);
   const [userData, setUserData] = useState({ id: "", user: "" });
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    console.log(cookies.token);
-    console.log(cookies);
+    console.log("Navbar" + cookies);
     if (cookies.token) {
+      console.log(cookies);
       try {
         const decodedToken = jwtDecode(cookies.token);
-        console.log(decodedToken);
         setLogggedIn(true);
+        console.log(decodedToken);
         setUserData({ id: decodedToken.id, user: decodedToken.user });
       } catch (err) {
-        console.error("Invalid token", err);
-        removeCookie("token");
+        console.error(err);
       }
     } else {
       setLogggedIn(false);
-      setUserData({ id: "", user: "" });
     }
   }, [cookies.token]);
 
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  console.log("Environment App ID:", import.meta.env.VITE_APP_ID);
+  console.log("User ID:", userData.id);
   const logout = () => {
     removeCookie("token");
     setLogggedIn(false);
@@ -52,68 +57,73 @@ function Navbar() {
     handleClose();
   };
 
-  const login = () => navigate("/login");
-  const togglerDrawer = () => setIsOpen(!isOpen);
-  const AvatarName = userData.user
-    ? userData.user.slice(0, 1).toUpperCase()
-    : "U";
+  const login = () => {
+    navigate("/login");
+  };
 
-  console.log(cookies);
-  console.log("Logged In:", isLoggedIn);
-  console.log("User Data:", userData);
+  const togglerDrawer = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const AvatarName = userData.user.slice(0, 1).toUpperCase();
 
   return (
     <div className="Navbar d-flex justify-content-between align-items-center">
-      {/* Hamburger Menu */}
-      <button
-        className="p-3 hamburger ms-2"
-        onClick={togglerDrawer}
-        aria-label="Toggle Drawer"
-      >
-        <img
-          src="/Assets/More.svg"
-          alt="Hamburger Menu"
-          className="img-fluid"
-          style={{ width: "3rem", cursor: "pointer" }}
-        />
-      </button>
-      <div className={`drawer ${isOpen ? "open" : ""}`}>
-        <button onClick={togglerDrawer} className="close-btn">
-          ✕
+      <div>
+        <button className="p-3 hamburger ms-2" onClick={togglerDrawer}>
+          <img
+            src="/Assets/More.svg"
+            alt="Hamburger"
+            className="img-fluid"
+            style={{ width: "3rem", cursor: "pointer" }}
+          />
         </button>
-        <ul>
-          <Link
-            to="/Home"
-            onClick={() => setIsOpen(false)}
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <li>Home</li>
-          </Link>
-          <Link
-            to="/Content"
-            onClick={() => setIsOpen(false)}
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <li>Content</li>
-          </Link>
-          <Link
-            to="/Contributors"
-            onClick={() => setIsOpen(false)}
-            style={{ textDecoration: "none", color: "black" }}
-          >
-            <li>Contributors</li>
-          </Link>
-        </ul>
-        <Link
-          to="/About"
-          onClick={() => setIsOpen(false)}
-          style={{ textDecoration: "none", color: "black" }}
-        >
-          <h2 className="text-center link-underline-dark aboutus">About us</h2>
-        </Link>
-      </div>
 
-      {/* Avatar + Logout */}
+        {/* --------------> Drawer <------------------- */}
+
+        <div className={`drawer ${isOpen ? "open" : ""}`}>
+          <button onClick={togglerDrawer} className="close-btn">
+            ✕
+          </button>
+
+          <ul>
+            <Link
+              to="/Home"
+              onClick={() => setIsOpen(false)}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <li>Home</li>
+            </Link>
+            <Link
+              to="/Content"
+              onClick={() => setIsOpen(false)}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <li>Content</li>
+            </Link>
+            <Link
+              to="/Contributors"
+              onClick={() => setIsOpen(false)}
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <li>Contributors</li>
+            </Link>
+          </ul>
+
+          <Link
+            to="/About"
+            onClick={() => setIsOpen(false)}
+            style={{ textDecoration: "none", color: "black" }}
+          >
+            <h2 className="text-center link-underline-dark aboutus">
+              About us
+            </h2>
+          </Link>
+        </div>
+      </div>
+      {/*--------------------------->  Avatar + Logoout starts here  <--------------------------------------*/}
+      {/* {isLoggedIn && ( */}
+
       <div className="d-flex justify-content-center align-items-center">
         {userData.id === import.meta.env.VITE_APP_ID && (
           <Link to="/upload">
@@ -183,11 +193,7 @@ function Navbar() {
             </>
           )}
         </Menu>
-        <button
-          className="p-3 me-2"
-          style={{ border: "none" }}
-          aria-label="View Updates"
-        >
+        <button className="p-3 me-2" style={{ border: "none" }}>
           <Tooltip title="View Updates">
             <Link to="/updates">
               <img

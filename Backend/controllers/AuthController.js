@@ -17,11 +17,13 @@ module.exports.Signup = async (req, res, next) => {
     res.cookie("token", token, {
       withCredentials: true,
       // httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 12 * 60 * 60 * 1000,
+      secure: true, // Only over HTTPS
+      sameSite: "none", // For cross-origin requests (if necessary)
+      maxAge: 12 * 60 * 60 * 1000, // Cookie expiry
     });
-    res.status(201).json({ message: "User signed in successfully", success: true, user });
+    res
+      .status(201)
+      .json({ message: "User signed in successfully", success: true, user });
     next();
   } catch (error) {
     console.error(error);
@@ -46,11 +48,13 @@ module.exports.Login = async (req, res, next) => {
     res.cookie("token", token, {
       withCredentials: true,
       // httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 12 * 60 * 60 * 1000,
+      secure: true, // Only over HTTPS
+      sameSite: "none", // For cross-origin requests (if necessary)
+      maxAge: 12 * 60 * 60 * 1000, // Cookie expiry
     });
-    res.status(201).json({ message: "User logged in successfully", success: true });
+    res
+      .status(201)
+      .json({ message: "User logged in successfully", success: true });
     next();
   } catch (error) {
     console.error(error);

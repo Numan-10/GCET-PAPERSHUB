@@ -6,14 +6,14 @@ import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
-import UploadPage from "./Components/upload/UploadPage.jsx";
+import UploadPage from "./Components/Upload/UploadPage.jsx";
 import HomePage from "./Components/Home/HomePage.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Signup from "./Components/Signup/Signup.jsx";
 import ContentPage from "./Components/Content/ContentPage.jsx";
 import "./index.css";
 import SubDetails from "./Components/Details/SubDetails.jsx";
-import ContributePage from "./Components/contributors/ContributePage.jsx";
+import ContributePage from "./Components/Contributors/ContributePage.jsx";
 import { CookiesProvider } from "react-cookie";
 
 function Layout({ children }) {
@@ -31,9 +31,9 @@ function Layout({ children }) {
 }
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <Layout>
-      <CookiesProvider>
+  <CookiesProvider>
+    <BrowserRouter>
+      <Layout>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<HomePage />} />
@@ -47,7 +47,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/content" element={<ContentPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </CookiesProvider>
-    </Layout>
-  </BrowserRouter>
+      </Layout>
+    </BrowserRouter>
+  </CookiesProvider>
 );
