@@ -8,7 +8,6 @@ module.exports.Signup = async (req, res, next) => {
     if (!email || !password || !username) {
       return res.json({ message: "All fields are required" });
     }
-
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.json({ message: "User already exists" });
@@ -16,18 +15,13 @@ module.exports.Signup = async (req, res, next) => {
     const user = await User.create({ email, password, username, createdAt });
     const token = createSecretToken(user._id, user.username);
     res.cookie("token", token, {
-      path: "/",
-      domain: "gcet-papershub.vercel.app", // your frontend domain
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 12 * 60 * 60 * 1000,
     });
-
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
+    res.status(201).json({ message: "User signed in successfully", success: true, user });
     next();
   } catch (error) {
     console.error(error);
@@ -50,18 +44,13 @@ module.exports.Login = async (req, res, next) => {
     }
     const token = createSecretToken(user._id, user.username);
     res.cookie("token", token, {
-      path: "/",
-      domain: "gcet-papershub.vercel.app", 
       withCredentials: true,
-      httpOnly: false,
+      httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 12 * 60 * 60 * 1000,
     });
-    
-    res
-      .status(201)
-      .json({ message: "User logged in successfully", success: true });
+    res.status(201).json({ message: "User logged in successfully", success: true });
     next();
   } catch (error) {
     console.error(error);

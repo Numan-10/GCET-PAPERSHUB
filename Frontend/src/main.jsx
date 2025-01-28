@@ -31,9 +31,9 @@ function Layout({ children }) {
 }
 
 createRoot(document.getElementById("root")).render(
-  <CookiesProvider>
-    <BrowserRouter>
-      <Layout>
+  <BrowserRouter>
+    <Layout>
+      <CookiesProvider>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<HomePage />} />
@@ -47,7 +47,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/content" element={<ContentPage />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </Layout>
-    </BrowserRouter>
-  </CookiesProvider>
+      </CookiesProvider>
+    </Layout>
+  </BrowserRouter>
 );
