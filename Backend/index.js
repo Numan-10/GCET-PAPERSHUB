@@ -39,6 +39,12 @@ main()
     console.log(err);
   });
 
+
+  
+app.get("/test", (req, res) => {
+  res.send("All good !");
+});
+
 app.get("/subjects", async (req, res) => {
   try {
     const data = await Paper.find({});
