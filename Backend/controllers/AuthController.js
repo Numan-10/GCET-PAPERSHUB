@@ -64,6 +64,7 @@ module.exports.Login = async (req, res, next) => {
       message: "Logged in successfully",
       success: true,
       JwtToken,
+      email: user.email,
       name: user.username,
     });
   } catch (err) {

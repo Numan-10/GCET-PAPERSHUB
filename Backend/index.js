@@ -11,7 +11,7 @@ const cookieParser = require("cookie-parser");
 const userVerification = require("./Middlewares/AuthMiddleware");
 const { isAdmin } = require("./Middlewares/isAdmin");
 const AuthRouter = require("./Routes/AuthRoute");
-const TestRouter = require("./Routes/TestRoute");
+const TestRouter = require("./Routes/VerifyRoute");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -20,7 +20,8 @@ const Url = process.env.MONGO_URL;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://gcet-papershub.vercel.app"],
+    // origin: ["https://gcet-papershub.vercel.app"],
+    origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
