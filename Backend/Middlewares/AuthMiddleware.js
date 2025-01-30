@@ -1,34 +1,21 @@
+require("dotenv").config();
 const User = require("../Models/User");
+
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-module.exports.userVerification = (req, res, next) => {
-  const token = req.cookies.token;
-  console.log("Cookies UserVerification" + req.cookies.token);
+const userVerification = (req, res, next) => {
+  const Auth = req.headers["authorization"];
+  if (!Auth) {
+    return res.status(403).json({ message: "Please sign in to continue." });
+  }
   try {
-    if (!token) {
-      return res.json({
-        status: false,
-        message: "Oops! It seems you're not logged in",
-      });
-    }
-    jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
-      if (err) {
-        return res
-          .status(403)
-          .json({ status: false, message: "Invalid token" });
-      }
-      const user = await User.findById(data.id);
-      if (!user) {
-        return res
-          .status(404)
-          .json({ status: false, message: "User not found" });
-      }
-      req.user = user;
-
-      next();
-    });
+    const decoded = jwt.verify(Auth, process.env.TOKEN_KEY);
+    req.user = decoded;
+    next();
   } catch (err) {
-    return res.status(403).json({ status: false, message: "Invalid token" });
+    res.status(401).json({ message: "Session invalid. Sign in again." });
   }
 };
+
+module.exports = userVerification;

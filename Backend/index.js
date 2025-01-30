@@ -7,11 +7,11 @@ const cors = require("cors");
 const multer = require("multer");
 const { storage } = require("./cloudConfig");
 const upload = multer({ storage });
-const { Signup, Login } = require("./controllers/AuthController");
 const cookieParser = require("cookie-parser");
-const { userVerification } = require("./Middlewares/AuthMiddleware");
+const userVerification = require("./Middlewares/AuthMiddleware");
 const { isAdmin } = require("./Middlewares/isAdmin");
-
+const AuthRouter = require("./Routes/AuthRoute");
+const TestRouter = require("./Routes/TestRoute");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -39,8 +39,6 @@ main()
     console.log(err);
   });
 
-
-  
 app.get("/test", (req, res) => {
   res.send("All good !");
 });
@@ -89,8 +87,9 @@ app.post("/upload", upload.single("Pdf"), async (req, res) => {
 });
 
 // ------------> Auth <---------------
-app.post("/signup", Signup);
-app.post("/login", Login);
+
+app.use("/", AuthRouter);
+app.use("/", TestRouter);
 
 // ------------> Endpoint for fetching sun details <---------------
 
