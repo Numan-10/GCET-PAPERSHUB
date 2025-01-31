@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from "react-toastify";
 
 function Upload() {
   const Navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies([]);
   const [username, setUsername] = useState("");
   const [inputValue, setIsInputValue] = useState({
     Title: "",
@@ -23,16 +21,18 @@ function Upload() {
   const { Title, Subject, Semester, Pdf } = inputValue;
 
   useEffect(() => {
-    const verifyCookie = async () => {
+    const verify = async () => {
       try {
-        if (!cookies.token) {
+        if (!localStorage.getItem("token")) {
           return Navigate("/login");
         }
 
         const { data } = await axios.post(
-          `${import.meta.env.VITE_APP_BACKEND_URL}/verify`,
-          {},
-          { withCredentials: true }
+          // `${import.meta.env.VITE_APP_BACKEND_URL}/verify`,
+          `http://localhost:3000/verify`,
+          {
+            Authorization: localStorage.getItem("token"),
+          }
         );
 
         const { status, user, email } = data;
@@ -54,8 +54,8 @@ function Upload() {
       }
     };
 
-    verifyCookie();
-  }, [cookies, Navigate, removeCookie]);
+    verify();
+  }, [Navigate]);
 
   const handleOnChange = (evt) => {
     const { name, value, files } = evt.target;
@@ -103,7 +103,8 @@ function Upload() {
 
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/upload`,
+        // `${import.meta.env.VITE_APP_BACKEND_URL}/upload`,
+        `http://localhost:3000/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

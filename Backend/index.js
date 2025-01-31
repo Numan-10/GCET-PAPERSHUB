@@ -35,6 +35,7 @@ async function main() {
 main()
   .then((res) => {
     console.log("Connected to DB");
+    console.log("Current Database:", mongoose.connection.name);
   })
   .catch((err) => {
     console.log(err);
@@ -52,9 +53,6 @@ app.get("/subjects", async (req, res) => {
     console.log(err);
   }
 });
-// console.log(typeof userVerification); // Should output 'function'
-// console.log(userVerification);
-// Upload
 
 app.post("/verify", userVerification, isAdmin, (req, res) => {
   res.json({ status: true, message: "You are an admin" });

@@ -14,8 +14,6 @@ import ContentPage from "./Components/Content/ContentPage.jsx";
 import "./index.css";
 import SubDetails from "./Components/Details/SubDetails.jsx";
 import ContributePage from "./Components/contributors/ContributePage.jsx";
-import { CookiesProvider } from "react-cookie";
-
 function Layout({ children }) {
   const location = useLocation();
 
@@ -31,23 +29,21 @@ function Layout({ children }) {
 }
 
 createRoot(document.getElementById("root")).render(
-  <CookiesProvider>
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/home/:id" element={<SubDetails />} />
-          <Route path="/contributors" element={<ContributePage />} />
-          <Route path="/updates" element={<UpdatePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/upload" element={<UploadPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/content" element={<ContentPage />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
-  </CookiesProvider>
+  <BrowserRouter>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/home/:id" element={<SubDetails />} />
+        <Route path="/contributors" element={<ContributePage />} />
+        <Route path="/updates" element={<UpdatePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/upload" element={<UploadPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/content" element={<ContentPage />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    </Layout>
+  </BrowserRouter>
 );

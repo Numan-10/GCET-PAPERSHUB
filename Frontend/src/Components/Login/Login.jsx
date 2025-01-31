@@ -38,7 +38,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-     return handleError("All fields are required ");
+      return handleError("All fields are required ");
     }
     try {
       setIsLoading(true);
@@ -58,6 +58,7 @@ const Login = () => {
 
         localStorage.setItem("token", JwtToken);
         localStorage.setItem("user", name);
+        localStorage.setItem("email", email);
 
         setTimeout(() => {
           navigate("/home");
