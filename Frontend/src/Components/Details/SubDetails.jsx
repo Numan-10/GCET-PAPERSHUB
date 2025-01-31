@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useCookies } from "react-cookie";
 
 function SubDetails() {
   const { id } = useParams();
@@ -11,16 +10,15 @@ function SubDetails() {
 
   const [subject, setSubject] = useState({});
   const [error, setError] = useState("");
-  const [cookies] = useCookies(["token"]);
 
   const getToastWidth = () => (window.innerWidth > 768 ? "300px" : "90%");
 
   useEffect(() => {
-    if (cookies.token) {
+    if (localStorage.getItem("token")) {
+      axios;
+      // .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
       axios
-        .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
-          withCredentials: true,
-        })
+        .get(`http://localhost:3000/subjects/${id}`)
         .then((response) => {
           console.log(response);
           if (response.data.status === false) {
@@ -44,14 +42,14 @@ function SubDetails() {
           });
         });
     } else {
-      toast.error("Unable to fetch, Login again.", {
+      toast.error("Log in first, hero!", {
         position: "top-center",
         autoClose: 1500,
         onClose: () => navigate("/login"),
         width: getToastWidth(),
       });
     }
-  }, [id, navigate, cookies.token]);
+  }, [id, navigate, localStorage.getItem("token")]);
 
   if (error)
     return (
@@ -87,7 +85,7 @@ function SubDetails() {
           <p className="card-text text-muted">{subject.Subject}</p>
           <p className="card-text text-muted">Semester: {subject.Semester}</p>
           <a
-            href={subject.Pdf.Url}
+            href={subject.Pdf?.Url}
             className="btn btn-primary btn-lg"
             target="_blank"
           >

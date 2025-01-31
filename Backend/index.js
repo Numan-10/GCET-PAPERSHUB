@@ -92,7 +92,7 @@ app.use("/", TestRouter);
 
 // ------------> Endpoint for fetching sun details <---------------
 
-app.get("/subjects/:id", userVerification, async (req, res) => {
+app.get("/subjects/:id", async (req, res) => {
   try {
     const { id } = req.params;
     // console.log("backend " + id);
