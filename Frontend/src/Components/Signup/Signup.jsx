@@ -10,6 +10,7 @@ const Signup = () => {
     password: "",
     username: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const getToastWidth = () => {
     return window.innerWidth > 768 ? "300px" : "90%";
@@ -38,32 +39,48 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !password || !username) {
+      return handleError("All fields are required ");
+    }
     try {
+      setIsLoading(true);
       const { data } = await axios.post(
-        ` ${import.meta.env.VITE_APP_BACKEND_URL}/signup`,
+        // ` ${import.meta.env.VITE_APP_BACKEND_URL}/signup`,
+        `http://localhost:3000/signup`,
         {
           ...inputValue,
-        },
-        { withCredentials: true }
+        }
       );
       const { success, message } = data;
+      setIsLoading(false);
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          navigate("/home");
+          navigate("/login");
         }, 1000);
+        setInputValue({
+          ...inputValue,
+          email: "",
+          password: "",
+          username: "",
+        });
       } else {
         handleError(message);
+        setIsLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
+      if (error.response && error.response.data && error.response.data.error) {
+        const errorDetails = error.response.data.error.details;
+        if (Array.isArray(errorDetails) && errorDetails.length > 0) {
+          handleError(errorDetails[0].message);
+        } else {
+          handleError("An unexpected error occurred.");
+        }
+      } else {
+        handleError("Server error. Please try again.");
+      }
     }
-    setInputValue({
-      ...inputValue,
-      email: "",
-      password: "",
-      username: "",
-    });
   };
 
   return (
@@ -129,9 +146,23 @@ const Signup = () => {
                 </p>
               </div>
               <div className="d-grid">
-                <button type="submit" className="btn btn-success">
-                  Submit
-                </button>
+                {isLoading ? (
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    disabled={isLoading || !email || !password || !username}
+                  >
+                    Processing... &nbsp;
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                ) : (
+                  <button type="submit" className="btn btn-success">
+                    Submit
+                  </button>
+                )}
               </div>
             </form>
           </div>

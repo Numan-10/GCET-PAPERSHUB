@@ -13,6 +13,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const { email, password } = inputValue;
   const handleOnChange = (e) => {
@@ -36,31 +37,51 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+     return handleError("All fields are required ");
+    }
     try {
+      setIsLoading(true);
+      console.log("input Values login", inputValue);
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/login`,
+        // `${import.meta.env.VITE_APP_BACKEND_URL}/login`,
+        `http://localhost:3000/login`,
         {
           ...inputValue,
-        },
-        { withCredentials: true }
+        }
       );
-      const { success, message } = data;
+      setIsLoading(false);
+      const { success, message, JwtToken, name, email } = data;
+      console.log("data login" + data);
       if (success) {
         handleSuccess(message);
+
+        localStorage.setItem("token", JwtToken);
+        localStorage.setItem("user", name);
+
         setTimeout(() => {
           navigate("/home");
         }, 1000);
+        setInputValue({
+          ...inputValue,
+          email: "",
+          password: "",
+        });
       } else {
         handleError(message);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.data && error.response.data.error) {
+        const errorDetails = error.response.data.error.details;
+        if (Array.isArray(errorDetails) && errorDetails.length > 0) {
+          handleError(errorDetails[0].message);
+        } else {
+          handleError("An unexpected error occurred.");
+        }
+      } else {
+        handleError("Server error. Please try again.");
+      }
     }
-    setInputValue({
-      ...inputValue,
-      email: "",
-      password: "",
-    });
   };
 
   return (
@@ -112,9 +133,23 @@ const Login = () => {
                 </p>
               </div>
               <div className="d-grid">
-                <button type="submit" className="btn btn-success">
-                  Login
-                </button>
+                {isLoading ? (
+                  <button
+                    class="btn btn-primary"
+                    type="button"
+                    disabled={isLoading || !email || !password || !username}
+                  >
+                    Loading... &nbsp;
+                    <span
+                      class="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                  </button>
+                ) : (
+                  <button type="submit" className="btn btn-success">
+                    Login
+                  </button>
+                )}
               </div>
             </form>
           </div>
