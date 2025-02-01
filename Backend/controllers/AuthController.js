@@ -59,7 +59,7 @@ module.exports.Login = async (req, res, next) => {
         .status(403)
         .json({ message: "Incorrect password or email", success: false });
     }
-    const JwtToken = createSecretToken(user._id);
+    const JwtToken = createSecretToken(user._id,user.email,user.username);
     return res.status(200).json({
       message: "Logged in successfully",
       success: true,

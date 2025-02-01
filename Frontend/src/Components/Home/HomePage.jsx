@@ -31,7 +31,7 @@ function HomePage() {
           // `${import.meta.env.VITE_APP_BACKEND_URL}/subjects`
           `http://localhost:3000/subjects`
         );
-        console.log(response.data);
+        // console.log(response.data);
         setIsData(response.data);
       } catch (err) {
         setIsError("Failed to load subjects. Please try again.");
@@ -45,7 +45,7 @@ function HomePage() {
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = data.slice(firstPostIndex, lastPostIndex);
-  console.log("Backend URL:", import.meta.env.VITE_APP_BACKEND_URL);
+  // console.log("Backend URL:", import.meta.env.VITE_APP_BACKEND_URL);
 
   return (
     <>

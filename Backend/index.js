@@ -35,7 +35,7 @@ async function main() {
 main()
   .then((res) => {
     console.log("Connected to DB");
-    console.log("Current Database:", mongoose.connection.name);
+    // console.log("Current Database:", mongoose.connection.name);
   })
   .catch((err) => {
     console.log(err);
@@ -54,9 +54,7 @@ app.get("/subjects", async (req, res) => {
   }
 });
 
-app.post("/verify", userVerification, isAdmin, (req, res) => {
-  res.json({ status: true, message: "You are an admin" });
-});
+app.get("/verify", userVerification,isAdmin)
 
 app.post("/upload", upload.single("Pdf"), async (req, res) => {
   try {
@@ -88,7 +86,7 @@ app.post("/upload", upload.single("Pdf"), async (req, res) => {
 // ------------> Auth <---------------
 
 app.use("/", AuthRouter);
-app.use("/", TestRouter);
+// app.use("/", TestRouter);
 
 // ------------> Endpoint for fetching sun details <---------------
 

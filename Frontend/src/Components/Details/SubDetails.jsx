@@ -20,7 +20,7 @@ function SubDetails() {
       axios
         .get(`http://localhost:3000/subjects/${id}`)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           if (response.data.status === false) {
             toast.error(response.data.message, {
               position: "top-center",

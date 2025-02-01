@@ -23,33 +23,41 @@ function Upload() {
   useEffect(() => {
     const verify = async () => {
       try {
-        if (!localStorage.getItem("token")) {
+        const token = localStorage.getItem("token");
+        // console.log("Token in localStorage:", token);
+
+        if (!token) {
           return Navigate("/login");
         }
 
-        const { data } = await axios.post(
-          // `${import.meta.env.VITE_APP_BACKEND_URL}/verify`,
-          `http://localhost:3000/verify`,
-          {
-            Authorization: localStorage.getItem("token"),
-          }
-        );
+        //
 
-        const { status, user, email } = data;
+        const url = "http://localhost:3000/verify";
+        const headers = {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        };
+        const response = await fetch(url, headers);
+        // console.log(response);
+        const result = await response.json();
+        const { status, user, email } = result;
+        // console.log(status);
+        // console.log(user);
+        // console.log(email);
 
         if (!status || email !== import.meta.env.VITE_APP_EMAIL) {
           return Navigate("/home");
         }
 
-        setUsername(user);
         toast.success(`Welcome, ${user}`, {
           position: "top-center",
           style: { marginTop: "1rem", width: getToastWidth() },
           autoClose: 1500,
         });
       } catch (err) {
-        console.error(err);
-        removeCookie("token");
+        console.log(err);
+        localStorage.clear();
         Navigate("/home");
       }
     };
@@ -60,7 +68,7 @@ function Upload() {
   const handleOnChange = (evt) => {
     const { name, value, files } = evt.target;
     if (name === "Pdf") {
-      console.log(evt);
+      // console.log(evt);
       setIsInputValue({
         ...inputValue,
         [name]: files[0],
