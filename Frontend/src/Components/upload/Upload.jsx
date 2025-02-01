@@ -29,7 +29,7 @@ function Upload() {
           return Navigate("/login");
         }
 
-        const url = "http://localhost:3000/verify";
+        const url = `${import.meta.env.VITE_APP_BACKEND_URL}/verify`;
         const headers = {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -105,7 +105,7 @@ function Upload() {
 
     try {
       const { data } = await axios.post(
-        `http://localhost:3000/upload`,
+        ` ${import.meta.env.VITE_APP_BACKEND_URL}/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -127,7 +127,7 @@ function Upload() {
       }
       setIsInputValue({ Title: "", Subject: "", Semester: "", Pdf: null });
     } catch (err) {
-      console.error(JSON.stringify(err))
+      console.error(JSON.stringify(err));
       toast.error("Something went wrong. Please try again.", {
         position: "top-center",
         style: { marginTop: "1rem", width: getToastWidth() },
