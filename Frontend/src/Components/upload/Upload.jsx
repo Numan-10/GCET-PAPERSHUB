@@ -24,13 +24,10 @@ function Upload() {
     const verify = async () => {
       try {
         const token = localStorage.getItem("token");
-        // console.log("Token in localStorage:", token);
 
         if (!token) {
           return Navigate("/login");
         }
-
-        //
 
         const url = "http://localhost:3000/verify";
         const headers = {
@@ -38,13 +35,10 @@ function Upload() {
             Authorization: localStorage.getItem("token"),
           },
         };
+
         const response = await fetch(url, headers);
-        // console.log(response);
         const result = await response.json();
         const { status, user, email } = result;
-        // console.log(status);
-        // console.log(user);
-        // console.log(email);
 
         if (!status || email !== import.meta.env.VITE_APP_EMAIL) {
           return Navigate("/home");
@@ -56,7 +50,7 @@ function Upload() {
           autoClose: 1500,
         });
       } catch (err) {
-        console.log(err);
+        console.log("Verification error:", err);
         localStorage.clear();
         Navigate("/home");
       }
@@ -68,7 +62,6 @@ function Upload() {
   const handleOnChange = (evt) => {
     const { name, value, files } = evt.target;
     if (name === "Pdf") {
-      // console.log(evt);
       setIsInputValue({
         ...inputValue,
         [name]: files[0],
@@ -93,7 +86,8 @@ function Upload() {
       setisLoading(false);
       return;
     }
-    //----------------> Upload file Validation <----------------
+
+    // Upload file validation
     if (Pdf.type !== "application/pdf") {
       toast.error("Please upload a valid PDF file!", {
         position: "top-center",
@@ -111,7 +105,6 @@ function Upload() {
 
     try {
       const { data } = await axios.post(
-        // `${import.meta.env.VITE_APP_BACKEND_URL}/upload`,
         `http://localhost:3000/upload`,
         formData,
         {
@@ -134,7 +127,7 @@ function Upload() {
       }
       setIsInputValue({ Title: "", Subject: "", Semester: "", Pdf: null });
     } catch (err) {
-      console.error(err);
+      console.error(JSON.stringify(err))
       toast.error("Something went wrong. Please try again.", {
         position: "top-center",
         style: { marginTop: "1rem", width: getToastWidth() },

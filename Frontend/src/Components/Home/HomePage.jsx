@@ -16,20 +16,12 @@ function HomePage() {
     "/Assets/Frame 80.svg",
   ];
 
-  /* 
-  ---------> function for generating random image
-  const getRandomImage = () => {
-    const number = Math.floor(Math.random() * Images.length);
-    return Images[number];
-  };
-  */
-
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get(
-          // `${import.meta.env.VITE_APP_BACKEND_URL}/subjects`
-          `http://localhost:3000/subjects`
+          `${import.meta.env.VITE_APP_BACKEND_URL}/subjects`
+          // `http://localhost:3000/subjects`
         );
         // console.log(response.data);
         setIsData(response.data);

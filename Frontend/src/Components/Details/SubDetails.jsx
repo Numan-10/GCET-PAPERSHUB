@@ -15,10 +15,9 @@ function SubDetails() {
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      axios;
-      // .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`, {
       axios
-        .get(`http://localhost:3000/subjects/${id}`)
+        .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`)
+        // axios.get(`http://localhost:3000/subjects/${id}`)
         .then((response) => {
           // console.log(response);
           if (response.data.status === false) {
