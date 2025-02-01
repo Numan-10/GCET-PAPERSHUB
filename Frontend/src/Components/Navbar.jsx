@@ -62,7 +62,7 @@ function Navbar() {
     setTimeout(() => navigate("/home"), 1500);
     handleMenuClose();
   };
-
+  console.log("UserDAta", userData);
   const AvatarName = userData?.User?.charAt(0)?.toUpperCase();
 
   return (

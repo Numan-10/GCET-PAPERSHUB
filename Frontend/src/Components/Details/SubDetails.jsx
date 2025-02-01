@@ -11,7 +11,7 @@ function SubDetails() {
   const [subject, setSubject] = useState({});
   const [error, setError] = useState("");
 
-  const getToastWidth = () => (window.innerWidth > 768 ? "300px" : "90%");
+  const getToastWidth = () => (window.innerWidth > 768 ? "280px" : "90%");
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -25,6 +25,7 @@ function SubDetails() {
               position: "top-center",
               autoClose: 1500,
               onClose: () => navigate("/login"),
+              style: { marginTop: "1rem", width: getToastWidth() },
             });
             return;
           } else {
@@ -37,7 +38,7 @@ function SubDetails() {
             position: "top-center",
             autoClose: 1500,
             onClose: () => navigate("/login"),
-            width: getToastWidth(),
+            style: { marginTop: "1rem", width: getToastWidth() },
           });
         });
     } else {
@@ -45,7 +46,7 @@ function SubDetails() {
         position: "top-center",
         autoClose: 1500,
         onClose: () => navigate("/login"),
-        width: getToastWidth(),
+        style: { marginTop: "1rem", width: getToastWidth() },
       });
     }
   }, [id, navigate, localStorage.getItem("token")]);
