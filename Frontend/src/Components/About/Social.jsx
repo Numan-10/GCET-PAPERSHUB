@@ -1,10 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Social() {
   return (
     <div className="container mt-5">
       <div className="row">
-        <div className="col-12 p-1 text-center Home">Home</div>
+        <div className="col-12 p-1 text-center Home">
+          <Link to={"/home"} style={{ textDecoration: "none", color: "black" }}>
+            Home
+          </Link>
+        </div>
         <p className="text-center mt-1 join">
           JOIN US AND LET'S EXPLORE TOGETHER
         </p>

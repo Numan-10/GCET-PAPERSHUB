@@ -42,7 +42,7 @@ function SubDetails() {
           });
         });
     } else {
-      toast.error("Log in first, hero!", {
+      toast.error("Oops! You’re not logged in", {
         position: "top-center",
         autoClose: 1500,
         onClose: () => navigate("/login"),

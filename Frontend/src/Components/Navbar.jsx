@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+
 import {
   Box,
   Avatar,
@@ -27,36 +28,38 @@ function Navbar() {
     const storedEmail = localStorage.getItem("email");
     const token = localStorage.getItem("token");
 
-    if (storedUser && storedEmail) {
-      let decodedToken = null;
-      if (token) {
-        try {
-          decodedToken = jwtDecode(token);
-        } catch (error) {
-          console.error("Invalid token:", error);
-          localStorage.removeItem("token");
-        }
-      }
+    if (storedUser && storedEmail && token) {
+      try {
+        const decodedToken = jwtDecode(token);
 
-      setUserData({
-        User: storedUser,
-        Email: storedEmail,
-        id: decodedToken?.id || null,
-      });
+        if (decodedToken.exp * 1000 < Date.now()) {
+          localStorage.clear();
+          setUserData(null);
+          return;
+        }
+
+        setUserData({
+          User: storedUser,
+          Email: storedEmail,
+          id: decodedToken.id || null,
+        });
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.clear();
+        setUserData(null);
+      }
     } else {
       setUserData(null);
     }
-  }, [location]);
+  }, [location.pathname]);
 
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("email");
+    localStorage.clear();
     setUserData(null);
-    navigate("/home");
+    setTimeout(() => navigate("/home"), 1500);
     handleMenuClose();
   };
 
@@ -118,7 +121,7 @@ function Navbar() {
         <Box
           sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
         >
-          <Tooltip title="Your Account">
+          <Tooltip title={userData ? "Your Account" : "Login"}>
             <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: 2 }}>
               <Avatar
                 sx={{
@@ -128,7 +131,7 @@ function Navbar() {
                   fontSize: "15px",
                 }}
               >
-                {AvatarName}
+                {AvatarName || ""}
               </Avatar>
             </IconButton>
           </Tooltip>
