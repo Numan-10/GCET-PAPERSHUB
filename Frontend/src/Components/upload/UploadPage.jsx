@@ -3,7 +3,7 @@ import Upload from "./Upload.jsx";
 
 function UploadPage() {
   return (
-    <div className="mb-2">
+    <div className="container mb-2">
       <Upload />
     </div>
   );

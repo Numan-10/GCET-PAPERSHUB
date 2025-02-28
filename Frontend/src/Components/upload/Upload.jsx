@@ -138,7 +138,7 @@ function Upload() {
   };
 
   return (
-    <div className="container">
+    <>
       <div className="row">
         <div className="col-1"></div>
         <div className="col mt-5">
@@ -220,7 +220,7 @@ function Upload() {
         <div className="col-1"></div>
       </div>
       <ToastContainer />
-    </div>
+    </>
   );
 }
 
