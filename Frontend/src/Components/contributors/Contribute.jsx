@@ -42,7 +42,7 @@ function Contribute({ name, role, src, about }) {
 
         <div className="SocialsC p-2 ">
           <div className="iconsC p-1">
-            <a href="www.linkedin.com/in/numan10" target="_blank">
+            <a href="https://linkedin.com/in/numan10" target="_blank">
               <i class="fa-brands fa-linkedin"></i>
             </a>
           </div>

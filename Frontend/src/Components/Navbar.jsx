@@ -87,7 +87,7 @@ function Navbar() {
             ✕
           </button>
           <ul>
-            {["Home", "Content", "Contributor"].map((item) => (
+            {["Home", "Content", "Contributors"].map((item) => (
               <Link
                 key={item}
                 to={`/${item}`}
