@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import API_BASE_URL from "../../ApiUrl.js";
 function SubDetails() {
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -14,9 +15,10 @@ function SubDetails() {
   const getToastWidth = () => (window.innerWidth > 768 ? "280px" : "90%");
 
   useEffect(() => {
+    const BackendUrl = API_BASE_URL;
     if (localStorage.getItem("token")) {
       axios
-        .get(`${import.meta.env.VITE_APP_BACKEND_URL}/subjects/${id}`)
+        .get(`${BackendUrl}/subjects/${id}`)
         // axios.get(`http://localhost:3000/subjects/${id}`)
         .then((response) => {
           // console.log(response);

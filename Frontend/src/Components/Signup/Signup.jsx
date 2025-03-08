@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-
+import API_BASE_URL from "../../ApiUrl.js";
 const Signup = () => {
+
+  const BackendUrl = API_BASE_URL;
+
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -45,7 +48,7 @@ const Signup = () => {
     try {
       setIsLoading(true);
       const { data } = await axios.post(
-        ` ${import.meta.env.VITE_APP_BACKEND_URL}/signup`,
+        ` ${BackendUrl}/signup`,
         // `http://localhost:3000/signup`,
         {
           ...inputValue,

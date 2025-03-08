@@ -3,6 +3,7 @@ import Social from "./Social.jsx";
 import Subject from "./Subject.jsx";
 import axios from "axios";
 import Pagination from "./Pagination";
+import API_BASE_URL from "../../ApiUrl.js";
 
 function HomePage() {
   const [data, setIsData] = useState([]);
@@ -16,13 +17,11 @@ function HomePage() {
     "/Assets/Frame 80.svg",
   ];
 
+  const BackendUrl = API_BASE_URL;
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_BACKEND_URL}/subjects`
-          // `http://localhost:3000/subjects`
-        );
+        const response = await axios.get(`${BackendUrl}/subjects`);
         // console.log(response.data);
         setIsData(response.data);
       } catch (err) {

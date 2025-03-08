@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import API_BASE_URL from "../../ApiUrl";
 
 const Login = () => {
+  const BackendUrl = API_BASE_URL;
+
   const getToastWidth = () => {
     return window.innerWidth > 768 ? "300px" : "90%";
   };
@@ -44,7 +47,7 @@ const Login = () => {
       setIsLoading(true);
       console.log("input Values login", inputValue);
       const { data } = await axios.post(
-        `${import.meta.env.VITE_APP_BACKEND_URL}/login`,
+        `${BackendUrl}/login`,
         // `http://localhost:3000/login`,
         {
           ...inputValue,

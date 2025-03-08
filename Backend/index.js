@@ -17,12 +17,14 @@ const AuthRouter = require("./Routes/AuthRoute");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-
 const Url = process.env.MONGO_URL;
+const PROD_URL = process.env.FRONTEND_URL;
+const LOCAL_URL = process.env.LOCAL_FRONTEND_URL;
+
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://gcet-papershub.vercel.app"],
+    origin: [PROD_URL, LOCAL_URL],
     // origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -43,9 +45,9 @@ main()
     console.log(err);
   });
 
-app.get("/test", (req, res) => {
-  res.send("All good !");
-});
+// app.get("/test", (req, res) => {
+//   res.send("All good !");
+// });
 
 app.get("/subjects", async (req, res) => {
   try {

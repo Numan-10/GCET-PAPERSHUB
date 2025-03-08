@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-
+import API_BASE_URL from "../../ApiUrl.js";
 function Upload() {
+
   const Navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [inputValue, setIsInputValue] = useState({
@@ -20,6 +21,7 @@ function Upload() {
 
   const { Title, Subject, Semester, Pdf } = inputValue;
 
+  const BackendUrl = API_BASE_URL;
   useEffect(() => {
     const verify = async () => {
       try {
@@ -29,7 +31,7 @@ function Upload() {
           return Navigate("/login");
         }
 
-        const url = `${import.meta.env.VITE_APP_BACKEND_URL}/verify`;
+        const url = `${BackendUrl}/verify`;
         const headers = {
           headers: {
             Authorization: localStorage.getItem("token"),
@@ -105,7 +107,7 @@ function Upload() {
 
     try {
       const { data } = await axios.post(
-        ` ${import.meta.env.VITE_APP_BACKEND_URL}/upload`,
+        ` ${BackendUrl}/upload`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
