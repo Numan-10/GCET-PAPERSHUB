@@ -187,3 +187,9 @@
 .break {
   white-space: nowrap;
 }
+
+.SocialsC {
+  font-size: 1.5rem;
+  text-decoration: none;
+  display: flex;
+}

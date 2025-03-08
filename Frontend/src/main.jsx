@@ -35,7 +35,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<Landing />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/home/:id" element={<SubDetails />} />
-        <Route path="/contributors" element={<ContributePage />} />
+        <Route path="/contributor" element={<ContributePage />} />
         <Route path="/updates" element={<UpdatePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/upload" element={<UploadPage />} />

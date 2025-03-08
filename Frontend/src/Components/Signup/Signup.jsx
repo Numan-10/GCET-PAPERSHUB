@@ -78,11 +78,14 @@ const Signup = () => {
         const errorDetails = error.response.data.error.details;
         if (Array.isArray(errorDetails) && errorDetails.length > 0) {
           handleError(errorDetails[0].message);
+          setIsLoading(false);
         } else {
           handleError("An unexpected error occurred.");
+          setIsLoading(false);
         }
       } else {
         handleError("Server error. Please try again.");
+        setIsLoading(false);
       }
     }
   };

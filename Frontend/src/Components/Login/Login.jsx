@@ -76,15 +76,19 @@ const Login = () => {
         handleError(message);
       }
     } catch (error) {
+      setIsLoading(false);
       if (error.response && error.response.data && error.response.data.error) {
         const errorDetails = error.response.data.error.details;
         if (Array.isArray(errorDetails) && errorDetails.length > 0) {
           handleError(errorDetails[0].message);
+          setIsLoading(false);
         } else {
           handleError("An unexpected error occurred.");
+          setIsLoading(false);
         }
       } else {
         handleError("Server error. Please try again.");
+        setIsLoading(false);
       }
     }
   };
