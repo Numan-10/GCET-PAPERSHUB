@@ -5,7 +5,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import API_BASE_URL from "../../ApiUrl.js";
 function SubDetails() {
-
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -63,13 +62,15 @@ function SubDetails() {
 
   if (!subject.Title)
     return (
-      <p
-        className="d-flex justify-content-center align-items-center mt-5"
+      <div
+        class="d-flex justify-content-center align-items-center"
         style={{ height: "80vh" }}
       >
-        Loading...
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
         <ToastContainer />
-      </p>
+      </div>
     );
 
   return (

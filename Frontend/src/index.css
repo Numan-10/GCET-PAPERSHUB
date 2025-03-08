@@ -92,7 +92,7 @@
 /* --------------> so that the content takes the remaining space : Footer Solved */
 .container {
   flex: 1;
-} 
+}
 
 /* -------------> Navbar <----------------- */
 
@@ -155,4 +155,35 @@
 
 .pnf {
   height: 80vh;
+}
+
+/* login btn color */
+.loginbtn {
+  background-color: #f57c07;
+  color: white;
+  font-weight: 500;
+}
+.loginbtn:hover {
+  background-color: #f57c07;
+  color: white;
+  font-weight: 500;
+}
+
+.lines {
+  width: 15vmax;
+}
+
+/* Google btn */
+
+.google-icon {
+  /* border: 1px solid black; */
+  width: 20px;
+}
+.google {
+  margin: auto;
+  width: 16rem;
+}
+
+.break {
+  white-space: nowrap;
 }

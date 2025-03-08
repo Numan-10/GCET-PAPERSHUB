@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import API_BASE_URL from "../../ApiUrl.js";
-const Signup = () => {
+import Google from "../Google.jsx";
 
+const Signup = () => {
   const BackendUrl = API_BASE_URL;
 
   const navigate = useNavigate();
@@ -87,89 +88,86 @@ const Signup = () => {
   };
 
   return (
-    <div className="container mt-5 mb-3">
+    <div className="container mt-5 mb-4">
       <div className="row justify-content-center">
-        <div className="col-12 col-md-6">
-          <div className="card shadow p-4">
-            <h2 className="text-center mb-4 fw-bold text-success">
-              Signup Account
-            </h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="email" className="form-label fw-semibold">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  placeholder="Enter your email"
-                  onChange={handleOnChange}
-                  id="email"
-                  className="form-control"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="username" className="form-label fw-semibold">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  name="username"
-                  value={username}
-                  placeholder="Enter your username"
-                  onChange={handleOnChange}
-                  id="username"
-                  className="form-control"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label fw-semibold">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={password}
-                  placeholder="Enter your password"
-                  onChange={handleOnChange}
-                  id="password"
-                  className="form-control"
-                />
-              </div>
-              <div className="mb-3">
-                <p className="text-muted small">
-                  Already have an account?{" "}
-                  <Link
-                    to="/login"
-                    className="text-decoration-none text-success"
-                  >
-                    Login here
-                  </Link>
-                </p>
-              </div>
-              <div className="d-grid">
-                {isLoading ? (
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    disabled={isLoading || !email || !password || !username}
-                  >
-                    Processing... &nbsp;
-                    <span
-                      class="spinner-border spinner-border-sm"
-                      aria-hidden="true"
-                    ></span>
-                  </button>
-                ) : (
-                  <button type="submit" className="btn btn-success">
-                    Submit
-                  </button>
-                )}
-              </div>
-            </form>
+        <div className="col-12 col-md-7 ">
+          <h3 className="text-left fw-bold ">Sign up</h3>
+          <div className="mb-3">
+            <p className=" small">
+              Already have an account?{" "}
+              <Link to="/login" className="text-decoration-none ">
+                Login here
+              </Link>
+            </p>
+            <hr />
           </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label fw-semibold">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                placeholder="Enter your email"
+                onChange={handleOnChange}
+                id="email"
+                className="form-control"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="username" className="form-label fw-semibold">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                value={username}
+                placeholder="Enter your username"
+                onChange={handleOnChange}
+                id="username"
+                className="form-control"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label fw-semibold">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                placeholder="Enter your password"
+                onChange={handleOnChange}
+                id="password"
+                className="form-control"
+              />
+            </div>
+
+            <div className="d-grid">
+              {isLoading ? (
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  disabled={isLoading || !email || !password || !username}
+                >
+                  Processing... &nbsp;
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              ) : (
+                <button type="submit" className="btn loginbtn">
+                  Signup
+                </button>
+              )}
+            </div>
+          </form>
         </div>
+        {/* Google  */}
+        <Google />
       </div>
       <ToastContainer />
     </div>

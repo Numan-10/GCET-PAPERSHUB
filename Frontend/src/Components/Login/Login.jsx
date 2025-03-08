@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import API_BASE_URL from "../../ApiUrl";
+import Google from "../Google";
 
 const Login = () => {
   const BackendUrl = API_BASE_URL;
@@ -89,75 +90,73 @@ const Login = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-4">
       <div className="row justify-content-center">
-        <div className="col-12 col-md-6">
-          <div className="card shadow p-4">
-            <h2 className="text-center fw-bold text-success">
-              Login to Your Account
-            </h2>
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3 mt-4">
-                <label htmlFor="email" className="form-label fw-semibold">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  placeholder="Enter your email"
-                  onChange={handleOnChange}
-                  id="email"
-                  className="form-control"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label fw-semibold">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={password}
-                  placeholder="Enter your password"
-                  onChange={handleOnChange}
-                  id="password"
-                  className="form-control"
-                />
-              </div>
-              <div className="mb-3">
-                <p className="text-muted small">
-                  Don't have an account?{" "}
-                  <Link
-                    to="/signup"
-                    className="text-decoration-none text-success"
-                  >
-                    Signup here
-                  </Link>
-                </p>
-              </div>
-              <div className="d-grid">
-                {isLoading ? (
-                  <button
-                    class="btn btn-primary"
-                    type="button"
-                    disabled={isLoading || !email || !password || !username}
-                  >
-                    Loading... &nbsp;
-                    <span
-                      class="spinner-border spinner-border-sm"
-                      aria-hidden="true"
-                    ></span>
-                  </button>
-                ) : (
-                  <button type="submit" className="btn btn-success">
-                    Login
-                  </button>
-                )}
-              </div>
-            </form>
+        <div className="col-12 col-md-7">
+          <h3 className="text-left fw-bold">Sign in</h3>
+          <div className="mb-3">
+            <p className=" small">
+              Don't have an account yet?{" "}
+              <Link to="/signup" className="text-decoration-none ">
+                Signup here
+              </Link>
+            </p>
+            <hr />
           </div>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3 mt-4">
+              <label htmlFor="email" className="form-label fw-semibold ">
+                Email Address
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={email}
+                placeholder="Enter your email"
+                onChange={handleOnChange}
+                id="email"
+                className="form-control"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label fw-semibold">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                value={password}
+                placeholder="Enter your password"
+                onChange={handleOnChange}
+                id="password"
+                className="form-control"
+              />
+            </div>
+
+            <div className="d-grid">
+              {isLoading ? (
+                <button
+                  class="btn btn-primary"
+                  type="button"
+                  disabled={isLoading || !email || !password || !username}
+                >
+                  Loading... &nbsp;
+                  <span
+                    class="spinner-border spinner-border-sm"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              ) : (
+                <button type="submit" className="btn loginbtn">
+                  Sign in
+                </button>
+              )}
+            </div>
+          </form>
         </div>
+
+        {/* Continue with Google  */}
+        <Google />
       </div>
       <ToastContainer />
     </div>
