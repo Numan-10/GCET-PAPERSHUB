@@ -13,6 +13,8 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "Papers_HUB",
     allowedFormates: ["pdf"],
+    use_filename: true,
+    unique_filename: false,
   },
 });
 
