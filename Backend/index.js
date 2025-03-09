@@ -25,8 +25,8 @@ const LOCAL_URL = process.env.LOCAL_FRONTEND_URL;
 app.use(express.json());
 app.use(
   cors({
-    origin: [PROD_URL, LOCAL_URL],
-    // origin: ["http://localhost:5173"],
+    // origin: [PROD_URL, LOCAL_URL],
+    origin: ["https://gcet-papershub.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
