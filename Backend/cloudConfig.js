@@ -13,8 +13,9 @@ const storage = new CloudinaryStorage({
   params: {
     folder: "Papers_HUB",
     allowedFormates: ["pdf"],
+    public_id: file.originalname.replace(/\.[^/.]+$/, ""),
     use_filename: true,
-    unique_filename: true,
+    unique_filename: false,
   },
 });
 
