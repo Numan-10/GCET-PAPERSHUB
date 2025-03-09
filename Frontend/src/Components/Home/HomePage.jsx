@@ -10,6 +10,7 @@ function HomePage() {
   const [error, setIsError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setPostsPerPage] = useState(6);
+  const [loading, setIsLoading] = useState(true);
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
@@ -27,6 +28,8 @@ function HomePage() {
       } catch (err) {
         setIsError("Failed to load subjects. Please try again.");
         console.log(err);
+      } finally {
+        setIsLoading(false); ///always executes
       }
     };
 
@@ -37,14 +40,20 @@ function HomePage() {
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = data.slice(firstPostIndex, lastPostIndex);
   // console.log("Backend URL:", import.meta.env.VITE_APP_BACKEND_URL);
-  if (!data) {
-  <p className="d-flex justify-content-center align-items-center">Loading</p>
-  }
+
   return (
     <>
       <div className="container">
         <Social />
         {error && <p className="text-danger text-center">{error}</p>}
+        {loading && (
+          <p className="text-center">
+            {" "}
+            <div class="spinner-border" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </p>
+        )}
         <div className="row">
           {currentPosts.map((subject, index) => (
             <Subject
