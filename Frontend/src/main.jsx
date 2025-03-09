@@ -14,6 +14,11 @@ import ContentPage from "./Components/Content/ContentPage.jsx";
 import "./index.css";
 import SubDetails from "./Components/Details/SubDetails.jsx";
 import ContributePage from "./Components/contributors/ContributePage.jsx";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+
+//Googe CliendId
+const cliendId = import.meta.env.VITE_APP_CLIENT_ID;
+
 function Layout({ children }) {
   const location = useLocation();
 
@@ -29,21 +34,23 @@ function Layout({ children }) {
 }
 
 createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
-    <Layout>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/home/:id" element={<SubDetails />} />
-        <Route path="/Contributors" element={<ContributePage />} />
-        <Route path="/updates" element={<UpdatePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/upload" element={<UploadPage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/content" element={<ContentPage />} />
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
-    </Layout>
-  </BrowserRouter>
+  <GoogleOAuthProvider clientId={cliendId}>
+    <BrowserRouter>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/home/:id" element={<SubDetails />} />
+          <Route path="/Contributors" element={<ContributePage />} />
+          <Route path="/updates" element={<UpdatePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/upload" element={<UploadPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/content" element={<ContentPage />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Layout>
+    </BrowserRouter>
+  </GoogleOAuthProvider>
 );

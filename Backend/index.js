@@ -13,6 +13,7 @@ const cookieParser = require("cookie-parser");
 const userVerification = require("./Middlewares/AuthMiddleware");
 const { isAdmin } = require("./Middlewares/isAdmin");
 const AuthRouter = require("./Routes/AuthRoute");
+const GoogleAuth = require("./Routes/GoogleAuth");
 
 const app = express();
 
@@ -90,6 +91,9 @@ app.post("/upload", upload, async (req, res) => {
 // ------------> Auth <---------------
 
 app.use("/", AuthRouter);
+
+//Google Auth
+app.use("/auth", GoogleAuth);
 
 // ------------> Endpoint for fetching sun details <---------------
 
