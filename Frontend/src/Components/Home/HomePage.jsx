@@ -37,7 +37,9 @@ function HomePage() {
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = data.slice(firstPostIndex, lastPostIndex);
   // console.log("Backend URL:", import.meta.env.VITE_APP_BACKEND_URL);
-
+  if (!data) {
+  <p className="d-flex justify-content-center align-items-center">Loading</p>
+  }
   return (
     <>
       <div className="container">
