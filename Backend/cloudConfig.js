@@ -9,13 +9,15 @@ cloudinary.config({
 });
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "Papers_HUB",
-    allowedFormates: ["pdf"],
-    public_id: file.originalname.replace(/\.[^/.]+$/, ""),
-    use_filename: true,
-    unique_filename: false,
+  cloudinary,
+  params: async (req, file) => {
+    return {
+      folder: "Papers_HUB",
+      format: "pdf",
+      public_id: file.originalname.replace(/\.[^/.]+$/, ""),
+      use_filename: true,
+      unique_filename: false,
+    };
   },
 });
 
