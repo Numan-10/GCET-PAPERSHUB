@@ -1,10 +1,11 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import API_BASE_URL from "../ApiUrl";
+import { useNavigate } from "react-router-dom";
 
 function Google() {
   const BackendUrl = API_BASE_URL;
-
+  const Navigate = useNavigate();
   const responseGoogle = async (res) => {
     // console.log(res);
     try {
@@ -14,7 +15,18 @@ function Google() {
       const response = await axios.get(
         `${BackendUrl}/auth/google?code=${code}`
       );
-      console.log("Response Google",response);
+      console.log("Response Google", response);
+      if (response.data.message == "Success") {
+        const Token = response.data.token;
+        const { email, image, username } = response.data.user;
+        console.log("Google:", Token);
+        console.log("Google:", email, image, username);
+        // let obj = { Token, email, image, username };
+        localStorage.setItem("token", Token);
+        localStorage.setItem("email", email);
+        localStorage.setItem("user", username);
+        Navigate("/home");
+      }
     } catch (err) {
       console.log(err);
     }

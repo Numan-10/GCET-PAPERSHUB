@@ -13,7 +13,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Your password is required"],
+  },
+  image: {
+    type: String,
   },
   createdAt: {
     type: Date,
