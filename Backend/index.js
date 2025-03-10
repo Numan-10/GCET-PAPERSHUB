@@ -21,12 +21,12 @@ const PORT = process.env.PORT || 3000;
 const Url = process.env.MONGO_URL;
 const PROD_URL = process.env.FRONTEND_URL;
 const LOCAL_URL = process.env.LOCAL_FRONTEND_URL;
-console.log(PROD_URL,LOCAL_URL)
+console.log(PROD_URL, LOCAL_URL);
 app.use(express.json());
 app.use(
   cors({
-    origin: [PROD_URL, LOCAL_URL],
-    // origin: ["https://gcet-papershub.vercel.app"],
+    // origin: [PROD_URL, LOCAL_URL],
+    origin: ["https://gcet-papershub.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })

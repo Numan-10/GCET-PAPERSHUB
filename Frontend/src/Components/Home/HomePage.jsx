@@ -47,12 +47,15 @@ function HomePage() {
         <Social />
         {error && <p className="text-danger text-center">{error}</p>}
         {loading && (
-          <p className="text-center">
-            {" "}
-            <div class="spinner-border" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-          </p>
+          <>
+            <p className="text-center">
+              {" "}
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </p>
+            <p className="text-center fw-medium"><b>Note:</b> Using Render free service, backend starting (30-40s). Please stay on this page—this will disappear once ready. 😊</p>
+          </>
         )}
         <div className="row">
           {currentPosts.map((subject, index) => (
