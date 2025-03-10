@@ -4,6 +4,7 @@ import Subject from "./Subject.jsx";
 import axios from "axios";
 import Pagination from "./Pagination";
 import API_BASE_URL from "../../ApiUrl.js";
+import Reviews from "./Reviews.jsx";
 
 function HomePage() {
   const [data, setIsData] = useState([]);
@@ -54,7 +55,10 @@ function HomePage() {
                 <span class="sr-only">Loading...</span>
               </div>
             </p>
-            <p className="text-center fw-medium"><b>Note:</b> Using Render free service, backend starting (30-40s). Please stay on this page—this will disappear once ready. 😊</p>
+            <p className="text-center fw-medium">
+              <b>Note:</b> Using Render free service, backend starting (30-40s).
+              Please stay on this page—this will disappear once ready. 😊
+            </p>
           </>
         )}
         <div className="row">
@@ -74,6 +78,7 @@ function HomePage() {
             currentPage={currentPage}
           />
         </div>
+        <Reviews />
       </div>
     </>
   );

@@ -14,6 +14,7 @@ const userVerification = require("./Middlewares/AuthMiddleware");
 const { isAdmin } = require("./Middlewares/isAdmin");
 const AuthRouter = require("./Routes/AuthRoute");
 const GoogleAuth = require("./Routes/GoogleAuth");
+const ReviewRoute = require("./Routes/ReviewRoute");
 
 const app = express();
 
@@ -94,6 +95,8 @@ app.use("/", AuthRouter);
 
 //Google Auth
 app.use("/auth", GoogleAuth);
+//Review
+app.use("/", ReviewRoute);
 
 // ------------> Endpoint for fetching sun details <---------------
 
