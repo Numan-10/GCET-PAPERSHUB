@@ -1,8 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../ApiUrl.js";
 function SubDetails() {
   const { id } = useParams();
@@ -10,8 +9,6 @@ function SubDetails() {
 
   const [subject, setSubject] = useState({});
   const [error, setError] = useState("");
-
-  const getToastWidth = () => (window.innerWidth > 768 ? "280px" : "90%");
 
   useEffect(() => {
     const BackendUrl = API_BASE_URL;
@@ -24,11 +21,11 @@ function SubDetails() {
           if (response.data.status === false) {
             toast.error(response.data.message, {
               position: "top-center",
-              autoClose: 1500,
-              onClose: () => navigate("/login"),
-              style: { marginTop: "1rem", width: getToastWidth() },
+              duration: 1800,
             });
-            return;
+            setTimeout(() => {
+              navigate("/login");
+            }, 1800);
           } else {
             setSubject(response.data);
           }
@@ -37,18 +34,20 @@ function SubDetails() {
           setError("Error fetching subject details: " + err.message);
           toast.error("Unable to fetch, Login again.", {
             position: "top-center",
-            autoClose: 1500,
-            onClose: () => navigate("/login"),
-            style: { marginTop: "1rem", width: getToastWidth() },
+            duration: 1800,
           });
+          setTimeout(() => {
+            navigate("/login");
+          }, 1800);
         });
     } else {
       toast.error("Oops! You’re not logged in", {
         position: "top-center",
-        autoClose: 1500,
-        onClose: () => navigate("/login"),
-        style: { marginTop: "1rem", width: getToastWidth() },
+        duration: 1800,
       });
+      setTimeout(() => {
+        navigate("/login");
+      }, 1800);
     }
   }, [id, navigate, localStorage.getItem("token")]);
 
@@ -56,7 +55,7 @@ function SubDetails() {
     return (
       <p className="text-danger text-center mt-5">
         {error}
-        <ToastContainer />
+        <Toaster />
       </p>
     );
 
@@ -69,7 +68,7 @@ function SubDetails() {
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <ToastContainer />
+        <Toaster />
       </div>
     );
 
@@ -96,7 +95,7 @@ function SubDetails() {
           </a>
         </div>
       </div>
-      <ToastContainer />
+      <Toaster />
     </div>
   );
 }

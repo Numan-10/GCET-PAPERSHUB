@@ -41,7 +41,7 @@ function Reviews() {
     if (comment) {
       const feed = comment.trim();
       if (feed.length < 15) {
-        return handleError("Comment must be 20+ chars.");
+        return handleError("Comment must be 15+ chars.");
       }
     }
     try {

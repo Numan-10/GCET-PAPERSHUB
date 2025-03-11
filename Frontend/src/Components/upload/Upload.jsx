@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../ApiUrl.js";
 function Upload() {
-
   const Navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [inputValue, setIsInputValue] = useState({
@@ -14,10 +13,6 @@ function Upload() {
     Pdf: null,
   });
   const [isloading, setisLoading] = useState(false);
-
-  const getToastWidth = () => {
-    return window.innerWidth > 768 ? "300px" : "90%";
-  };
 
   const { Title, Subject, Semester, Pdf } = inputValue;
 
@@ -48,8 +43,8 @@ function Upload() {
 
         toast.success(`Welcome, ${user}`, {
           position: "top-center",
-          style: { marginTop: "1rem", width: getToastWidth() },
-          autoClose: 1500,
+
+          duration: 1500,
         });
       } catch (err) {
         console.log("Verification error:", err);
@@ -83,10 +78,9 @@ function Upload() {
     if (!Title || !Subject || !Semester || !Pdf) {
       toast.error("All fields are required!", {
         position: "top-center",
-        style: { marginTop: "1rem", width: getToastWidth() },
+        duration: 1000,
       });
-      setisLoading(false);
-      return;
+      return setisLoading(false);
     }
 
     // Upload file validation
@@ -106,25 +100,20 @@ function Upload() {
     formData.append("Pdf", Pdf);
 
     try {
-      const { data } = await axios.post(
-        ` ${BackendUrl}/upload`,
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const { data } = await axios.post(` ${BackendUrl}/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const { success, message } = data;
       if (success) {
         toast.success(message, {
           position: "top-center",
-          style: { marginTop: "1rem", width: getToastWidth() },
+          duration: 1000,
         });
-        setTimeout(() => Navigate("/Upload"), 1000);
       } else {
         toast.error(message, {
           position: "top-center",
-          style: { marginTop: "1rem", width: getToastWidth() },
+          duration: 1000,
         });
       }
       setIsInputValue({ Title: "", Subject: "", Semester: "", Pdf: null });
@@ -221,7 +210,7 @@ function Upload() {
         </div>
         <div className="col-1"></div>
       </div>
-      <ToastContainer />
+      <Toaster />
     </>
   );
 }

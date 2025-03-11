@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../ApiUrl";
 import Google from "../Google";
 
 const Login = () => {
   const BackendUrl = API_BASE_URL;
-
-  const getToastWidth = () => {
-    return window.innerWidth > 768 ? "300px" : "90%";
-  };
 
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
@@ -31,12 +27,12 @@ const Login = () => {
   const handleError = (err) =>
     toast.error(err, {
       position: "top-center",
-      style: { marginTop: "1rem", width: getToastWidth() },
+      duration: 1000,
     });
   const handleSuccess = (msg) =>
     toast.success(msg, {
       position: "top-center",
-      style: { marginTop: "1rem", width: getToastWidth() },
+      duration: 1000,
     });
 
   const handleSubmit = async (e) => {
@@ -66,7 +62,7 @@ const Login = () => {
 
         setTimeout(() => {
           navigate("/home");
-        }, 1000);
+        }, 900);
         setInputValue({
           ...inputValue,
           email: "",
@@ -87,7 +83,8 @@ const Login = () => {
           setIsLoading(false);
         }
       } else {
-        handleError("Server error. Please try again.");
+        // console.log(error);
+        handleError(error?.response?.data?.message);
         setIsLoading(false);
       }
     }
@@ -162,7 +159,7 @@ const Login = () => {
         {/* Continue with Google  */}
         <Google />
       </div>
-      <ToastContainer />
+      <Toaster />
     </div>
   );
 };

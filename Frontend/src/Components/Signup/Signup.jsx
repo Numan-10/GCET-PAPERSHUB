@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../ApiUrl.js";
 import Google from "../Google.jsx";
 
@@ -16,10 +16,6 @@ const Signup = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const getToastWidth = () => {
-    return window.innerWidth > 768 ? "300px" : "90%";
-  };
-
   const { email, password, username } = inputValue;
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -32,13 +28,12 @@ const Signup = () => {
   const handleError = (err) =>
     toast.error(err, {
       position: "top-center",
-      style: { marginTop: "1rem", width: getToastWidth() },
-      autoClose: 2000,
+      duration: 1000,
     });
   const handleSuccess = (msg) =>
     toast.success(msg, {
       position: "top-center",
-      style: { marginTop: "1rem", width: getToastWidth() },
+      duration: 1000,
     });
 
   const handleSubmit = async (e) => {
@@ -84,7 +79,7 @@ const Signup = () => {
           setIsLoading(false);
         }
       } else {
-        handleError("Server error. Please try again.");
+        handleError(error?.response?.data?.message);
         setIsLoading(false);
       }
     }
@@ -172,7 +167,7 @@ const Signup = () => {
         {/* Google  */}
         <Google />
       </div>
-      <ToastContainer />
+      <Toaster />
     </div>
   );
 };

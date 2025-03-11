@@ -1,27 +1,31 @@
-import React from "react";
-import { toast, ToastContainer } from "react-toastify";
+import React, { useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function Content() {
   const Navigate = useNavigate();
 
-  const getToastWidth = () => {
-    return window.innerWidth > 768 ? "450px" : "90%";
-  };
+  useEffect(() => {
+    toast("Loading... Please don’t hold your breath!", {
+      duration: 2800,
+      icon: "👏",
+      style: {
+        borderRadius: "10px",
+        background: "#333",
+        color: "#fff",
+      },
+    });
 
-  toast.info("Designers are arguing about the colors.😆", {
-    position: "top-center",
-    autoClose: 3000,
-    onClose: () => {
+    setTimeout(() => {
       Navigate("/home");
-    },
-    style: { marginTop: "1.5rem", width: getToastWidth() },
-  });
+    }, 3000);
+  }, []);
+
   return (
     <>
       <div className="container">
         <div
-          className="d-flex justify-content-center align-items-center fs-1 fw-bold "
+          className="d-flex justify-content-center align-items-center fs-1 fw-bold"
           style={{
             height: "70vh",
             color: "rgba(0, 0, 0, 0.6)",
@@ -34,7 +38,7 @@ function Content() {
         </div>
       </div>
 
-      <ToastContainer />
+      <Toaster />
     </>
   );
 }
