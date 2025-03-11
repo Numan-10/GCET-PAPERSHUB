@@ -21,7 +21,7 @@ function SubDetails() {
           if (response.data.status === false) {
             toast.error(response.data.message, {
               position: "top-center",
-              duration: 1800,
+              duration: 1700,
             });
             setTimeout(() => {
               navigate("/login");

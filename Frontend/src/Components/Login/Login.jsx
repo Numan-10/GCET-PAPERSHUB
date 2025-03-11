@@ -32,7 +32,7 @@ const Login = () => {
   const handleSuccess = (msg) =>
     toast.success(msg, {
       position: "top-center",
-      duration: 1000,
+      duration: 1500,
     });
 
   const handleSubmit = async (e) => {
@@ -54,15 +54,16 @@ const Login = () => {
       const { success, message, JwtToken, name, email } = data;
       console.log("data login" + data);
       if (success) {
-        handleSuccess(message);
+        setTimeout(() => {
+          handleSuccess(message);
+        }, 250);
 
         localStorage.setItem("token", JwtToken);
         localStorage.setItem("user", name);
         localStorage.setItem("email", email);
 
-        setTimeout(() => {
-          navigate("/home");
-        }, 900);
+        navigate("/home");
+
         setInputValue({
           ...inputValue,
           email: "",

@@ -31,13 +31,14 @@ module.exports.GoogleAuth = async (req, res) => {
       const token = createSecretToken({ _id, email, name });
       // console.log(token);
       res.status(200).json({
-        message: "Success",
+        message: "Google Login Successful!",
+        success: true,
         token,
         user,
       });
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };

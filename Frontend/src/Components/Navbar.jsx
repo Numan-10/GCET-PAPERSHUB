@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import toast, { Toaster } from "react-hot-toast";
 
 import {
   Box,
@@ -61,6 +62,10 @@ function Navbar() {
     setUserData(null);
     setTimeout(() => navigate("/home"), 1500);
     handleMenuClose();
+    toast.success("Logged out successfully", {
+      duration: 2100,
+      position: "top-center",
+    });
   };
   console.log("UserDAta", userData);
   const AvatarName = userData?.User?.charAt(0)?.toUpperCase();
@@ -185,6 +190,7 @@ function Navbar() {
           </Tooltip>
         </button>
       </div>
+      <Toaster />
     </div>
   );
 }

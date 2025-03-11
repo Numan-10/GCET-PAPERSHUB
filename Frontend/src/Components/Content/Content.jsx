@@ -6,9 +6,9 @@ function Content() {
   const Navigate = useNavigate();
 
   useEffect(() => {
-    toast("Loading... Please don’t hold your breath!", {
-      duration: 2800,
-      icon: "👏",
+    toast("Let the code brew... like coffee!", {
+      duration: 2400,
+      icon: "☕",
       style: {
         borderRadius: "10px",
         background: "#333",
@@ -17,8 +17,8 @@ function Content() {
     });
 
     setTimeout(() => {
-      Navigate("/home");
-    }, 3000);
+      return Navigate("/home");
+    }, 2500);
   }, []);
 
   return (

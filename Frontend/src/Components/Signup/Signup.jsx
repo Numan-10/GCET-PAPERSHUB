@@ -54,9 +54,9 @@ const Signup = () => {
       setIsLoading(false);
       if (success) {
         handleSuccess(message);
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
+
+        navigate("/login");
+
         setInputValue({
           ...inputValue,
           email: "",

@@ -2,6 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import API_BASE_URL from "../ApiUrl";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 function Google() {
   const BackendUrl = API_BASE_URL;
@@ -15,8 +16,9 @@ function Google() {
       const response = await axios.get(
         `${BackendUrl}/auth/google?code=${code}`
       );
-      console.log("Response Google", response);
-      if (response.data.message == "Success") {
+      // console.log("Response Google", response);
+      const { message, success } = response.data;
+      if (success) {
         const Token = response.data.token;
         const { email, image, username } = response.data.user;
         console.log("Google:", Token);
@@ -25,10 +27,20 @@ function Google() {
         localStorage.setItem("token", Token);
         localStorage.setItem("email", email);
         localStorage.setItem("user", username);
+
         Navigate("/home");
+
+        setTimeout(() => {
+          toast.success(message, {
+            position: "top-center",
+            duration: 2100,
+            icon: "🎉",
+          });
+        }, 800);
       }
     } catch (err) {
       console.log(err);
+      toast.error(err?.response?.data?.message || err);
     }
   };
   const GoogleAuth = useGoogleLogin({
@@ -60,6 +72,7 @@ function Google() {
         </div>
         <div className="fw-medium">Sign in with Google</div>
       </button>
+      <Toaster />
     </>
   );
 }
