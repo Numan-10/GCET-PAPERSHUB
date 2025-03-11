@@ -37,21 +37,22 @@ function Contribute({ name, role, src, about }) {
 
       {/* -------------------------> About <--------------------------- */}
       <div className="col-12 col-md-6 mt-4 mt-md-0 text-center text-md-start">
-        <h2 className="p-2">About Me!</h2>
-        <p className="p-2 text-start">{about}</p>
+        <h2 className="p-2 text-center text-md-start ">About Me!</h2>
+        <p className="p-2 text-center text-md-start">{about}</p>
 
-        <div className="SocialsC p-2 ">
-          <div className="iconsC p-1">
-            <a href="https://linkedin.com/in/numan10" target="_blank">
-              <i class="fa-brands fa-linkedin"></i>
-            </a>
+        <div className="ss">
+          <div className="SocialsC p-2">
+            <div className="iconsC  ">
+              <a href="https://github.com/NumanXdev" target="_blank">
+                <i class="fa-brands fa-github text-dark"></i>
+              </a>
+            </div>
+            <div className="iconsC ">
+              <a href="https://linkedin.com/in/numan10" target="_blank">
+                <i class="fa-brands fa-linkedin"></i>
+              </a>
+            </div>
           </div>
-          <div className="iconsC p-1 ms-3">
-            <a href="https://github.com/NumanXdev" target="_blank">
-              <i class="fa-brands fa-github"></i>
-            </a>
-          </div>
-          <div></div>
         </div>
       </div>
     </div>

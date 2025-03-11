@@ -70,7 +70,7 @@ function Reviews() {
       }
     } catch (err) {
       console.log(err);
-      handleError(err?.response?.data?.message);
+      handleError(err?.response?.data?.message || err.message);
     }
   };
   const handleChange = (evt) => {

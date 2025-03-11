@@ -190,16 +190,34 @@
   white-space: nowrap;
 }
 
-.SocialsC {
-  font-size: 1.5rem;
-  text-decoration: none;
-  display: flex;
+/*---------> //parent <-------- */
+.ss {
+  width: 310px;
 }
 
-#comment{
+/* ----------------> child=>width inherit <-------------*/
+.SocialsC {
+  width: 45%;
+  font-size: 1.8rem;
+  text-decoration: none;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+@media (max-width: 768px) {
+  .ss {
+    width: 100%;
+  }
+  .SocialsC {
+    width: 100%;
+    justify-content: space-evenly;
+  }
+}
+
+#comment {
   height: 10rem;
   width: 85%;
 }
-#Rating{
+#Rating {
   font-size: 2.3rem;
 }

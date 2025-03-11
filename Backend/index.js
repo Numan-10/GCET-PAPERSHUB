@@ -26,8 +26,8 @@ console.log(PROD_URL, LOCAL_URL);
 app.use(express.json());
 app.use(
   cors({
-    // origin: [PROD_URL, LOCAL_URL],
-    origin: ["https://gcet-papershub.vercel.app"],
+    origin: [PROD_URL, LOCAL_URL],
+    // origin: ["https://gcet-papershub.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -100,7 +100,7 @@ app.use("/", userVerification, ReviewRoute);
 
 // ------------> Endpoint for fetching sun details <---------------
 
-app.get("/subjects/:id", async (req, res) => {
+app.get("/subjects/:id", userVerification, async (req, res) => {
   try {
     const { id } = req.params;
     // console.log("backend " + id);
