@@ -4,10 +4,23 @@ import Rating from "@mui/material/Rating";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
 import toast, { Toaster } from "react-hot-toast";
+import { useLocation } from "react-router-dom";
 
 function Reviews() {
   const [value, setValue] = React.useState(1);
   const [comment, setComment] = React.useState("");
+  const [user, setuser] = React.useState("");
+
+  const location = useLocation();
+  React.useEffect(() => {
+    try {
+      const currUser = localStorage.getItem("user");
+      setuser(currUser);
+      console.log(currUser);
+    } catch (err) {
+      console.log(err);
+    }
+  }, [location.pathname]);
 
   // ------------------------> Handle Success <-----------------
   const handleSucess = (msg) => {
@@ -28,15 +41,24 @@ function Reviews() {
     if (comment) {
       const feed = comment.trim();
       if (feed.length < 15) {
-        return handleError("Comment should be greater than 15");
+        return handleError("Comment must be 20+ chars.");
       }
     }
     try {
-      const response = await axios.post("http://localhost:3000/review", {
-        value,
-        comment,
-      });
-      console.log(response.data);
+      const response = await axios.post(
+        "http://localhost:3000/review",
+        {
+          value,
+          comment,
+          user,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+      console.log("Response:" + response.data);
       const { message, success } = response.data;
 
       if (success) {
@@ -48,7 +70,7 @@ function Reviews() {
       }
     } catch (err) {
       console.log(err);
-      handleError(err.message);
+      handleError(err?.response?.data?.message);
     }
   };
   const handleChange = (evt) => {
@@ -76,7 +98,7 @@ function Reviews() {
           }}
         />
         {/* <Typography component="legend">Read only</Typography>
-        <Rating name="read-only" value={value} readOnly /> */}
+      <Rating name="read-only" value={value} readOnly /> */}
       </Box>
       <div className="p-1">
         <h6 className=" mt-3">Comment</h6>
