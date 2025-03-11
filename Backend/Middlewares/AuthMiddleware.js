@@ -8,15 +8,19 @@ const userVerification = (req, res, next) => {
   // console.log("Token received:", req.headers["authorization"]);
   const Auth = req.headers["authorization"];
   if (!Auth) {
-    return res.status(403).json({ message: "Please sign in to continue." });
+    return res
+      .status(403)
+      .json({ message: "Please sign in to continue.", success: false });
   }
   try {
     const decoded = jwt.verify(Auth, process.env.TOKEN_KEY);
-    // console.log(decoded);
+    // console.log("Decoded",decoded);
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: "Session invalid. Sign in again." });
+    res
+      .status(401)
+      .json({ message: "Session invalid. Sign in again.", success: false });
   }
 };
 

@@ -96,7 +96,7 @@ app.use("/", AuthRouter);
 //Google Auth
 app.use("/auth", GoogleAuth);
 //Review
-app.use("/", ReviewRoute);
+app.use("/", userVerification, ReviewRoute);
 
 // ------------> Endpoint for fetching sun details <---------------
 
