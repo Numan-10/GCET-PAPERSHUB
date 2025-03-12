@@ -2,9 +2,9 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
-import Typography from "@mui/material/Typography";
 import toast, { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
+import TestimonialsPage from "../Testimonials/TestimonialsPage";
 
 function Reviews() {
   const [value, setValue] = React.useState(1);
@@ -70,7 +70,7 @@ function Reviews() {
       }
     } catch (err) {
       console.log(err);
-      handleError(err?.response?.data?.message || err.message);
+      handleError(err?.response?.data?.message || "Please sign in to continue");
     }
   };
   const handleChange = (evt) => {
@@ -78,45 +78,55 @@ function Reviews() {
     setComment(evt.target.value);
   };
   return (
-    <div className="container mt-5 pt-2">
-      <hr />
-      <div className="p-1">
-        <h3>Leave a Review</h3>
-        <p>Rating</p>
-      </div>
+    <>
+      <hr className="mt-5" />
+      <h1 className="text-center mt-5 TestHeading">Testimonials</h1>
+      {/* ------------------------------> Testimonials component Here <--------------------------------- */}
 
-      {/*------------------------> Ratings <---------------------*/}
+      <TestimonialsPage />
 
-      <Box sx={{ "& > legend": { mt: 2 } }}>
-        {/* <Typography component="legend">Controlled</Typography> */}
-        <Rating
-          name="rating"
-          value={value}
-          id="Rating"
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
-        />
-        {/* <Typography component="legend">Read only</Typography>
+      {user && (
+        <div className="container mt-0 pt-2">
+          <hr />
+          <div className="p-1">
+            <h3>Leave a Review</h3>
+            <p>Rating</p>
+          </div>
+
+          {/*------------------------> Ratings <---------------------*/}
+
+          <Box sx={{ "& > legend": { mt: 2 } }}>
+            {/* <Typography component="legend">Controlled</Typography> */}
+            <Rating
+              name="rating"
+              value={value}
+              id="Rating"
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+            />
+            {/* <Typography component="legend">Read only</Typography>
       <Rating name="read-only" value={value} readOnly /> */}
-      </Box>
-      <div className="p-1">
-        <h6 className=" mt-3">Comment</h6>
-        <div className="form-floating">
-          <textarea
-            name="comment"
-            id="comment"
-            className="form-control p-2"
-            value={comment}
-            onChange={handleChange}
-          ></textarea>
+          </Box>
+          <div className="p-1">
+            <h6 className=" mt-3">Comment</h6>
+            <div className="form-floating">
+              <textarea
+                name="comment"
+                id="comment"
+                className="form-control p-2"
+                value={comment}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+            <button className="btn btn-dark mt-3" onClick={submit}>
+              Submit
+            </button>
+          </div>
+          <Toaster />
         </div>
-        <button className="btn btn-dark mt-3" onClick={submit}>
-          Submit
-        </button>
-      </div>
-      <Toaster />
-    </div>
+      )}
+    </>
   );
 }
 

@@ -60,12 +60,17 @@ function Navbar() {
   const logout = () => {
     localStorage.clear();
     setUserData(null);
-    setTimeout(() => navigate("/home"), 1500);
+    navigate("/home");
+
     handleMenuClose();
-    toast.success("Logged out successfully", {
-      duration: 2100,
-      position: "top-center",
-    });
+    setTimeout(
+      () =>
+        toast.success("Logged out successfully", {
+          duration: 2000,
+          position: "top-center",
+        }),
+      800
+    );
   };
   console.log("UserDAta", userData);
   const AvatarName = userData?.User?.charAt(0)?.toUpperCase();
