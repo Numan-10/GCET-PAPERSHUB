@@ -22,7 +22,7 @@ function Subject({ sub, img, id }) {
         <img src={img} className="card-img-top" alt="card" />
         <div className="card-img-overlay d-flex justify-content-center align-items-center">
           <h5
-            className="text-center text-black fw-bold fs-4"
+            className="text-center fw-bold fs-4"
             style={{ letterSpacing: "1px" }}
           >
             {sub}

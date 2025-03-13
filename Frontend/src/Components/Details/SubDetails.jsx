@@ -24,11 +24,12 @@ function SubDetails() {
       } catch (err) {
         console.log(err);
         navigate("/login");
-
-        toast.error(err?.response?.data?.message || "Error Occured", {
-          duration: 5000,
-          position: "top-center",
-        });
+        setTimeout(() => {
+          toast.error(err?.response?.data?.message || "Error Occured", {
+            duration: 5000,
+            position: "top-center",
+          });
+        }, 250);
       }
     };
     fetchData();
@@ -47,28 +48,34 @@ function SubDetails() {
     );
 
   return (
-    <div className="container mt-4 mb-5">
-      <h2 className="text-center mb-4">Subject Information</h2>
-      <div className="card shadow-lg rounded">
-        <img
-          src="/Assets/gcet.png"
-          className="card-img-top"
-          alt="Subject"
-          style={{ height: "250px", objectFit: "cover" }}
-        />
-        <div className="card-body text-center">
-          <h5 className="card-title text-primary fs-1">{subject.Title}</h5>
-          <p className="card-text text-muted">{subject.Subject}</p>
-          <p className="card-text text-muted">Semester: {subject.Semester}</p>
-          <a
-            href={subject.Pdf?.Url}
-            className="btn btn-primary btn-lg"
-            target="_blank"
-          >
-            <i className="fa-solid fa-file-pdf"></i> View PDF
-          </a>
+    <div className="container mt-5 mb-5">
+      <div className="row ">
+        <div className="col-1"></div>
+        <div className="col d-flex flex-column align-items-center">
+          <h3 className="fw-semibold">{subject.Title}</h3>
+          <div>
+            <img
+              src="/Assets/gcet.png"
+              className=" rounded img-fluid"
+              alt="Subject"
+              style={{ height: "250px", objectFit: "cover" }}
+            />
+            <div>
+              <p className="text-muted mt-2">Subject: {subject.Subject}</p>
+              <p className="text-muted">Semester: {subject.Semester}</p>
+              <a
+                href={subject.Pdf?.Url}
+                className="btn btn-primary "
+                target="_blank"
+              >
+                <i className="fa-solid fa-file-pdf"></i> View PDF
+              </a>
+            </div>
+          </div>
         </div>
+        <div className="col-1"></div>
       </div>
+
       <Toaster />
     </div>
   );
