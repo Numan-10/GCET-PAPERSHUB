@@ -10,7 +10,7 @@ function HomePage() {
   const [data, setIsData] = useState([]);
   const [error, setIsError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(6);
+  const [postsPerPage, setPostsPerPage] = useState(9);
   const [loading, setIsLoading] = useState(true);
 
   const Images = [

@@ -1,40 +1,50 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import API_BASE_URL from "../../ApiUrl";
+import Show from "./Show";
 
 function Content() {
   const Navigate = useNavigate();
+  const BackendUrl = API_BASE_URL;
 
+  const [data, setData] = useState([]);
   useEffect(() => {
-    toast("Let the code brew... like coffee!", {
-      duration: 2400,
-      icon: "☕",
-      style: {
-        borderRadius: "10px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
-
-    setTimeout(() => {
-      return Navigate("/home");
-    }, 2500);
+    const ContentData = async (req, res) => {
+      try {
+        const { data } = await axios(`${BackendUrl}/content`);
+        setData(data);
+        console.log(data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    ContentData();
   }, []);
+
+  const Images = [
+    "/Assets/Frame 77 (1).svg",
+    "/Assets/Frame 78.svg",
+    "/Assets/Frame 80.svg",
+  ];
 
   return (
     <>
       <div className="container">
-        <div
-          className="d-flex justify-content-center align-items-center fs-1 fw-bold"
-          style={{
-            height: "70vh",
-            color: "rgba(0, 0, 0, 0.6)",
-            borderRadius: "10px",
-            textShadow: "2px 2px 8px rgba(0, 0, 0, 0.2)",
-            fontFamily: "'Poppins', sans-serif",
-          }}
-        >
-          Coming Soon!
+        <div className="Notes text-center fs-4 fw-bold mt-4 text-decoration-underline mb-3 ">
+          Notes Section
+        </div>
+        <div className="row">
+          {data.map((data, index) => (
+            // console.log(data,index)
+            <Show
+              key={index}
+              id={data._id}
+              sub={data.subject}
+              img={Images[index % Images.length]}
+            />
+          ))}
         </div>
       </div>
 

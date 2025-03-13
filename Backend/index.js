@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const Paper = require("./Models/Paper");
+const Content = require("./Models/Content");
 const cors = require("cors");
 const multer = require("multer");
 const { storage } = require("./cloudConfig");
@@ -15,6 +16,7 @@ const { isAdmin } = require("./Middlewares/isAdmin");
 const AuthRouter = require("./Routes/AuthRoute");
 const GoogleAuth = require("./Routes/GoogleAuth");
 const ReviewRoute = require("./Routes/ReviewRoute");
+const ContentRoute = require("./Routes/ContentRoute");
 
 const app = express();
 
@@ -26,8 +28,8 @@ console.log(PROD_URL, LOCAL_URL);
 app.use(express.json());
 app.use(
   cors({
-    // origin: [PROD_URL, LOCAL_URL],
-    origin: ["https://gcet-papershub.vercel.app"],
+    origin: [PROD_URL, LOCAL_URL],
+    // origin: ["https://gcet-papershub.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -47,8 +49,30 @@ main()
     console.log(err);
   });
 
-// app.get("/test", (req, res) => {
-//   res.send("All good !");
+// app.get("/test", async (req, res) => {
+//   try {
+//     await Content.deleteMany({});
+//     await Content.insertMany([
+//       { subject: "Mathematics" },
+//       { subject: "Physics" },
+//       { subject: "Chemistry" },
+//       { subject: "Engineering Mechanics" },
+//       { subject: "Computer Programming" },
+//       { subject: "Data Structures and Algorithms" },
+//       { subject: "Digital Logic Design" },
+//       { subject: "Computer Organization and Architecture" },
+//       { subject: "Database Management Systems" },
+//       { subject: "Operating Systems" },
+//       { subject: "Software Engineering" },
+//       { subject: "Microprocessors and Microcontrollers" },
+//       { subject: "Design and Analysis of Algorithms" },
+//       { subject: "Computer Networks" },
+//       { subject: "Machine Learning" },
+//     ]);
+//   } catch (err) {
+//     console.log(err);
+//   }
+//   res.send("Data uploaded!");
 // });
 
 app.get("/subjects", async (req, res) => {
@@ -96,7 +120,9 @@ app.use("/", AuthRouter);
 //Google Auth
 app.use("/auth", GoogleAuth);
 //Review
-app.use("/", userVerification, ReviewRoute);
+app.use("/review", userVerification, ReviewRoute);
+//Content
+app.use("/content", ContentRoute);
 
 // ------------> Endpoint for fetching sun details <---------------
 

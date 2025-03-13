@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { ReviewController } = require("../controllers/ReviewController");
-router.get("/review", ReviewController);
-router.post("/review", ReviewController);
+router.get("/", ReviewController);
+router.post("/", ReviewController);
 
 module.exports = router;

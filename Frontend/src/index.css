@@ -233,7 +233,6 @@
 
 /*---------------------------------> Testimonials <---------------------------------- */
 .review-slide {
-  
   /* width: 100%; */
   display: flex;
   width: max-content;
@@ -253,4 +252,10 @@
   100% {
     transform: translateX(-350%);
   }
+}
+
+.Notes {
+  color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
