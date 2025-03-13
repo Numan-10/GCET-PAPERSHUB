@@ -5,7 +5,8 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import TestimonialsPage from "../Testimonials/TestimonialsPage";
-
+import API_BASE_URL from "../../ApiUrl";
+const BackendUrl = API_BASE_URL;
 function Reviews() {
   const [value, setValue] = React.useState(1);
   const [comment, setComment] = React.useState("");
@@ -46,7 +47,7 @@ function Reviews() {
     }
     try {
       const response = await axios.post(
-        "http://localhost:3000/review",
+        `${BackendUrl}/review`,
         {
           value,
           comment,
@@ -70,7 +71,7 @@ function Reviews() {
       }
     } catch (err) {
       console.log(err);
-      handleError(err?.response?.data?.message || "Please sign in to continue");
+      handleError(err?.response?.data?.message || err);
     }
   };
   const handleChange = (evt) => {
