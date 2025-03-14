@@ -43,7 +43,7 @@ function SubDetails() {
     "/Assets/Frame 80.svg",
   ];
   return (
-    <div className="container mt-5">
+    <div className="container mt-4">
       {loading && (
         <div className="text-center mt-5">
           <div class="spinner-border " role="status">
@@ -63,22 +63,9 @@ function SubDetails() {
               sub={subDetails.subject}
               unit={data.unit}
               img={Images[index % Images.length]}
-             
             />
           ))
         }
-        {/* <div className="col">{subDetails?.semester}</div>
-        <div className="col">{subDetails?.subject}</div>
-        <div className="col"> {subDetails?.uploadedAt}</div>
-        <div className="col">
-          {subDetails?.units?.map((sub, index) => (
-            <div key={index}>
-              <p>{sub?.name}</p>
-              <p>{sub?.unit}</p>
-              <p>{sub?.pdf?.Url}</p>
-            </div>
-          ))}
-        </div> */}
       </div>
       <Toaster />
     </div>
