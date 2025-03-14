@@ -1,5 +1,9 @@
 const Content = require("../Models/Content");
 module.exports.ContentController = async (req, res) => {
-  const subjects = await Content.find({});
-  res.json(subjects);
+  try {
+    const subjects = await Content.find({});
+    res.json(subjects);
+  } catch (err) {
+    console.log(err);
+  }
 };

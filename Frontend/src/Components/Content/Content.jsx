@@ -10,14 +10,19 @@ function Content() {
   const BackendUrl = API_BASE_URL;
 
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [Error, setError] = useState("");
   useEffect(() => {
     const ContentData = async (req, res) => {
       try {
-        const { data } = await axios(`${BackendUrl}/content`);
+        const { data } = await axios.get(`${BackendUrl}/content`);
         setData(data);
         console.log(data);
       } catch (err) {
+        setError(err);
         console.log(err);
+      } finally {
+        setLoading(false);
       }
     };
     ContentData();
@@ -35,6 +40,20 @@ function Content() {
         <div className="Notes text-center fs-4 fw-bold mt-4 text-decoration-underline mb-3 ">
           Notes Section
         </div>
+
+        {/* Display Error messages */}
+        {Error && <p className="text-danger text-center">{Error}</p>}
+        {/* Display spinner unitil data comes */}
+        {loading && (
+          <p className="text-center mt-5">
+            {" "}
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </p>
+        )}
+
+        {/* MAin Data  */}
         <div className="row">
           {data.map((data, index) => (
             // console.log(data,index)

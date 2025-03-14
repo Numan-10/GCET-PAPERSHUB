@@ -15,6 +15,7 @@ import "./index.css";
 import SubDetails from "./Components/Details/SubDetails.jsx";
 import ContributePage from "./Components/contributors/ContributePage.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import SubUnits from "./Components/Content/Subject/SubUnits.jsx";
 
 //Googe CliendId
 const cliendId = import.meta.env.VITE_APP_CLIENT_ID;
@@ -48,6 +49,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/content" element={<ContentPage />} />
+          <Route path="/content/:subject" element={<SubUnits />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>

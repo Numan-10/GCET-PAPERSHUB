@@ -4,7 +4,7 @@ function show({ sub, img, id }) {
   console.log(sub, img, id);
   const Navigate = useNavigate();
   const handleOnClick = () => {
-    Navigate(`/content/${id}`);
+    Navigate(`/content/${sub}`);
     console.log(id);
   };
 
