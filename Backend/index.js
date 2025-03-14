@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const Paper = require("./Models/Paper");
-const Content = require("./Models/Content");
 const cors = require("cors");
 const multer = require("multer");
 const { storage } = require("./cloudConfig");
@@ -49,30 +48,39 @@ main()
     console.log(err);
   });
 
+//Units & Content Model
+// const UnitModel = require("./Models/Unit");
+// const ContentModel = require("./Models/Content");
+
 // app.get("/test", async (req, res) => {
 //   try {
-//     await Content.deleteMany({});
-//     await Content.insertMany([
-//       { subject: "Mathematics" },
-//       { subject: "Physics" },
-//       { subject: "Chemistry" },
-//       { subject: "Engineering Mechanics" },
-//       { subject: "Computer Programming" },
-//       { subject: "Data Structures and Algorithms" },
-//       { subject: "Digital Logic Design" },
-//       { subject: "Computer Organization and Architecture" },
-//       { subject: "Database Management Systems" },
-//       { subject: "Operating Systems" },
-//       { subject: "Software Engineering" },
-//       { subject: "Microprocessors and Microcontrollers" },
-//       { subject: "Design and Analysis of Algorithms" },
-//       { subject: "Computer Networks" },
-//       { subject: "Machine Learning" },
+//     // await Content.deleteMany({});
+//     let Units = await UnitModel.insertMany([
+//       {
+//         name: "Unit 1",
+//         unit: "Introduction to Databases",
+//         pdf: { Url: "unit1.pdf", filename: "unit1" },
+//       },
+//       {
+//         name: "Unit 2",
+//         unit: "SQL and NoSQL",
+//         pdf: { Url: "unit2.pdf", filename: "unit2" },
+//       },
 //     ]);
+//     console.log("Inserted Units:", Units);
+//     const Content = await ContentModel.create({
+//       subject: "Database Management Systems (DBMS)",
+//       semester: "5th",
+//       units: Units.map((unit) => unit._id),
+//     });
+//     console.log(Content);
+//     await Content.save();
+
+//     return res.json({ message: "Data successfullly Uploaded!", sucess: true });
 //   } catch (err) {
 //     console.log(err);
+//     return res.json({ message: "something Went wrong!", sucess: false, err });
 //   }
-//   res.send("Data uploaded!");
 // });
 
 app.get("/subjects", async (req, res) => {
@@ -119,10 +127,10 @@ app.use("/", AuthRouter);
 
 //Google Auth
 app.use("/auth", GoogleAuth);
-//Review
-app.use("/review", userVerification, ReviewRoute);
 //Content
 app.use("/content", ContentRoute);
+//Review
+app.use("/review", userVerification, ReviewRoute);
 
 // ------------> Endpoint for fetching sun details <---------------
 

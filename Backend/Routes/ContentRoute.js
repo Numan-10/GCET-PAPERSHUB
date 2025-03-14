@@ -1,11 +1,7 @@
 const router = require("express").Router();
-const { ContentController } = require("../controllers/ContentController");
-router.get("/", ContentController);
 
-router.get("/:subject", (req, res) => {
-  const subject = req.params;
-  console.log(subject);
-  res.send(subject)
-});
+const { Content, Units } = require("../controllers/ContentController");
+router.get("/", Content);
+router.get("/:subject", Units);
 
 module.exports = router;

@@ -6,6 +6,10 @@ const UnitSchema = new Schema({
     type: String,
     required: true,
   },
+  unit: {
+    type: String,
+    required: true,
+  },
   pdf: {
     Url: String,
     filename: String,

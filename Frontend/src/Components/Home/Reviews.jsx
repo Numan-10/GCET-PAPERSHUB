@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
@@ -8,12 +8,12 @@ import TestimonialsPage from "../Testimonials/TestimonialsPage";
 import API_BASE_URL from "../../ApiUrl";
 const BackendUrl = API_BASE_URL;
 function Reviews() {
-  const [value, setValue] = React.useState(1);
-  const [comment, setComment] = React.useState("");
-  const [user, setuser] = React.useState("");
+  const [value, setValue] = useState(1);
+  const [comment, setComment] = useState("");
+  const [user, setuser] = useState("");
 
   const location = useLocation();
-  React.useEffect(() => {
+  useEffect(() => {
     try {
       const currUser = localStorage.getItem("user");
       setuser(currUser);

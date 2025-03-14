@@ -13,7 +13,7 @@ function Content() {
   const [loading, setLoading] = useState(true);
   const [Error, setError] = useState("");
   useEffect(() => {
-    const ContentData = async (req, res) => {
+    const ContentData = async () => {
       try {
         const { data } = await axios.get(`${BackendUrl}/content`);
         setData(data);
