@@ -1,0 +1,30 @@
+.above {
+  position: absolute;
+  z-index: 200;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+.form-container {
+  background-color: white;
+  position: relative;
+  width: 500px;
+  top: 0;
+  right: 0;
+}
+
+.closebtn {
+  position: absolute;
+  border: none;
+  background: white;
+  top: 10px;
+  right: 10px;
+  padding: 3px 8px;
+  color: white;
+  background: red;
+}

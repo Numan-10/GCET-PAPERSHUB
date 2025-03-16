@@ -60,7 +60,7 @@ function SubDetails() {
               key={index}
               id={data._id}
               name={data.name}
-              sub={subDetails.subject}
+              pdf={data.pdf?.Url}
               unit={data.unit}
               img={Images[index % Images.length]}
             />

@@ -23,13 +23,13 @@ function SubDetails() {
         // console.log(response.data);
       } catch (err) {
         console.log(err);
-        navigate("/login");
-        setTimeout(() => {
-          toast.error(err?.response?.data?.message || "Error Occured", {
-            duration: 5000,
-            position: "top-center",
-          });
-        }, 250);
+        return navigate("/login");
+        // setTimeout(() => {
+        //   toast.error(err?.response?.data?.message || "Error Occured", {
+        //     duration: 5000,
+        //     position: "top-center",
+        //   });
+        // }, 250);
       }
     };
     fetchData();

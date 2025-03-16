@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_BASE_URL from "../../ApiUrl";
 import Show from "./Show";
+import CreateSub from "./Subject/CreateSub";
 
 function Content() {
   const Navigate = useNavigate();
@@ -12,6 +13,7 @@ function Content() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [Error, setError] = useState("");
+  const [show, setShow] = useState(false);
   useEffect(() => {
     const ContentData = async () => {
       try {
@@ -26,7 +28,7 @@ function Content() {
       }
     };
     ContentData();
-  }, []);
+  }, [data]);
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
@@ -36,8 +38,17 @@ function Content() {
 
   return (
     <>
-      <div className="container">
-        <div className="Notes text-center fs-4 fw-bold mt-4 text-decoration-underline mb-3 ">
+      <div className="container relative">
+        <div className="text-center mt-2 ">
+          <i
+            class="fa-solid fa-circle-plus fa-2x"
+            onClick={() => setShow(!show)}
+          ></i>
+        </div>
+        {/* Create form  */}
+        {show && <CreateSub onClose={() => setShow(false)} />}
+
+        <div className="Notes text-center fs-4 fw-bold mt-3 text-decoration-underline mb-3 ">
           Notes Section
         </div>
 
