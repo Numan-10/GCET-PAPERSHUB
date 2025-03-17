@@ -1,6 +1,5 @@
 const Content = require("../Models/Content");
 const Unit = require("../Models/Unit");
-
 module.exports.Content = async (req, res) => {
   try {
     const subjects = await Content.find({});
@@ -63,5 +62,48 @@ module.exports.newSubject = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Somthing went wrong", success: false });
+  }
+};
+
+//Uplaoding Notes
+module.exports.newUnit = async (req, res) => {
+  try {
+    const subject = req.params.sub;
+    const Url = req.file.path;
+    const filename = req.file.filename;
+    const { name, unit } = req.body.Unit;
+    // console.log(name, unit, subject);
+    const content = await Content.findOne({ subject });
+    // console.log("content Found :", content);
+    // console.log("URl And Filename:", Url, filename);
+    if (content && Url) {
+      // console.log(content);
+      const newUnit = new Unit({
+        name,
+        unit,
+        pdf: { Url, filename },
+      });
+      await newUnit.save();
+      content.units.push(newUnit);
+      await content.save();
+      console.log("New Unit", newUnit);
+      console.log("New Content", content);
+    }
+
+    if (!name || !unit) {
+      return res
+        .status(500)
+        .json({ message: "All fields are required", success: false });
+    }
+
+    // console.log(url, filename);
+    return res
+      .status(200)
+      .json({ message: "Unit added successfully", success: true });
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .json({ message: "An Error Occured!", success: false });
   }
 };

@@ -23,7 +23,7 @@ function ShowUnits({ id, name, unit, img, sub, pdf }) {
         <img src={img} className="card-img-top" alt="card" />
       </div>
       <h5 className="card-title fs-6 mt-2 ps-1 ms-1 ">
-        <span className="fw-semibold ps-1">{name} </span> : {unit}
+        <span className="fw-semibold ps-1"> {unit}</span> : {name}
       </h5>
       <div className={`pdf-container ${show ? "show" : ""}`}>
         <h6 className="mt-2 ms-1">

@@ -4,11 +4,13 @@ import API_BASE_URL from "../../../ApiUrl";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import ShowUnits from "./ShowUnits";
+import UploadUnits from "./UploadUnits";
 
 const BackendUrl = API_BASE_URL;
 function SubDetails() {
   const [subDetails, setSubDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [Show, setShow] = useState(false);
 
   const { subject } = useParams();
   useEffect(() => {
@@ -23,7 +25,7 @@ function SubDetails() {
             duration: 2000,
           });
         } else {
-          console.log(subDetails);
+          // console.log(subDetails);
           return setSubDetails(subDetails);
         }
         console.log(subDetails);
@@ -35,7 +37,7 @@ function SubDetails() {
       console.log(subDetails);
     };
     data();
-  }, []);
+  }, [subDetails]);
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
@@ -44,6 +46,25 @@ function SubDetails() {
   ];
   return (
     <div className="container mt-4">
+      {/* ---------------------------------->Start Upload Units <-------------------------- */}
+      <div className="text-center  ">
+        <i
+          class="fa-solid fa-circle-plus fa-2x"
+          onClick={() => setShow(!Show)}
+        ></i>
+      </div>
+
+      {Show && (
+        <UploadUnits
+          onClose={() => {
+            setShow(!Show);
+          }}
+          sub={subject}
+        />
+      )}
+
+      {/* ---------------------------------->End Upload Units <-------------------------- */}
+
       {loading && (
         <div className="text-center mt-5">
           <div class="spinner-border " role="status">

@@ -19,7 +19,7 @@ function Content() {
       try {
         const { data } = await axios.get(`${BackendUrl}/content`);
         setData(data);
-        console.log(data);
+        // console.log(data);
       } catch (err) {
         setError(err);
         console.log(err);
@@ -38,7 +38,7 @@ function Content() {
 
   return (
     <>
-      <div className="container relative">
+      <div className="container">
         <div className="text-center mt-2 ">
           <i
             class="fa-solid fa-circle-plus fa-2x"
