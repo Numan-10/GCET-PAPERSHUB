@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { upload } = require("../Middlewares/Upload");
+const userVerification = require("../Middlewares/AuthMiddleware");
 
 const {
   Content,
