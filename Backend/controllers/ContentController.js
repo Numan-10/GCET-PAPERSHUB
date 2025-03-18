@@ -2,10 +2,33 @@ const Content = require("../Models/Content");
 const Unit = require("../Models/Unit");
 module.exports.Content = async (req, res) => {
   try {
-    const subjects = await Content.find({});
-    res.json(subjects);
+    const page = parseInt(req.query.page) || 1;
+    const perPage = 6;
+    const totalSubjects = await Content.countDocuments();
+    const totalPages = Math.ceil(totalSubjects / perPage);
+    const Pages = [];
+    for (i = 0; i < totalPages; i++) {
+      Pages.push(i + 1);
+    }
+    if (page > totalPages) {
+      return res
+        .status(404)
+        .json({ message: "Page Not Found", success: false });
+    }
+    // ------------->Subjects that will be displayed on the page<---------
+    const subjects = await Content.find()
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .exec();
+
+    return res.status(200).json({ subjects, page, totalPages, Pages });
+    // const subjects = await Content.find({});
+    // res.json(subjects);
   } catch (err) {
     console.log(err);
+    return res
+      .status(500)
+      .json({ message: "Failed to Fetch Subjects!", success: false });
   }
 };
 

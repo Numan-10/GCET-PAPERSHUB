@@ -5,20 +5,26 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import ShowUnits from "./ShowUnits";
 import UploadUnits from "./UploadUnits";
+import { useNavigate } from "react-router-dom";
 
 const BackendUrl = API_BASE_URL;
 function SubDetails() {
   const [subDetails, setSubDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [Show, setShow] = useState(false);
+  const Navigate = useNavigate();
 
   const { subject } = useParams();
   useEffect(() => {
     const data = async () => {
       try {
         // console.log(`${BackendUrl}/${subject}`);
-        const { data } = await axios.get(`${BackendUrl}/content/${subject}`);
-        // console.log("response", data);
+        const { data } = await axios.get(`${BackendUrl}/content/${subject}`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+        // console.log("response", data); 
         const { message, success, subDetails } = data;
         if (!success) {
           toast.error(message, {
@@ -30,6 +36,7 @@ function SubDetails() {
         }
         console.log(subDetails);
       } catch (err) {
+        Navigate("/login");
         console.log(err);
       } finally {
         setLoading(false);

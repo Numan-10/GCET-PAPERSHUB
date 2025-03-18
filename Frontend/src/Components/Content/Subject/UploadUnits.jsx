@@ -35,10 +35,7 @@ function UploadUnits({ onClose, sub }) {
     setLoading(true);
     e.preventDefault();
     // console.log(sub);
-    if (!form.pdf) {
-      setLoading(false);
-      return toast.error("Please upload a PDF file!");
-    }
+
     if (form?.pdf?.type !== "application/pdf") {
       setLoading(false);
       toast.remove();
@@ -124,7 +121,7 @@ function UploadUnits({ onClose, sub }) {
           />
 
           {loading ? (
-            <button className="btn btn-success mb-5" type="button" disabled>
+            <button className="btn btn-success" type="button" disabled>
               Uploading... &nbsp;
               <span className="spinner-border spinner-border-sm"></span>
             </button>

@@ -5,21 +5,36 @@ import axios from "axios";
 import API_BASE_URL from "../../ApiUrl";
 import Show from "./Show";
 import CreateSub from "./Subject/CreateSub";
+import "../Home/pagination.css";
 
 function Content() {
   const Navigate = useNavigate();
   const BackendUrl = API_BASE_URL;
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    page: 1,
+    subjects: [],
+    totalPages: "",
+    Pages: [],
+  });
   const [loading, setLoading] = useState(true);
   const [Error, setError] = useState("");
   const [show, setShow] = useState(false);
   useEffect(() => {
     const ContentData = async () => {
       try {
-        const { data } = await axios.get(`${BackendUrl}/content`);
-        setData(data);
-        // console.log(data);
+        const responsee = await axios.get(
+          `${BackendUrl}/content?page=${data.page}`
+        );
+        // console.log(response.data.subjects);
+        const response = responsee.data;
+        setData((prev) => ({
+          ...prev,
+          page: response.page,
+          subjects: response.subjects,
+          totalPages: response.totalPages,
+          Pages: response.Pages,
+        }));
       } catch (err) {
         setError(err);
         console.log(err);
@@ -28,7 +43,7 @@ function Content() {
       }
     };
     ContentData();
-  }, [data]);
+  }, [data.page]); //data.subjects
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
@@ -66,7 +81,7 @@ function Content() {
 
         {/* MAin Data  */}
         <div className="row">
-          {data.map((data, index) => (
+          {data.subjects.map((data, index) => (
             // console.log(data,index)
             <Show
               key={index}
@@ -75,6 +90,21 @@ function Content() {
               img={Images[index % Images.length]}
             />
           ))}
+        </div>
+        <div className="pagination">
+          {data.Pages.map((page, index) => {
+            return (
+              <button
+                key={index}
+                onClick={() => {
+                  setData((prev) => ({ ...prev, page: page }));
+                }}
+                className={page === data.page ? "active" : ""}
+              >
+                {page}
+              </button>
+            );
+          })}
         </div>
       </div>
 

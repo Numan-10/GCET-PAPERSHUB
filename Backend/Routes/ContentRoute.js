@@ -9,7 +9,7 @@ const {
   newUnit,
 } = require("../controllers/ContentController");
 router.get("/", Content);
-router.get("/:subject", Units);
+router.get("/:subject", userVerification, Units);
 router.post("/new", newSubject);
 router.post("/:sub/new", upload, newUnit);
 
