@@ -5,12 +5,18 @@ import axios from "axios";
 import Pagination from "./Pagination";
 import API_BASE_URL from "../../ApiUrl.js";
 import Reviews from "./Reviews.jsx";
+import "./pagination.css";
 
 function HomePage() {
-  const [data, setIsData] = useState([]);
+  const [data, setIsData] = useState({
+    Pages: [],
+    Papers: [],
+    page: 1,
+    totalPages: "",
+  });
   const [error, setIsError] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(9);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [postsPerPage, setPostsPerPage] = useState(9);
   const [loading, setIsLoading] = useState(true);
 
   const Images = [
@@ -23,23 +29,38 @@ function HomePage() {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get(`${BackendUrl}/subjects`);
-        // console.log(response.data);
-        setIsData(response.data);
+        const response = await axios.get(
+          `${BackendUrl}/subjects?page=${data.page}`
+        );
+        console.log(response.data);
+        const responsee = response.data;
+        setIsData((prevData) => ({
+          ...prevData,
+          Pages: responsee.Pages,
+          Papers: responsee.Papers,
+          page: responsee.page,
+          totalPages: responsee.totalPages,
+        }));
+        setIsLoading(false);
       } catch (err) {
         setIsError("Failed to load subjects. Please try again.");
         console.log(err);
       } finally {
         setIsLoading(false); ///always executes
+        console.log(data);
       }
     };
 
     fetchSubjects();
-  }, []);
+  }, [data.page]);
 
+  // <------------------------------------------------------------------------------->
+  /* 
   const lastPostIndex = currentPage * postsPerPage;
   const firstPostIndex = lastPostIndex - postsPerPage;
   const currentPosts = data.slice(firstPostIndex, lastPostIndex);
+  */
+  // <------------------------------------------------------------------------------->
   // console.log("Backend URL:", import.meta.env.VITE_APP_BACKEND_URL);
 
   return (
@@ -62,6 +83,33 @@ function HomePage() {
           </>
         )}
         <div className="row">
+          {data.Papers.map((subject, index) => (
+            <Subject
+              key={index}
+              id={subject._id}
+              sub={subject.Subject}
+              img={Images[index % Images.length]}
+            />
+          ))}
+        </div>
+
+        {/* // <--------------------------- Pagination ----------------------------> */}
+
+        <div className="pagination">
+          {data.Pages.map((page, index) => (
+            <button
+              onClick={() => {
+                setIsData((prev) => {
+                  return { ...prev, page: page };
+                });
+              }}
+              className={page == data.page ? "active" : ""}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
+        {/* <div className="row">
           {currentPosts.map((subject, index) => (
             <Subject
               key={index}
@@ -77,7 +125,8 @@ function HomePage() {
             setCurrentPage={setCurrentPage}
             currentPage={currentPage}
           />
-        </div>
+        </div> */}
+
         <Reviews />
       </div>
     </>
