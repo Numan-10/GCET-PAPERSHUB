@@ -51,11 +51,11 @@ function Google() {
   return (
     <>
       <div className="d-flex justify-content-center align-items-center mt-3">
-        <div className="lines">
+        <div className="lines p-3">
           <hr />
         </div>
         <p className="px-3 pt-3 break">or continue with</p>
-        <div className="lines ">
+        <div className="lines p-3">
           <hr />
         </div>
       </div>

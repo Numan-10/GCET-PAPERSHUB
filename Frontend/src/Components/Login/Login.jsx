@@ -25,11 +25,12 @@ const Login = () => {
   };
 
   const handleError = (err) =>
-    toast.error(err, {
-      position: "top-center",
-      duration: 1000,
-    });
+  toast.error(err, {
+    position: "top-center",
+    duration: 1000,
+  });
   const handleSuccess = (msg) =>
+     
     toast.success(msg, {
       position: "top-center",
       duration: 1500,
@@ -38,6 +39,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
+      toast.remove();
       return handleError("All fields are required ");
     }
     try {
@@ -70,31 +72,36 @@ const Login = () => {
           password: "",
         });
       } else {
-        handleError(message);
+        toast.remove();
+       return handleError(message);
       }
     } catch (error) {
       setIsLoading(false);
       if (error.response && error.response.data && error.response.data.error) {
         const errorDetails = error.response.data.error.details;
         if (Array.isArray(errorDetails) && errorDetails.length > 0) {
-          handleError(errorDetails[0].message);
+          toast.remove();
           setIsLoading(false);
+          return handleError(errorDetails[0].message);
         } else {
-          handleError("An unexpected error occurred.");
+          toast.remove();
           setIsLoading(false);
+          return handleError("An unexpected error occurred.");
         }
       } else {
         // console.log(error);
-        handleError(error?.response?.data?.message);
+        toast.remove();
         setIsLoading(false);
+        return handleError(error?.response?.data?.message);
       }
     }
   };
 
   return (
-    <div className="container mt-5 mb-4">
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-7">
+    <div className="mt-md-5 mb-md-5 container d-flex justify-content-center align-items-center">
+      <div className="row ">
+        <div className="col-1 col-md-2"></div>
+        <div className="col-10 col-md-8">
           <h3 className="text-left fw-bold">Sign in</h3>
           <div className="mb-3">
             <p className=" small">
@@ -156,6 +163,7 @@ const Login = () => {
             </div>
           </form>
         </div>
+        <div className="col-1 col-md-2"></div>
 
         {/* Continue with Google  */}
         <Google />

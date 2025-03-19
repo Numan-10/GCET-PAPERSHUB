@@ -86,9 +86,10 @@ const Signup = () => {
   };
 
   return (
-    <div className="container mt-5 mb-4">
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-7 ">
+    <div className="mt-md-5 mb-md-5 container d-flex justify-content-center align-items-center">
+      <div className="row ">
+        <div className="col-1 col-md-2"></div>
+        <div className="col-10 col-md-8 ">
           <h3 className="text-left fw-bold ">Sign up</h3>
           <div className="mb-3">
             <p className=" small">
@@ -164,6 +165,7 @@ const Signup = () => {
             </div>
           </form>
         </div>
+        <div className="col-1 col-md-2"></div>
         {/* Google  */}
         <Google />
       </div>

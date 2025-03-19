@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Social from "./Social.jsx";
 import Subject from "./Subject.jsx";
 import axios from "axios";
-import Pagination from "./Pagination";
 import API_BASE_URL from "../../ApiUrl.js";
 import Reviews from "./Reviews.jsx";
 import "./pagination.css";
