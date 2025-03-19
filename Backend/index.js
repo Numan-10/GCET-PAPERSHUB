@@ -17,6 +17,7 @@ const AuthRouter = require("./Routes/AuthRoute");
 const GoogleAuth = require("./Routes/GoogleAuth");
 const ReviewRoute = require("./Routes/ReviewRoute");
 const ContentRoute = require("./Routes/ContentRoute");
+const PaperRoute = require("./Routes/PaperRoute");
 
 const app = express();
 
@@ -84,68 +85,15 @@ main()
 //   }
 // });
 
-app.get("/subjects", async (req, res) => {
-  try {
-    const page = req.query.page || 1;
-    const perPage = 3;
-    const totalPapers = await Paper.countDocuments();
-
-    const totalPages = Math.ceil(totalPapers / perPage);
-    const Pages = [];
-    for (let i = 0; i < totalPages; i++) {
-      Pages.push(i + 1);
-    }
-    if (page > totalPages) {
-      return res
-        .status(404)
-        .json({ message: "Papers Not Found!", success: false });
-    }
-    const Papers = await Paper.find()
-      .skip((page - 1) * perPage)
-      .limit(perPage)
-      .exec();
-    return res.status(200).json({ Papers, page, totalPages, Pages });
-  } catch (err) {
-    console.log(err);
-    return res
-      .status(404)
-      .json({ message: "Papers Not Found!", success: false });
-  }
-});
+// app.get("/subjects", );
 
 // app.get("/verify", userVerification, isAdmin);
 
-app.post("/upload", userVerification, isAdmin, upload, async (req, res) => {
-  try {
-    // console.log(req);
-    const { Title, Subject, Semester } = req.body.paper;
-    let Url = req.file.path;
-    let filename = req.file.filename;
-    const newdata = new Paper({
-      Title,
-      Subject,
-      Semester,
-    });
-    newdata.Pdf = { Url, filename };
-    await newdata
-      .save()
-      .then(() =>
-        res
-          .status(200)
-          .json({ success: true, message: "Data Uploaded Successfully" })
-      );
-  } catch (err) {
-    console.log(err);
-    res
-      .status(500)
-      .json({ success: false, message: "Failed to save the Data" });
-  }
-});
-
-// ------------> Auth <---------------
-
+app.post("/upload");
+//Subjects
+app.use("/", PaperRoute);
+//Auth
 app.use("/", AuthRouter);
-
 //Google Auth
 app.use("/auth", GoogleAuth);
 //Content
@@ -155,21 +103,7 @@ app.use("/review", userVerification, ReviewRoute);
 
 // ------------> Endpoint for fetching sun details <---------------
 
-app.get("/subjects/:id", userVerification, async (req, res) => {
-  try {
-    const { id } = req.params;
-    // console.log("backend " + id);
-    const subject = await Paper.findById(id);
-    // console.log(subject);
-    if (subject) {
-      res.json(subject);
-    } else {
-      res.json({ message: "Subject Not Found" });
-    }
-  } catch (err) {
-    console.log(err);
-  }
-});
+// app.get("/subjects/:id", userVerification, );
 
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);
