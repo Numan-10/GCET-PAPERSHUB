@@ -34,6 +34,7 @@ Here’s what students will see when they access the platform:
   <img src="/Frontend/public/Assets/Home.png" width="45%" alt="Home Screen">
   <img src="/Frontend/public/Assets/Signin.png" width="45%" alt="Login Screen">
   <img src="/Frontend/public/Assets/Signup.png" width="45%" alt="Signup Screen">
+  <img src="/Frontend/public/Assets/subjectuser.png" width="45%" alt="Subject Screen">
 </div>
 
 ---
@@ -43,9 +44,9 @@ Here’s what students will see when they access the platform:
 **Note:** Admin access is **strictly limited** to the creator.
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="/Frontend/public/Assets/AdminHome.png" width="30%" alt="Upload Paper">
-  <img src="/Frontend/public/Assets/SubjectAdmin.png" width="30%" alt="Add Subject">
-  <img src="/Frontend/public/Assets/AddUnitAdmin.png" width="30%" alt="Upload Paper">
+  <img src="/Frontend/public/Assets/AdminHome.png" width="45%" alt="Upload Paper">
+  <img src="/Frontend/public/Assets/SubjectAdmin.png" width="45%" alt="Add Subject">
+  <img src="/Frontend/public/Assets/AddUnitAdmin.png" width="45%" alt="Upload Paper">
 </div>
 
 ---
