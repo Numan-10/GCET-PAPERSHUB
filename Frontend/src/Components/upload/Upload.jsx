@@ -17,44 +17,44 @@ function Upload() {
   const { Title, Subject, Semester, Pdf } = inputValue;
 
   const BackendUrl = API_BASE_URL;
-  useEffect(() => {
-    const verify = async () => {
-      try {
-        const token = localStorage.getItem("token");
+  // useEffect(() => {
+  //   const verify = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
 
-        if (!token) {
-          return Navigate("/login");
-        }
+  //       if (!token) {
+  //         return Navigate("/login");
+  //       }
 
-        const url = `${BackendUrl}/verify`;
-        const headers = {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        };
+  //       const url = `${BackendUrl}/verify`;
+  //       const headers = {
+  //         headers: {
+  //           Authorization: localStorage.getItem("token"),
+  //         },
+  //       };
 
-        const response = await fetch(url, headers);
-        const result = await response.json();
-        const { status, user, email } = result;
+  //       const response = await fetch(url, headers);
+  //       const result = await response.json();
+  //       const { status, user, email } = result;
 
-        if (!status || email !== import.meta.env.VITE_APP_EMAIL) {
-          return Navigate("/home");
-        }
+  //       if (!status || email !== import.meta.env.VITE_APP_EMAIL) {
+  //         return Navigate("/home");
+  //       }
 
-        toast.success(`Welcome, ${user}`, {
-          position: "top-center",
+  //       toast.success(`Welcome, ${user}`, {
+  //         position: "top-center",
 
-          duration: 1500,
-        });
-      } catch (err) {
-        console.log("Verification error:", err);
-        localStorage.clear();
-        Navigate("/home");
-      }
-    };
+  //         duration: 1500,
+  //       });
+  //     } catch (err) {
+  //       console.log("Verification error:", err);
+  //       localStorage.clear();
+  //       Navigate("/home");
+  //     }
+  //   };
 
-    verify();
-  }, [Navigate]);
+  //   verify();
+  // }, [Navigate]);
 
   const handleOnChange = (evt) => {
     const { name, value, files } = evt.target;
@@ -101,7 +101,10 @@ function Upload() {
 
     try {
       const { data } = await axios.post(` ${BackendUrl}/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: localStorage.getItem("token"),
+        },
       });
 
       const { success, message } = data;

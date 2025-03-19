@@ -44,7 +44,7 @@ function Content() {
       }
     };
     ContentData();
-  }, [data.page]); //data.subjects
+  }, [data]); //data.subjects
 
   const Images = [
     "/Assets/Frame 77 (1).svg",

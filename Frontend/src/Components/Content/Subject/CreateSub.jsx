@@ -3,54 +3,49 @@ import "./Create.css";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../../ApiUrl";
-//
+
 function CreateSub({ onClose }) {
-  const [form, setform] = useState({
+  const [form, setForm] = useState({
     subject: "",
     semester: "",
   });
   const [success, setSuccess] = useState(false);
+
   const handleInputChange = (evt) => {
-    // console.log(evt);
-    const Field = evt.target.name;
-    const Value = evt.target.value;
-    // console.log(Field);
-    // console.log(Value);
-    setform((prevData) => {
-      return { ...prevData, [Field]: Value };
-    });
+    const field = evt.target.name;
+    const value = evt.target.value;
+    setForm((prevData) => ({ ...prevData, [field]: value }));
   };
 
-  //Toast
+  // Toast notifications
   const handleSuccess = (msg) => {
     toast.remove();
-    toast.success(msg, {
-      duration: 2000,
-    });
+    toast.success(msg, { duration: 2000 });
   };
+
   const handleError = (msg) => {
     toast.remove();
-    toast.error(msg, {
-      duration: 2000,
-    });
+    toast.error(msg, { duration: 2000 });
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    // console.log(form.subject);
-    // console.log(form.semester);
     try {
-      const response = await axios.post(`${API_BASE_URL}/content/new`, {
+      const response = await axios.post(
+        `${API_BASE_URL}/content/new`,
         form,
-      });
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
+
       console.log(response.data);
       const { message, success } = response.data;
       if (success) {
         handleSuccess(message);
-        setform({
-          subject: "",
-          semester: "",
-        });
+        setForm({ subject: "", semester: "" });
         setSuccess(true);
       }
     } catch (err) {
@@ -59,19 +54,6 @@ function CreateSub({ onClose }) {
     }
   };
 
-  //   useEffect(() => {
-  //     const sendData = async () => {
-  //       try {
-  //         const response = await axios.post(`${API_BASE_URL}/content/new`, {
-  //           form,
-  //         });
-  //         console.log(response.data);
-  //       } catch (err) {
-  //         console.log(err);
-  //       }
-  //     };
-  //     sendData();
-  //   }, [form]);
   useEffect(() => {
     if (success) {
       setTimeout(() => {
@@ -79,7 +61,7 @@ function CreateSub({ onClose }) {
       }, 50);
       setSuccess(false);
     }
-  }, [success]);
+  }, [success, onClose]);
 
   return (
     <div className="above p-4">
@@ -92,7 +74,7 @@ function CreateSub({ onClose }) {
           <input
             type="text"
             className="form-control mb-3"
-            placeholder="Subject  Name"
+            placeholder="Subject Name"
             value={form.subject}
             onChange={handleInputChange}
             name="subject"
@@ -105,7 +87,7 @@ function CreateSub({ onClose }) {
             onChange={handleInputChange}
             name="semester"
           />
-          <button type="Submit" className="btn btn-success">
+          <button type="submit" className="btn btn-success">
             Submit
           </button>
         </form>

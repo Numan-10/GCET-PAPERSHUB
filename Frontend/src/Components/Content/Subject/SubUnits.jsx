@@ -21,11 +21,10 @@ function SubDetails() {
     const data = async () => {
       try {
         // console.log(`${BackendUrl}/${subject}`);
-        const { data } = await axios.get(`${BackendUrl}/content/${subject}`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
-        });
+        const { data } = await axios.get(
+          `${BackendUrl}/content/${subject}`,
+          {}
+        );
         // console.log("response", data);
         const { message, success, subDetails } = data;
         if (!success) {

@@ -62,19 +62,19 @@ module.exports.Units = async (req, res) => {
 //content/new
 module.exports.newSubject = async (req, res) => {
   try {
-    const { form } = req.body;
-    const subject = form.subject;
-    const semester = form.semester;
+    const { subject, semester } = req.body;
+    // const subject = form.subject;
+    // const semester = form.semester;
     if (!subject || !semester) {
       return res
         .status(500)
         .json({ message: "All fields are required", success: false });
     }
-    console.log(form.subject);
-    console.log(form.semester);
+    console.log(subject);
+    console.log(semester);
     const newSubject = new Content({
-      subject: subject,
-      semester: semester,
+      subject,
+      semester,
     });
     newSubject.save();
     console.log(newSubject);

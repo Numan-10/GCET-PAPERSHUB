@@ -113,9 +113,9 @@ app.get("/subjects", async (req, res) => {
   }
 });
 
-app.get("/verify", userVerification, isAdmin);
+// app.get("/verify", userVerification, isAdmin);
 
-app.post("/upload", upload, async (req, res) => {
+app.post("/upload", userVerification, isAdmin, upload, async (req, res) => {
   try {
     // console.log(req);
     const { Title, Subject, Semester } = req.body.paper;

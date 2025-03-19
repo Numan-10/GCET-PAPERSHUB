@@ -54,7 +54,10 @@ function UploadUnits({ onClose, sub }) {
         `${BackendUrl}/content/${sub}/new`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: localStorage.getItem("token"),
+          },
         }
       );
       console.log(response);
