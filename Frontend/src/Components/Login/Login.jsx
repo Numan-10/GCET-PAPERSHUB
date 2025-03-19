@@ -25,12 +25,11 @@ const Login = () => {
   };
 
   const handleError = (err) =>
-  toast.error(err, {
-    position: "top-center",
-    duration: 1000,
-  });
+    toast.error(err, {
+      position: "top-center",
+      duration: 1000,
+    });
   const handleSuccess = (msg) =>
-     
     toast.success(msg, {
       position: "top-center",
       duration: 1500,
@@ -73,7 +72,7 @@ const Login = () => {
         });
       } else {
         toast.remove();
-       return handleError(message);
+        return handleError(message);
       }
     } catch (error) {
       setIsLoading(false);
@@ -112,9 +111,13 @@ const Login = () => {
             </p>
             <hr />
           </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} >
             <div className="mb-3 mt-4">
-              <label htmlFor="email" className="form-label fw-semibold ">
+              <label
+                htmlFor="email"
+                className="form-label fw-semibold "
+                required
+              >
                 Email Address
               </label>
               <input

@@ -6,12 +6,14 @@ import axios from "axios";
 import ShowUnits from "./ShowUnits";
 import UploadUnits from "./UploadUnits";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 
 const BackendUrl = API_BASE_URL;
 function SubDetails() {
   const [subDetails, setSubDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [Show, setShow] = useState(false);
+  const [userData, setUserData] = useState(null);
   const Navigate = useNavigate();
 
   const { subject } = useParams();
@@ -24,7 +26,7 @@ function SubDetails() {
             Authorization: localStorage.getItem("token"),
           },
         });
-        // console.log("response", data); 
+        // console.log("response", data);
         const { message, success, subDetails } = data;
         if (!success) {
           toast.error(message, {
@@ -51,15 +53,50 @@ function SubDetails() {
     "/Assets/Frame 78.svg",
     "/Assets/Frame 80.svg",
   ];
+
+  //-------------> Showing the + sign to the specific User-> for adding Subjects <-------------------
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    const storedEmail = localStorage.getItem("email");
+    const token = localStorage.getItem("token");
+
+    if (storedUser && storedEmail && token) {
+      try {
+        const decodedToken = jwtDecode(token);
+
+        if (decodedToken.exp * 1000 < Date.now()) {
+          localStorage.clear();
+          setUserData(null);
+          return;
+        }
+
+        setUserData({
+          User: storedUser,
+          Email: storedEmail,
+          id: decodedToken.id || null,
+        });
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.clear();
+        setUserData(null);
+      }
+    } else {
+      setUserData(null);
+    }
+  }, []);
+  // ------------------------------------->End!<------------------------------------
   return (
     <div className="container mt-4">
       {/* ---------------------------------->Start Upload Units <-------------------------- */}
-      <div className="text-center  ">
-        <i
-          class="fa-solid fa-circle-plus fa-2x"
-          onClick={() => setShow(!Show)}
-        ></i>
-      </div>
+      {/* Showing btn to specific user to create the Units */}
+      {userData?.id === import.meta.env.VITE_APP_ID && (
+        <div className="text-center  ">
+          <i
+            class="fa-solid fa-circle-plus fa-2x"
+            onClick={() => setShow(!Show)}
+          ></i>
+        </div>
+      )}
 
       {Show && (
         <UploadUnits
