@@ -72,7 +72,7 @@ function Navbar() {
       800
     );
   };
-  console.log("UserDAta", userData);
+
   const AvatarName = userData?.User?.charAt(0)?.toUpperCase();
 
   return (

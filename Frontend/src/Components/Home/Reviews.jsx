@@ -17,7 +17,6 @@ function Reviews() {
     try {
       const currUser = localStorage.getItem("user");
       setuser(currUser);
-      console.log(currUser);
     } catch (err) {
       console.log(err);
     }

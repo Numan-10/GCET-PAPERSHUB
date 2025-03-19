@@ -2,17 +2,14 @@ require("dotenv").config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-const Paper = require("./Models/Paper");
 const cors = require("cors");
 // const multer = require("multer");
 // const { storage } = require("./cloudConfig");
-const { upload } = require("./Middlewares/Upload");
 // const upload = multer({
 //   storage,
 // }).single("Pdf");
 const cookieParser = require("cookie-parser");
 const userVerification = require("./Middlewares/AuthMiddleware");
-const { isAdmin } = require("./Middlewares/isAdmin");
 const AuthRouter = require("./Routes/AuthRoute");
 const GoogleAuth = require("./Routes/GoogleAuth");
 const ReviewRoute = require("./Routes/ReviewRoute");

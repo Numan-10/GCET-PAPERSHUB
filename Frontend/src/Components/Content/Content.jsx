@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import API_BASE_URL from "../../ApiUrl";
 import Show from "./Show";
 import CreateSub from "./Subject/CreateSub";
 import "../Home/pagination.css";
-import { jwtDecode } from "jwt-decode";
 
 function Content() {
-  const Navigate = useNavigate();
   const BackendUrl = API_BASE_URL;
   const [data, setData] = useState({
     page: 1,
@@ -20,14 +16,12 @@ function Content() {
   const [loading, setLoading] = useState(true);
   const [Error, setError] = useState("");
   const [show, setShow] = useState(false);
-  const [userData, setUserData] = useState(null);
   useEffect(() => {
     const ContentData = async () => {
       try {
         const responsee = await axios.get(
           `${BackendUrl}/content?page=${data.page}`
         );
-
         const response = responsee.data;
         setData((prev) => ({
           ...prev,
@@ -51,49 +45,15 @@ function Content() {
     "/Assets/Frame 80.svg",
   ];
 
-  //-------------> Showing the + sign to the specific User-> for adding Subjects <-------------------
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedEmail = localStorage.getItem("email");
-    const token = localStorage.getItem("token");
-
-    if (storedUser && storedEmail && token) {
-      try {
-        const decodedToken = jwtDecode(token);
-
-        if (decodedToken.exp * 1000 < Date.now()) {
-          localStorage.clear();
-          setUserData(null);
-          return;
-        }
-
-        setUserData({
-          User: storedUser,
-          Email: storedEmail,
-          id: decodedToken.id || null,
-        });
-      } catch (error) {
-        localStorage.clear();
-        setUserData(null);
-      }
-    } else {
-      setUserData(null);
-    }
-  }, []);
-  // ------------------------------------->End!<------------------------------------
-
   return (
     <>
       <div className="container">
-        {userData?.id === import.meta.env.VITE_APP_ID && (
-          <div className="text-center mt-2 ">
-            <i
-              class="fa-solid fa-circle-plus fa-2x"
-              onClick={() => setShow(!show)}
-            ></i>
-          </div>
-        )}
-
+        <div className="text-center mt-2 ">
+          <i
+            class="fa-solid fa-circle-plus fa-2x"
+            onClick={() => setShow(!show)}
+          ></i>
+        </div>
         {/* Create form  */}
         {show && <CreateSub onClose={() => setShow(false)} />}
 
@@ -140,8 +100,6 @@ function Content() {
           })}
         </div>
       </div>
-
-      <Toaster />
     </>
   );
 }

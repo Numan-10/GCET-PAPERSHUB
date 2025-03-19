@@ -65,8 +65,8 @@ module.exports.newSubject = async (req, res) => {
         .json({ message: "All fields are required", success: false });
     }
     const newSubject = new Content({
-      subject,
-      semester,
+      subject: subject,
+      semester: semester,
     });
     newSubject.save();
 

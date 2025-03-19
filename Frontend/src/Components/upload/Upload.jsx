@@ -47,7 +47,6 @@ function Upload() {
     if (Pdf.type !== "application/pdf") {
       toast.error("Please upload a valid PDF file!", {
         position: "top-center",
-        style: { marginTop: "1rem", width: getToastWidth() },
       });
       setisLoading(false);
       return;
@@ -81,10 +80,8 @@ function Upload() {
       }
       setIsInputValue({ Title: "", Subject: "", Semester: "", Pdf: null });
     } catch (err) {
-      console.error(JSON.stringify(err));
-      toast.error("Something went wrong. Please try again.", {
+      toast.error(err?.response?.data?.message, {
         position: "top-center",
-        style: { marginTop: "1rem", width: getToastWidth() },
       });
     } finally {
       setisLoading(false);
