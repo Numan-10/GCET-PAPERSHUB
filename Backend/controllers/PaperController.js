@@ -21,7 +21,6 @@ module.exports.Subjects = async (req, res) => {
       .exec();
     return res.status(200).json({ Papers, page, totalPages, Pages });
   } catch (err) {
-    console.log(err);
     return res
       .status(404)
       .json({ message: "Papers Not Found!", success: false });
@@ -32,7 +31,6 @@ module.exports.Subjects = async (req, res) => {
 
 module.exports.UploadPaper = async (req, res) => {
   try {
-    // console.log(req);
     const { Title, Subject, Semester } = req.body.paper;
     let Url = req.file.path;
     let filename = req.file.filename;
@@ -50,26 +48,23 @@ module.exports.UploadPaper = async (req, res) => {
           .json({ success: true, message: "Data Uploaded Successfully" })
       );
   } catch (err) {
-    console.log(err);
-    res
+    return res
       .status(500)
       .json({ success: false, message: "Failed to save the Data" });
   }
 };
 
 //Show Paper
-module.exports.ShowPaper=async (req, res) => {
-    try {
-      const { id } = req.params;
-      // console.log("backend " + id);
-      const subject = await Paper.findById(id);
-      // console.log(subject);
-      if (subject) {
-        res.json(subject);
-      } else {
-        res.json({ message: "Subject Not Found" });
-      }
-    } catch (err) {
-      console.log(err);
+module.exports.ShowPaper = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const subject = await Paper.findById(id);
+
+    if (subject) {
+      res.json(subject);
     }
+  } catch (err) {
+    return res.json({ message: "Subject Not Found" });
   }
+};

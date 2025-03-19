@@ -45,7 +45,7 @@ const Signup = () => {
       setIsLoading(true);
       const { data } = await axios.post(
         ` ${BackendUrl}/signup`,
-        // `http://localhost:3000/signup`,
+
         {
           ...inputValue,
         }

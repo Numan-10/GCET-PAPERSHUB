@@ -8,22 +8,16 @@ function Google() {
   const BackendUrl = API_BASE_URL;
   const Navigate = useNavigate();
   const responseGoogle = async (res) => {
-    // console.log(res);
     try {
-      console.log(res["code"]);
       let code = res["code"];
-      console.log(BackendUrl);
       const response = await axios.get(
         `${BackendUrl}/auth/google?code=${code}`
       );
-      // console.log("Response Google", response);
+
       const { message, success } = response.data;
       if (success) {
         const Token = response.data.token;
         const { email, image, username } = response.data.user;
-        console.log("Google:", Token);
-        console.log("Google:", email, image, username);
-        // let obj = { Token, email, image, username };
         localStorage.setItem("token", Token);
         localStorage.setItem("email", email);
         localStorage.setItem("user", username);
@@ -39,7 +33,6 @@ function Google() {
         }, 800);
       }
     } catch (err) {
-      console.log(err);
       toast.error(err?.response?.data?.message || err);
     }
   };

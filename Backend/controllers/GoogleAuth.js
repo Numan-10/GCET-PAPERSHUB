@@ -9,15 +9,15 @@ module.exports.GoogleAuth = async (req, res) => {
     const code = req.query;
     if (code) {
       const Token = code.code;
-      // console.log("Token Controller: ", Token);
+
       const { tokens } = await oauth2Client.getToken(Token);
-      //   console.log(Response);
+
       oauth2Client.setCredentials(tokens);
 
       const UserData = await axios.get(`${GoogleUrl}${tokens.access_token}`);
-      // console.log(UserData);
+
       const { email, name, picture } = UserData.data;
-      // console.log(email, name, picture);
+
       let user = await UserModel.findOne({ email });
       if (!user) {
         user = await UserModel.create({
@@ -29,7 +29,7 @@ module.exports.GoogleAuth = async (req, res) => {
 
       const { _id } = user;
       const token = createSecretToken({ _id, email, name });
-      // console.log(token);
+
       res.status(200).json({
         message: "Google Login Successful!",
         success: true,
@@ -38,7 +38,6 @@ module.exports.GoogleAuth = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Internal Server Error", success: false });
   }
 };

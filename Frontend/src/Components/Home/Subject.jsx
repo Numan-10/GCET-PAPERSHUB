@@ -5,7 +5,6 @@ function Subject({ sub, img, id }) {
   const Navigate = useNavigate();
   const handleOnClick = () => {
     Navigate(`/home/${id}`);
-    // console.log(id);
   };
 
   return (

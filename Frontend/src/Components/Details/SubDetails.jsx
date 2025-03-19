@@ -18,18 +18,11 @@ function SubDetails() {
             Authorization: localStorage.getItem("token"),
           },
         });
-        // axios.get(`http://localhost:3000/subjects/${id}`)
+
         setSubject(response.data);
-        // console.log(response.data);
       } catch (err) {
         console.log(err);
         return navigate("/login");
-        // setTimeout(() => {
-        //   toast.error(err?.response?.data?.message || "Error Occured", {
-        //     duration: 5000,
-        //     position: "top-center",
-        //   });
-        // }, 250);
       }
     };
     fetchData();

@@ -27,7 +27,7 @@ function Content() {
         const responsee = await axios.get(
           `${BackendUrl}/content?page=${data.page}`
         );
-        // console.log(response.data.subjects);
+
         const response = responsee.data;
         setData((prev) => ({
           ...prev,
@@ -38,13 +38,12 @@ function Content() {
         }));
       } catch (err) {
         setError(err);
-        console.log(err);
       } finally {
         setLoading(false);
       }
     };
     ContentData();
-  }, [data]); //data.subjects
+  }, [data]);
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
@@ -74,7 +73,6 @@ function Content() {
           id: decodedToken.id || null,
         });
       } catch (error) {
-        console.error("Invalid token:", error);
         localStorage.clear();
         setUserData(null);
       }
@@ -118,7 +116,6 @@ function Content() {
         {/* MAin Data  */}
         <div className="row">
           {data.subjects.map((data, index) => (
-            // console.log(data,index)
             <Show
               key={index}
               id={data._id}

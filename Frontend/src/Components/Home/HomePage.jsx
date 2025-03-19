@@ -14,8 +14,6 @@ function HomePage() {
     totalPages: "",
   });
   const [error, setIsError] = useState("");
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [postsPerPage, setPostsPerPage] = useState(9);
   const [loading, setIsLoading] = useState(true);
 
   const Images = [
@@ -31,7 +29,7 @@ function HomePage() {
         const response = await axios.get(
           `${BackendUrl}/subjects?page=${data.page}`
         );
-        console.log(response.data);
+
         const responsee = response.data;
         setIsData((prevData) => ({
           ...prevData,
@@ -43,24 +41,13 @@ function HomePage() {
         setIsLoading(false);
       } catch (err) {
         setIsError("Failed to load subjects. Please try again.");
-        console.log(err);
       } finally {
-        setIsLoading(false); ///always executes
-        console.log(data);
+        setIsLoading(false);
       }
     };
 
     fetchSubjects();
   }, [data.page]);
-
-  // <------------------------------------------------------------------------------->
-  /* 
-  const lastPostIndex = currentPage * postsPerPage;
-  const firstPostIndex = lastPostIndex - postsPerPage;
-  const currentPosts = data.slice(firstPostIndex, lastPostIndex);
-  */
-  // <------------------------------------------------------------------------------->
-  // console.log("Backend URL:", import.meta.env.VITE_APP_BACKEND_URL);
 
   return (
     <>
@@ -108,23 +95,6 @@ function HomePage() {
             </button>
           ))}
         </div>
-        {/* <div className="row">
-          {currentPosts.map((subject, index) => (
-            <Subject
-              key={index}
-              id={subject._id}
-              sub={subject.Subject}
-              img={Images[index % Images.length]}
-              // img={getRandomImage()}
-            />
-          ))}
-          <Pagination
-            totalPosts={data.length}
-            postsPerPage={postsPerPage}
-            setCurrentPage={setCurrentPage}
-            currentPage={currentPage}
-          />
-        </div> */}
 
         <Reviews />
       </div>

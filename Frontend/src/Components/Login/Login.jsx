@@ -43,17 +43,17 @@ const Login = () => {
     }
     try {
       setIsLoading(true);
-      console.log("input Values login", inputValue);
+
       const { data } = await axios.post(
         `${BackendUrl}/login`,
-        // `http://localhost:3000/login`,
+
         {
           ...inputValue,
         }
       );
       setIsLoading(false);
       const { success, message, JwtToken, name, email } = data;
-      console.log("data login" + data);
+
       if (success) {
         setTimeout(() => {
           handleSuccess(message);
@@ -88,7 +88,6 @@ const Login = () => {
           return handleError("An unexpected error occurred.");
         }
       } else {
-        // console.log(error);
         toast.remove();
         setIsLoading(false);
         return handleError(error?.response?.data?.message);
@@ -111,7 +110,7 @@ const Login = () => {
             </p>
             <hr />
           </div>
-          <form onSubmit={handleSubmit} >
+          <form onSubmit={handleSubmit}>
             <div className="mb-3 mt-4">
               <label
                 htmlFor="email"

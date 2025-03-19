@@ -15,10 +15,7 @@ function UploadUnits({ onClose, sub }) {
   const [loading, setLoading] = useState(false);
 
   const handleOnChange = (evt) => {
-    console.log(evt);
     const Field = evt.target.name;
-    // console.log(Field);
-    // console.log(value);
 
     if (Field === "pdf") {
       setform((prevData) => {
@@ -34,14 +31,12 @@ function UploadUnits({ onClose, sub }) {
   const onSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
-    // console.log(sub);
 
     if (form?.pdf?.type !== "application/pdf") {
       setLoading(false);
       toast.remove();
       return toast.error("Please upload a valid PDF file!");
     }
-    console.log(form);
 
     const formData = new FormData();
     formData.append("Unit[name]", form.name);
@@ -49,7 +44,6 @@ function UploadUnits({ onClose, sub }) {
     formData.append("Pdf", form.pdf);
 
     try {
-      // console.log(form.name, form.unit);
       const response = await axios.post(
         `${BackendUrl}/content/${sub}/new`,
         formData,
@@ -60,7 +54,7 @@ function UploadUnits({ onClose, sub }) {
           },
         }
       );
-      console.log(response);
+
       const { message, success } = response.data;
 
       if (success) {

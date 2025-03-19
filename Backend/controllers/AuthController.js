@@ -32,7 +32,6 @@ module.exports.Signup = async (req, res, next) => {
       .status(201)
       .json({ message: "Signup successful", success: true });
   } catch (error) {
-    console.error(error);
     return res
       .status(500)
       .json({ message: "Internal Server Error", success: false });
@@ -59,7 +58,7 @@ module.exports.Login = async (req, res, next) => {
         .status(403)
         .json({ message: "Incorrect password or email", success: false });
     }
-    const JwtToken = createSecretToken(user._id,user.email,user.username);
+    const JwtToken = createSecretToken(user._id, user.email, user.username);
     return res.status(200).json({
       message: "Logged in successfully",
       success: true,
@@ -68,7 +67,6 @@ module.exports.Login = async (req, res, next) => {
       name: user.username,
     });
   } catch (err) {
-    console.log(err);
     return res
       .status(500)
       .json({ message: "Internal Server Error", success: false });

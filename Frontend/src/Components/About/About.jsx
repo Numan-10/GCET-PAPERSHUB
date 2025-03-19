@@ -10,18 +10,17 @@ function About() {
         </div>
       </div>
       <div className="row">
-        
         <div className="col">
           <p className="text-center mt-2 lh-lg  px-1">
-            Our vision is to revolutionize exam preparation by providing GCET
-            students with seamless access to previous year papers, empowering
-            them to excel academically and prepare with confidence. As we
-            continue to grow, you'll soon find not just past papers but also
-            comprehensive notes and additional resources to support your
-            learning journey. Stay tuned for more!
+            We empower students by providing a user-friendly notes-sharing
+            platform, making learning more accessible, efficient, and
+            collaborative. Our goal is to simplify the learning process,
+            encourage peer-to-peer knowledge sharing, and build a strong
+            academic community where students can thrive together. With easy
+            access to well-structured notes and past papers, we aim to enhance
+            preparation and boost confidence for exams.
           </p>
         </div>
-        
       </div>
     </div>
   );

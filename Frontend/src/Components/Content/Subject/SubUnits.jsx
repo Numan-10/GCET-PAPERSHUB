@@ -20,29 +20,25 @@ function SubDetails() {
   useEffect(() => {
     const data = async () => {
       try {
-        // console.log(`${BackendUrl}/${subject}`);
         const { data } = await axios.get(
           `${BackendUrl}/content/${subject}`,
           {}
         );
-        // console.log("response", data);
+
         const { message, success, subDetails } = data;
         if (!success) {
           toast.error(message, {
             duration: 2000,
           });
         } else {
-          // console.log(subDetails);
           return setSubDetails(subDetails);
         }
-        console.log(subDetails);
       } catch (err) {
         Navigate("/login");
         console.log(err);
       } finally {
         setLoading(false);
       }
-      console.log(subDetails);
     };
     data();
   }, [subDetails]);
@@ -75,7 +71,6 @@ function SubDetails() {
           id: decodedToken.id || null,
         });
       } catch (error) {
-        console.error("Invalid token:", error);
         localStorage.clear();
         setUserData(null);
       }
@@ -117,7 +112,6 @@ function SubDetails() {
       )}
       <div className="row  ">
         {
-          // subDetails?.units?.map((data, index) => console.log(data, index))
           // ----------------------------------------------------------------------------
           subDetails?.units?.map((data, index) => (
             <ShowUnits

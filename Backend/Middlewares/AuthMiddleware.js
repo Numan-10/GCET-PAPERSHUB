@@ -5,7 +5,6 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const userVerification = (req, res, next) => {
-  console.log("Token received:", req.headers["authorization"]);
   const Auth = req.headers["authorization"];
   if (!Auth) {
     return res
@@ -14,7 +13,7 @@ const userVerification = (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(Auth, process.env.TOKEN_KEY);
-    // console.log("Decoded",decoded);
+
     req.user = decoded;
     next();
   } catch (err) {

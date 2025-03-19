@@ -35,7 +35,6 @@ function Reviews() {
 
   //   ------------------------> Submit <--------------------------
   const submit = async () => {
-    // console.log(value, comment);
     if (!value || !comment) {
       return handleError("All fields are required!");
     }
@@ -59,7 +58,7 @@ function Reviews() {
           },
         }
       );
-      console.log("Response:" + response.data);
+
       const { message, success } = response.data;
 
       if (success) {
@@ -70,12 +69,10 @@ function Reviews() {
         handleError(message);
       }
     } catch (err) {
-      console.log(err);
       handleError(err?.response?.data?.message || err);
     }
   };
   const handleChange = (evt) => {
-    // console.log(evt.target.value);
     setComment(evt.target.value);
   };
   return (
@@ -97,7 +94,6 @@ function Reviews() {
           {/*------------------------> Ratings <---------------------*/}
 
           <Box sx={{ "& > legend": { mt: 2 } }}>
-            {/* <Typography component="legend">Controlled</Typography> */}
             <Rating
               name="rating"
               value={value}
@@ -106,8 +102,6 @@ function Reviews() {
                 setValue(newValue);
               }}
             />
-            {/* <Typography component="legend">Read only</Typography>
-      <Rating name="read-only" value={value} readOnly /> */}
           </Box>
           <div className="p-1">
             <h6 className=" mt-3">Comment</h6>

@@ -1,11 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 function show({ sub, img, id }) {
-  // console.log(sub, img, id);
   const Navigate = useNavigate();
   const handleOnClick = () => {
     Navigate(`/content/${sub}`);
-    console.log(id);
   };
 
   return (
