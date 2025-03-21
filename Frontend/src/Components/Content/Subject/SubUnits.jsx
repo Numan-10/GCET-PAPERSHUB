@@ -20,10 +20,11 @@ function SubDetails() {
   useEffect(() => {
     const data = async () => {
       try {
-        const { data } = await axios.get(
-          `${BackendUrl}/content/${subject}`,
-          {}
-        );
+        const { data } = await axios.get(`${BackendUrl}/content/${subject}`, {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
 
         const { message, success, subDetails } = data;
         if (!success) {

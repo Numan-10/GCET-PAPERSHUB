@@ -10,7 +10,7 @@ const {
   newUnit,
 } = require("../controllers/ContentController");
 router.get("/", Content);
-router.get("/:subject", Units);
+router.get("/:subject", userVerification,Units);
 router.post("/new", userVerification, isAdmin, newSubject);
 router.post("/:sub/new", userVerification, isAdmin, upload, newUnit);
 

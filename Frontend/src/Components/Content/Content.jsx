@@ -86,7 +86,7 @@ function Content() {
           <div className="text-center  ">
             <i
               class="fa-solid fa-circle-plus fa-2x"
-              onClick={() => setShow(!Show)}
+              onClick={() => setShow(!show)}
             ></i>
           </div>
         )}
