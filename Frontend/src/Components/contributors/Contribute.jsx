@@ -54,7 +54,7 @@ function Contribute({ name, role, src, about }) {
             </div>
             <div className="iconsC ">
               <a href="https://portfolio-seven-silk-82.vercel.app/" target="_blank">
-              <i class="fa-solid fa-address-card" style="color: #0b2042;"></i>
+              <i class="fa-solid fa-address-card" style={{color:"#ff9700"}}></i>
               </a>
             </div>
           </div>
