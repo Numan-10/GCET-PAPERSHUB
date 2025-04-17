@@ -3,7 +3,7 @@ const Unit = require("../Models/Unit");
 module.exports.Content = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
-    const perPage = 6;
+    const perPage = 9;
     const totalSubjects = await Content.countDocuments();
     const totalPages = Math.ceil(totalSubjects / perPage);
     const Pages = [];
