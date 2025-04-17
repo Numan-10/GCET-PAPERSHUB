@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Message from "./Msg.jsx";
 
 function Social() {
   const Navigate = useNavigate();
@@ -11,6 +12,7 @@ function Social() {
 
   return (
     <div className="container mt-5 mb-5">
+      <Message/>
       <div className="row text-center ">
         <div className="col-4">
           <img
