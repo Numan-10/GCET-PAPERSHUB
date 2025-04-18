@@ -3,7 +3,7 @@ import "./pagination.css";
 
 function Msg() {
   return (
-    <div className="container mt-3 mb-5 fs-6 text-center bg p-3 rounded text-dark msg d-flex justify-content-center align-items-start md:align-items-center border border-primary-subtle">
+    <div className="container mb-3 fs-6 text-center bg p-3 rounded text-dark msg d-flex justify-content-center align-items-start md:align-items-center border border-primary-subtle">
       {" "}
       <div className="icon fs-5 me-2  ">
         <i class="fas fa-envelope"></i>
