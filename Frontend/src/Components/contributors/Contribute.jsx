@@ -38,8 +38,10 @@ function Contribute({ name, role, src, about }) {
       {/* -------------------------> About <--------------------------- */}
       <div className="col-12 col-md-6 mt-4 mt-md-0 text-center text-md-start">
         <h2 className="p-2 text-center text-md-start ">About Me!</h2>
-        <p className="p-2 text-center text-md-start">{about}</p>
-
+        <p className="px-2 text-center text-md-start">{about}</p>
+        <p className="px-2 text-center text-md-start ">
+         <i> Want to know more? Feel free to check out the links below.</i>
+        </p>
         <div className="ss">
           <div className="SocialsC p-2">
             <div className="iconsC  ">
@@ -53,8 +55,14 @@ function Contribute({ name, role, src, about }) {
               </a>
             </div>
             <div className="iconsC ">
-              <a href="https://portfolio-seven-silk-82.vercel.app/" target="_blank">
-              <i class="fa-solid fa-address-card" style={{color:"#ff9700"}}></i>
+              <a
+                href="https://portfolio-seven-silk-82.vercel.app/"
+                target="_blank"
+              >
+                <i
+                  class="fa-solid fa-address-card"
+                  style={{ color: "#ff9700" }}
+                ></i>
               </a>
             </div>
           </div>
