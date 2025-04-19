@@ -45,7 +45,7 @@ function Contribute({ name, role, src, about }) {
         <div className="ss">
           <div className="SocialsC p-2">
             <div className="iconsC  ">
-              <a href="https://github.com/NumanXdev" target="_blank">
+              <a href="https://github.com/Numan-10" target="_blank">
                 <i class="fa-brands fa-github text-dark"></i>
               </a>
             </div>

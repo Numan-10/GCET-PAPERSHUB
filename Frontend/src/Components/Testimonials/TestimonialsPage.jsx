@@ -7,9 +7,14 @@ const arr = [
     Value: 5,
   },
   {
-    Text: "Great experience! The platform is very intuitive and user-friendly.",
-    Name: "Alice",
-    Value: 4,
+    Text: "Awesome Dear.. Keep it up 💯.",
+    Name: "maviya_mubashir",
+    Value: 5,
+  },
+  {
+    Text: "Great Initiative",
+    Name: "Mir Tanzeel Tawheedi",
+    Value: 5,
   },
   {
     Text: "Excellent service! I highly recommend this platform to everyone.",
@@ -26,10 +31,11 @@ const arr = [
     Name: "David",
     Value: 1,
   },
+
   {
-    Text: "It's decent, but the customer support is not very helpful.",
-    Name: "Eva",
-    Value: 2,
+    Text: "Absolutely love this platform! The user interface is clean and easy to navigate",
+    Name: "Numan",
+    Value: 5,
   },
   {
     Text: "Absolutely love this platform! The user interface is clean and easy to navigate",
@@ -37,13 +43,8 @@ const arr = [
     Value: 5,
   },
   {
-    Text: "Great experience! The platform is very intuitive and user-friendly.",
-    Name: "Alice",
-    Value: 4,
-  },
-  {
-    Text: "Excellent service! I highly recommend this platform to everyone.",
-    Name: "Bob",
+    Text: "Great Initiative",
+    Name: "Mir Tanzeel Tawheedi",
     Value: 5,
   },
 ];
