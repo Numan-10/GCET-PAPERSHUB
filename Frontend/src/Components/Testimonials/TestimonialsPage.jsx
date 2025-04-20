@@ -12,6 +12,11 @@ const arr = [
     Value: 5,
   },
   {
+    Text: "This should’ve existed way earlier. Much needed for GCETians!",
+    Name: "Saima",
+    Value: 4,
+  },
+  {
     Text: "Great Initiative",
     Name: "Mir Tanzeel Tawheedi",
     Value: 5,
@@ -21,11 +26,7 @@ const arr = [
     Name: "Sadath",
     Value: 5,
   },
-  {
-    Text: "This should’ve existed way earlier. Much needed for GCETians!",
-    Name: "Saima",
-    Value: 4,
-  },
+
   {
     Text: "Really great initiative ✨",
     Name: "Asad Aabid",
@@ -43,9 +44,9 @@ const arr = [
     Value: 5,
   },
   {
-    Text: "Great Initiative",
-    Name: "Mir Tanzeel Tawheedi",
-    Value: 5,
+    Text: "This should’ve existed way earlier. Much needed for GCETians!",
+    Name: "Saima",
+    Value: 4,
   },
 ];
 
