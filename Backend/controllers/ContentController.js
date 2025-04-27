@@ -5,11 +5,7 @@ module.exports.Content = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
     const perPage = 9;
     const totalSubjects = await Content.countDocuments();
-    const totalPages = Math.ceil(totalSubjects / perPage);
-    const Pages = [];
-    for (i = 0; i < totalPages; i++) {
-      Pages.push(i + 1);
-    }
+    const totalPages = Math.max(Math.ceil(totalSubjects / perPage), 1);
     if (page > totalPages) {
       return res
         .status(404)
@@ -21,7 +17,7 @@ module.exports.Content = async (req, res) => {
       .limit(perPage)
       .exec();
 
-    return res.status(200).json({ subjects, page, totalPages, Pages });
+    return res.status(200).json({ subjects, page, totalPages });
   } catch (err) {
     return res
       .status(500)

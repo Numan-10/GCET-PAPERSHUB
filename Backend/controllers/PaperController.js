@@ -5,11 +5,7 @@ module.exports.Subjects = async (req, res) => {
     const perPage = 9;
     const totalPapers = await Paper.countDocuments();
 
-    const totalPages = Math.ceil(totalPapers / perPage);
-    const Pages = [];
-    for (let i = 0; i < totalPages; i++) {
-      Pages.push(i + 1);
-    }
+    const totalPages = Math.max(Math.ceil(totalPapers / perPage), 1);
     if (page > totalPages) {
       return res
         .status(404)
@@ -19,7 +15,7 @@ module.exports.Subjects = async (req, res) => {
       .skip((page - 1) * perPage)
       .limit(perPage)
       .exec();
-    return res.status(200).json({ Papers, page, totalPages, Pages });
+    return res.status(200).json({ Papers, page, totalPages });
   } catch (err) {
     return res
       .status(404)

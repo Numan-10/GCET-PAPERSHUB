@@ -7,10 +7,9 @@ import Reviews from "./Reviews.jsx";
 import "./pagination.css";
 
 function HomePage() {
+  const [page, setPage] = useState(1);
   const [data, setIsData] = useState({
-    Pages: [],
     Papers: [],
-    page: 1,
     totalPages: "",
   });
   const [error, setIsError] = useState("");
@@ -27,7 +26,7 @@ function HomePage() {
     const fetchSubjects = async () => {
       try {
         const response = await axios.get(
-          `${BackendUrl}/subjects?page=${data.page}`
+          `${BackendUrl}/subjects?page=${page}`
         );
 
         const responsee = response.data;
@@ -47,8 +46,10 @@ function HomePage() {
     };
 
     fetchSubjects();
-  }, [data.page]);
+  }, [page]);
 
+  // Generating dynamic array based on total pages
+  let Pages = Array.from({ length: data.totalPages }, (_, i) => i + 1);
   return (
     <>
       <div className="container">
@@ -82,16 +83,14 @@ function HomePage() {
         {/* // <--------------------------- Pagination ----------------------------> */}
 
         <div className="pagination">
-          {data.Pages.map((page, index) => (
+          {Pages.map((p) => (
             <button
               onClick={() => {
-                setIsData((prev) => {
-                  return { ...prev, page: page };
-                });
+                setPage(() => p);
               }}
-              className={page == data.page ? "active" : ""}
+              className={p == page ? "active" : ""}
             >
-              {page}
+              {p}
             </button>
           ))}
         </div>

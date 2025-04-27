@@ -8,38 +8,30 @@ import { jwtDecode } from "jwt-decode";
 
 function Content() {
   const BackendUrl = API_BASE_URL;
+  const [page, setPage] = useState(1);
   const [data, setData] = useState({
-    page: 1,
     subjects: [],
     totalPages: "",
-    Pages: [],
   });
   const [loading, setLoading] = useState(true);
   const [Error, setError] = useState("");
   const [show, setShow] = useState(false);
   const [userData, setUserData] = useState(null);
+
   useEffect(() => {
     const ContentData = async () => {
       try {
-        const responsee = await axios.get(
-          `${BackendUrl}/content?page=${data.page}`
-        );
-        const response = responsee.data;
-        setData((prev) => ({
-          ...prev,
-          page: response.page,
-          subjects: response.subjects,
-          totalPages: response.totalPages,
-          Pages: response.Pages,
-        }));
+        const response = await axios.get(`${BackendUrl}/content?page=${page}`);
+        const { subjects, totalPages } = response.data;
+        setData({ subjects, totalPages });
       } catch (err) {
-        setError(err);
+        setError(err.message || "Failed to fetch data");
       } finally {
         setLoading(false);
       }
     };
     ContentData();
-  }, [data]);
+  }, [page]);
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
@@ -47,7 +39,7 @@ function Content() {
     "/Assets/Frame 80.svg",
   ];
 
-  //-------------> Showing the + sign to the specific User-> for adding Subjects <-------------------
+  // Showing the + sign to the speific User
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const storedEmail = localStorage.getItem("email");
@@ -56,13 +48,11 @@ function Content() {
     if (storedUser && storedEmail && token) {
       try {
         const decodedToken = jwtDecode(token);
-
         if (decodedToken.exp * 1000 < Date.now()) {
           localStorage.clear();
           setUserData(null);
           return;
         }
-
         setUserData({
           User: storedUser,
           Email: storedEmail,
@@ -76,64 +66,58 @@ function Content() {
       setUserData(null);
     }
   }, []);
-  // ------------------------------------->End!<------------------------------------
+
+  // generating array upto total pages
+  const Pages = Array.from({ length: data.totalPages }, (_, i) => i + 1);
 
   return (
     <>
       <div className="container">
-        {/* Showing btn to specific user to create the Units */}
         {userData?.id === import.meta.env.VITE_APP_ID && (
-          <div className="text-center  ">
+          <div className="text-center">
             <i
-              class="fa-solid fa-circle-plus fa-2x"
+              className="fa-solid fa-circle-plus fa-2x"
               onClick={() => setShow(!show)}
             ></i>
           </div>
         )}
-        {/* Create form  */}
+
         {show && <CreateSub onClose={() => setShow(false)} />}
 
-        <div className="Notes text-center fs-4 fw-bold mt-3 text-decoration-underline mb-3 ">
+        <div className="Notes text-center fs-4 fw-bold mt-3 text-decoration-underline mb-3">
           Notes Section
         </div>
 
-        {/* Display Error messages */}
         {Error && <p className="text-danger text-center">{Error}</p>}
-        {/* Display spinner unitil data comes */}
         {loading && (
-          <p className="text-center mt-5">
-            {" "}
+          <div className="text-center mt-5">
             <div className="spinner-border" role="status">
-              <span className="sr-only">Loading...</span>
+              <span className="visually-hidden">Loading...</span>
             </div>
-          </p>
+          </div>
         )}
 
-        {/* MAin Data  */}
         <div className="row">
-          {data.subjects.map((data, index) => (
+          {data.subjects.map((subject, index) => (
             <Show
               key={index}
-              id={data._id}
-              sub={data.subject}
+              id={subject._id}
+              sub={subject.subject}
               img={Images[index % Images.length]}
             />
           ))}
         </div>
+
         <div className="pagination">
-          {data.Pages.map((page, index) => {
-            return (
-              <button
-                key={index}
-                onClick={() => {
-                  setData((prev) => ({ ...prev, page: page }));
-                }}
-                className={page === data.page ? "active" : ""}
-              >
-                {page}
-              </button>
-            );
-          })}
+          {Pages.map((p) => (
+            <button
+              key={p}
+              onClick={() => setPage(p)}
+              className={p === page ? "active" : ""}
+            >
+              {p}
+            </button>
+          ))}
         </div>
       </div>
     </>
