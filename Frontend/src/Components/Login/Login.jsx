@@ -52,18 +52,17 @@ const Login = () => {
         }
       );
       setIsLoading(false);
-      const { success, message, JwtToken, name, email } = data;
+      const { success, message } = data;
 
       if (success) {
         setTimeout(() => {
           handleSuccess(message);
+          navigate("/verify",{state:{email}});
         }, 250);
 
-        localStorage.setItem("token", JwtToken);
-        localStorage.setItem("user", name);
-        localStorage.setItem("email", email);
-
-        navigate("/home");
+        // localStorage.setItem("token", JwtToken);
+        // localStorage.setItem("user", name);
+        // localStorage.setItem("email", email);
 
         setInputValue({
           ...inputValue,
@@ -97,6 +96,9 @@ const Login = () => {
 
   return (
     <div className="mt-md-5 mb-md-5 container d-flex justify-content-center align-items-center">
+      {
+
+      }
       <div className="row ">
         <div className="col-1 col-md-2"></div>
         <div className="col-10 col-md-8">
