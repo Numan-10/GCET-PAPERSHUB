@@ -1,0 +1,22 @@
+<svg width="350" height="200" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Top dot -->
+  <circle cx="180" cy="30" r="5" fill="gray" />
+
+  <!-- Left line (longer) -->
+  <line x1="180" y1="30" x2="60" y2="150" stroke="gray" stroke-width="2" />
+
+  <!-- Right line (longer) -->
+  <line x1="180" y1="30" x2="300" y2="150" stroke="gray" stroke-width="2" />
+
+  <!-- Orange rectangle with dotted border -->
+  <rect x="50" y="150" width="260" height="40" rx="5" ry="5" 
+        fill="#fb9436" stroke="white" stroke-width="2" stroke-dasharray="6,4" />
+
+  <!-- Text inside -->
+  <text x="180" y="175" text-anchor="middle" font-size="18" 
+        fill="white" font-family="Arial" font-weight="bold">
+    What users say about us
+  </text>
+
+</svg>

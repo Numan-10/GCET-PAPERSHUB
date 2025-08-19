@@ -229,6 +229,7 @@
   border-radius: 10px;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
   font-weight: 600;
+  height: 10rem;
 }
 
 /*---------------------------------> Testimonials <---------------------------------- */
@@ -258,4 +259,27 @@
   color: rgba(0, 0, 0, 0.6);
   border-radius: 10px;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes TestimonialSlide {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-8deg);
+  }
+  75% {
+    transform: rotate(8deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.Testimonial-text {
+  transform-origin: top center; /* makes it swing from the top */
+  animation: TestimonialSlide 4s ease-in-out infinite;
 }

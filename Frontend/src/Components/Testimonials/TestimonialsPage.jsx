@@ -48,8 +48,6 @@ const arr = [
   },
 ];
 
-
-
 function TestimonialsPage() {
   return (
     <div className="review-slide">

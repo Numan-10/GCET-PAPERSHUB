@@ -77,11 +77,20 @@ function Reviews() {
   return (
     <>
       <hr className="mt-5" />
-      <h1 className="text-center mt-5 TestHeading">Testimonials</h1>
+      <div className="position-relative  d-flex justify-content-center align-items-center">
+        <h1 className="text-center mt-5 TestHeading mb-10">Testimonials</h1>
+        <div className="position-absolute Testimonial-text top-0 start-0 text-center md:d-flex justify-content-center align-items-center ">
+          <img
+            src="/Assets/Testimonials.svg"
+            alt="testimonials"
+            className="img-fluid "
+            style={{ width: "100%", height: "15rem"}}
+          />
+        </div>
+      </div>
+
       {/* ------------------------------> Testimonials component Here <--------------------------------- */}
-
       <TestimonialsPage />
-
       {user && (
         <div className="container mt-0 pt-2">
           <hr />
