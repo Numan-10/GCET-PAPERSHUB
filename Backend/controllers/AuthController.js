@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 module.exports.Signup = async (req, res, next) => {
   try {
-    const { email, password, username, createdAt } = req.body;
+    const { email, password, username, createdAt, role } = req.body;
 
     if (!email || !password || !username) {
       return res
@@ -28,6 +28,7 @@ module.exports.Signup = async (req, res, next) => {
       password: hashedPassword,
       username,
       createdAt,
+      role,
     });
     await user.save();
 
@@ -35,6 +36,7 @@ module.exports.Signup = async (req, res, next) => {
       .status(201)
       .json({ message: "Signup successful", success: true });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .json({ message: "Internal Server Error", success: false });
@@ -65,10 +67,10 @@ module.exports.Login = async (req, res, next) => {
 
     const totp = speakeasy.totp({
       secret: process.env.TOKEN_KEY,
-      digits: 6,
+      digits: 4,
       step: 300,
     });
-    console.log(totp);
+
     totpStore[email] = totp;
     // totpStore[email] = email;
     const transporter = nodemailer.createTransport({
@@ -133,23 +135,22 @@ module.exports.Login = async (req, res, next) => {
     //   name: user.username,
     // });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res
       .status(500)
-      .json({ message: "Internal Server Error", success: false,email });
+      .json({ message: "Internal Server Error", success: false });
   }
 };
 
 module.exports.Verify = async (req, res) => {
   try {
-    const { otp,email } = req.body;
-  
-    console.log(otp,email);
+    const { otp, email } = req.body;
     const verified = speakeasy.totp.verify({
       secret: process.env.TOKEN_KEY,
       token: otp,
       step: 300,
       window: 0, //doesn't accept the token from 1 step before or after
+      digits: 4,
     });
 
     if (!verified || totpStore[email] != otp) {
@@ -167,11 +168,13 @@ module.exports.Verify = async (req, res) => {
     }
     delete totpStore[email];
     // email = null;
-    const Token = createSecretToken(existingUser._id);
+    const Token = createSecretToken(existingUser._id, existingUser.role);
     return res.json({
       message: "Successfully logged in",
       Token,
       success: true,
+      user: existingUser.username,
+      role: existingUser.role,
     });
   } catch (err) {
     return res.json({ message: `${err.message}`, success: false });

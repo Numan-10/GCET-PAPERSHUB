@@ -47,7 +47,7 @@ main()
     console.log(err);
   });
 
-app.post("/upload");
+// app.post("/upload");
 //Subjects
 app.use("/", PaperRoute);
 //Auth

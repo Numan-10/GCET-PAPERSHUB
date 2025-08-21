@@ -17,19 +17,21 @@ import ContributePage from "./Components/contributors/ContributePage.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import SubUnits from "./Components/Content/Subject/SubUnits.jsx";
 import Verify from "./Components/Verify.jsx";
+import AdminRoutes from "./Components/Admin/AdminRoutes/AdminRoutes.jsx";
 //Googe CliendId
 const cliendId = import.meta.env.VITE_APP_CLIENT_ID;
 
 function Layout({ children }) {
   const location = useLocation();
 
-  const noNavbarFooterRoute = ["/"];
+  const hideNavbarFooter =
+    location.pathname === "/" || location.pathname.startsWith("/admin");
 
   return (
     <>
-      {!noNavbarFooterRoute.includes(location.pathname) && <Navbar />}
+      {!hideNavbarFooter && <Navbar />}
       {children}
-      {!noNavbarFooterRoute.includes(location.pathname) && <Footer />}
+      {!hideNavbarFooter && <Footer />}
     </>
   );
 }
@@ -51,9 +53,12 @@ createRoot(document.getElementById("root")).render(
           <Route path="/content" element={<ContentPage />} />
           <Route path="/content/:subject" element={<SubUnits />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/admin/*" element={<AdminRoutes />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>
+
+     
     </BrowserRouter>
   </GoogleOAuthProvider>
 );

@@ -6,10 +6,16 @@ const {
 } = require("../controllers/PaperController");
 const { upload } = require("../Middlewares/Upload");
 const userVerification = require("../Middlewares/AuthMiddleware");
-const { isAdmin } = require("../Middlewares/isAdmin");
+const { AuthorizeRoles } = require("../Middlewares/AuthorizeRoles");
 
-router.post("/upload", userVerification, isAdmin, upload, UploadPaper);
+router.post(
+  "/upload",
+  userVerification,
+  AuthorizeRoles("admin"),
+  upload,
+  UploadPaper
+);
 router.get("/subjects", Subjects);
-router.get("/subjects/:id", userVerification, ShowPaper);
+router.get("/subjects/:id", userVerification, AuthorizeRoles("user","admin"),ShowPaper);
 
 module.exports = router;

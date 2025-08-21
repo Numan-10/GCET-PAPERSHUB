@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import toast, { Toaster } from "react-hot-toast";
-
 import {
   Box,
   Avatar,
@@ -20,37 +19,29 @@ function Navbar() {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [userData, setUserData] = useState(null);
+  const [currUser, setcurrUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedEmail = localStorage.getItem("email");
     const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
 
-    if (storedUser && storedEmail && token) {
+    if (user && token) {
       try {
         const decodedToken = jwtDecode(token);
-
         if (decodedToken.exp * 1000 < Date.now()) {
           localStorage.clear();
-          setUserData(null);
-          return;
+          setcurrUser(null);
+        } else {
+          setcurrUser(user);
         }
-
-        setUserData({
-          User: storedUser,
-          Email: storedEmail,
-          id: decodedToken.id || null,
-        });
-      } catch (error) {
-        console.error("Invalid token:", error);
+      } catch (err) {
         localStorage.clear();
-        setUserData(null);
+        setcurrUser(null);
       }
     } else {
-      setUserData(null);
+      setcurrUser(null);
     }
   }, [location.pathname]);
 
@@ -59,9 +50,8 @@ function Navbar() {
 
   const logout = () => {
     localStorage.clear();
-    setUserData(null);
+    setcurrUser(null);
     navigate("/home");
-
     handleMenuClose();
     setTimeout(
       () =>
@@ -73,11 +63,11 @@ function Navbar() {
     );
   };
 
-  const AvatarName = userData?.User?.charAt(0)?.toUpperCase();
-
+  const AvatarName = currUser?.charAt(0)?.toUpperCase();
+  const isAdmin = () => localStorage?.getItem("role") === "admin";
   return (
     <div className="Navbar d-flex justify-content-between align-items-center">
-      {/* ---------- Hamburger Menu ---------- */}
+      {/* Hamburger Menu */}
       <div>
         <button
           className="p-3 hamburger ms-2"
@@ -90,8 +80,6 @@ function Navbar() {
             style={{ width: "3rem", cursor: "pointer" }}
           />
         </button>
-
-        {/* ------------- Drawer ------------- */}
         <div className={`drawer ${isOpen ? "open" : ""}`}>
           <button onClick={() => setIsOpen(false)} className="close-btn">
             ✕
@@ -120,18 +108,21 @@ function Navbar() {
         </div>
       </div>
 
-      {/* ---------- Avatar & Logout ---------- */}
+      {/* Avatar & Logout */}
       <div className="d-flex justify-content-center align-items-center">
-        {userData?.id === import.meta.env.VITE_APP_ID && (
-          <Link to="/upload">
-            <button className="btn btn-success btn-sm">Upload here</button>
+        {/* <Link to="/upload">
+          <button className="btn btn-success btn-sm">Upload here</button>
+        </Link> */}
+
+        {isAdmin() && (
+          <Link to="/admin/dashboard">
+            <button className="btn btn-primary btn-sm">Admin-Dashboard</button>
           </Link>
         )}
-
         <Box
           sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
         >
-          <Tooltip title={userData ? "Your Account" : "Login"}>
+          <Tooltip title={currUser ? "Your Account" : "Login"}>
             <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: 2 }}>
               <Avatar
                 sx={{
@@ -146,7 +137,6 @@ function Navbar() {
             </IconButton>
           </Tooltip>
         </Box>
-
         <Menu
           anchorEl={anchorEl}
           open={open}
@@ -154,11 +144,11 @@ function Navbar() {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          {userData ? (
+          {currUser ? (
             <>
               <MenuItem>
                 <Avatar />
-                &nbsp;<span className="fw-semibold">{userData.User}</span>
+                &nbsp;<span className="fw-semibold">{currUser}</span>
               </MenuItem>
               <Divider />
               <MenuItem onClick={logout}>
