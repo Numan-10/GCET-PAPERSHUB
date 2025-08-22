@@ -1,7 +1,7 @@
 import { Routes, Route, useLocation } from "react-router";
 import DashboardLayout from "../Components/DashboardLayout";
-import DashboardPage from "../Pages/DashboardPage";
-import UsersPage from "../Pages/UsersPage";
+import DashboardPage from "../Pages/Dashboard/DashboardPage";
+import UsersPage from "../Pages/Users/UsersPage";
 import SettingsPage from "../Pages/SettingsPage";
 import PageNotFound from "../../PageNotFound";
 

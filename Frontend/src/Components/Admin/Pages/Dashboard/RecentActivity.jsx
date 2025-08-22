@@ -1,5 +1,3 @@
-// import { Card, CardContent } from "@mui/material";
-
 const activities = [
   {
     id: 1,
@@ -51,26 +49,28 @@ const activities = [
     time: "5 hours ago",
   },
 ];
-
 const RecentActivity = () => {
   return (
-    <div className="m-5 rounded shadow bg-white overflow-y-auto" style={{ height: "300px" }}>
-      <table className="table table-hover ">
+    <div
+      className="rounded shadow bg-white overflow-y-auto table-responsive"
+      style={{ height: "300px" }}
+    >
+      <table className="table table-hover">
         <thead className="table-dark">
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Action</th>
-            <th scope="col">Time</th>
+            <th scope="col">Name</th> <th scope="col">Email</th>{" "}
+            <th scope="col">Action</th> <th scope="col">Time</th>{" "}
           </tr>
         </thead>
         <tbody className="table-group-divider">
           {activities.map((activity) => (
             <tr key={activity.id}>
-              <th scope="row">{activity.user}</th>
-              <td>{activity.Email}</td>
-              <td>{activity.action}</td>
-              <td>{activity.time}</td>
+              <th scope="row" className="text-truncate" style={{ maxWidth: "100px" }}>{activity.user}</th>
+              <td className="text-truncate" style={{ maxWidth: "110px" }}>
+                {activity.Email}
+              </td>
+              <td   className="text-truncate" style={{ maxWidth: "70px" }}>{activity.action}</td>
+              <td className="text-truncate" style={{ maxWidth: "50px" }}>{activity.time}</td>
             </tr>
           ))}
         </tbody>

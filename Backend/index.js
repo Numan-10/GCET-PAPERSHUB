@@ -15,6 +15,7 @@ const GoogleAuth = require("./Routes/GoogleAuth");
 const ReviewRoute = require("./Routes/ReviewRoute");
 const ContentRoute = require("./Routes/ContentRoute");
 const PaperRoute = require("./Routes/PaperRoute");
+const AdminRoute=require("./Routes/AdminRoute")
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.use(
     // "https://gcet-papershub.vercel.app"
     origin: ["http://localhost:5173"],
     // origin: [LOCAL_URL],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     credentials: true,
   })
 );
@@ -57,7 +58,10 @@ app.use("/auth", GoogleAuth);
 //Content
 app.use("/content", ContentRoute);
 //Review
-app.use("/review", userVerification, ReviewRoute);
+app.use("/review",  ReviewRoute);
+// app.use("/review", userVerification, ReviewRoute);
+// Admin
+app.use("/user", AdminRoute);
 
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);
