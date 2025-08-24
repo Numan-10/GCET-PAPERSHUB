@@ -4,6 +4,9 @@ const bcrypt = require("bcrypt");
 const speakeasy = require("speakeasy");
 const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+// const Activity = require("../Models/RecentActivity");
+const { createActivity } = require("./ActivityController");
+
 dotenv.config();
 module.exports.Signup = async (req, res, next) => {
   try {
@@ -31,6 +34,13 @@ module.exports.Signup = async (req, res, next) => {
       role,
     });
     await user.save();
+
+    //Tracking Activity
+    await createActivity(
+      "Logged in",
+      existingUser.username,
+      existingUser.email
+    );
 
     return res
       .status(201)
@@ -169,6 +179,13 @@ module.exports.Verify = async (req, res) => {
     delete totpStore[email];
     // email = null;
     const Token = createSecretToken(existingUser._id, existingUser.role);
+
+    //Tracking Activity
+    await createActivity(
+      "Logged in",
+      existingUser.username,
+      existingUser.email
+    );
     return res.json({
       message: "Successfully logged in",
       Token,

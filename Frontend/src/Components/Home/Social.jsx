@@ -11,7 +11,7 @@ function Social() {
   };
 
   return (
-    <div className="container mt-4 mb-5">
+    <div className="container mt-4 mb-3">
       <Message/>
       <div className="row text-center ">
         <div className="col-4">
@@ -45,11 +45,11 @@ function Social() {
           </Link>
         </div>
       </div>
-      <div className="row mt-4">
+      {/* <div className="row mt-4">
         <div className="col-12 mt-md-5">
-          <h2 className="fs-2 fw-bolder mt-5">Exam Archives</h2>
+          <h2 className="fs-2 fw-bolder mt-5 ">Exam Archives</h2>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -62,3 +62,7 @@
 .msg {
   background-color: #eeee;
 }
+.colorbg {
+  /* background:linear-gradient(135deg, #c4b7c3 0%, #a4e68a 100%) */
+  background: linear-gradient(135deg, #e6dcff 0%, #ffcfc4 50%, #f0ffa8 100%);
+}

@@ -7,7 +7,7 @@ function show({ sub, img, id }) {
   };
 
   return (
-    <div className="col-12 col-md-4 mb-4">
+    <div className="col-12 col-md-6 col-lg-3 mb-4">
       <div
         className="card"
         style={{
@@ -18,6 +18,7 @@ function show({ sub, img, id }) {
         onClick={handleOnClick}
       >
         <img src={img} className="card-img-top" alt="card" />
+        {/* <div className="card-img-overlay">Notes</div> */}
       </div>
       <h5 class="card-title fs-6 mt-2 ps-1 ">
         <b>Subject : </b>

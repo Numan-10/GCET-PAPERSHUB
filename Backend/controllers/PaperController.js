@@ -2,7 +2,7 @@ const Paper = require("../Models/Paper");
 module.exports.Subjects = async (req, res) => {
   try {
     const page = req.query.page || 1;
-    const perPage = 9;
+    const perPage = 8;
     const totalPapers = await Paper.countDocuments();
 
     const totalPages = Math.max(Math.ceil(totalPapers / perPage), 1);

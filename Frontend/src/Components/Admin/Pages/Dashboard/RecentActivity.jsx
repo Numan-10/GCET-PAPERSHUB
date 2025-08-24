@@ -1,61 +1,30 @@
-const activities = [
-  {
-    id: 1,
-    Email: "john@example.com",
-    user: "John Doe",
-    action: "signed up",
-    time: "2 mins ago",
-  },
-  {
-    id: 2,
-    Email: "alice@example.com",
-    user: "Alice",
-    action: "logged in",
-    time: "10 mins ago",
-  },
-  {
-    id: 3,
-    Email: "michael@example.com",
-    user: "Michael",
-    action: "updated profile",
-    time: "30 mins ago",
-  },
-  {
-    id: 4,
-    Email: "sarah@example.com",
-    user: "Sarah",
-    action: "signed up",
-    time: "1 hour ago",
-  },
-  {
-    id: 5,
-    Email: "david@example.com",
-    user: "David",
-    action: "logged out",
-    time: "2 hours ago",
-  },
-  {
-    id: 6,
-    Email: "emma@example.com",
-    user: "Emma",
-    action: "updated settings",
-    time: "3 hours ago",
-  },
-  {
-    id: 7,
-    Email: "olivia@example.com",
-    user: "Olivia",
-    action: "logged in",
-    time: "5 hours ago",
-  },
-];
+import { useEffect, useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import axios from "axios";
 const RecentActivity = () => {
+  const [activites, setActivites] = useState([]);
+  useEffect(() => {
+    const fetchActivites = async () => {
+      const response = await axios.get("http://localhost:3000/user/activities");
+      const { success, Activites } = response.data;
+      if (success) {
+        console.log(Activites);
+        setActivites(Activites.reverse());
+      }
+    };
+    fetchActivites();
+  }, []);
   return (
     <div
       className="rounded shadow bg-white overflow-y-auto table-responsive"
       style={{ height: "300px" }}
     >
-      <table className="table table-hover">
+      <table className="table table-hover caption-top">
+        <caption>
+          <strong>
+            <h4 className="p-1">Recent Activites</h4>
+          </strong>
+        </caption>
         <thead className="table-dark">
           <tr>
             <th scope="col">Name</th> <th scope="col">Email</th>{" "}
@@ -63,14 +32,29 @@ const RecentActivity = () => {
           </tr>
         </thead>
         <tbody className="table-group-divider">
-          {activities.map((activity) => (
+          {activites.map((activity) => (
             <tr key={activity.id}>
-              <th scope="row" className="text-truncate" style={{ maxWidth: "100px" }}>{activity.user}</th>
-              <td className="text-truncate" style={{ maxWidth: "110px" }}>
-                {activity.Email}
+              <th
+                scope="row"
+                className="text-truncate"
+                style={{ maxWidth: "80px" }}
+              >
+                {activity.username}
+              </th>
+              <td className="text-truncate" style={{ maxWidth: "90px" }}>
+                {activity.email}
               </td>
-              <td   className="text-truncate" style={{ maxWidth: "70px" }}>{activity.action}</td>
-              <td className="text-truncate" style={{ maxWidth: "50px" }}>{activity.time}</td>
+              <td className="text-truncate" style={{ maxWidth: "60px" }}>
+                {activity.action}
+              </td>
+              <td className="text-truncate" style={{ maxWidth: "70px" }}>
+                {/*data-fns for better strutured dtime */}
+                {formatDistanceToNow(
+                  new Date(activity.createdAt),
+                  // { includeSeconds: true },
+                  { addSuffix: true }
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

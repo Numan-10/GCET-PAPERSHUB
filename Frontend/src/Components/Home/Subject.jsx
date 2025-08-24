@@ -8,7 +8,7 @@ function Subject({ sub, img, id }) {
   };
 
   return (
-    <div className="col-12 col-md-4 mb-4">
+    <div className="col-12 col-md-6 col-lg-3 mb-4">
       <div
         className="card"
         style={{
@@ -21,7 +21,7 @@ function Subject({ sub, img, id }) {
         <img src={img} className="card-img-top" alt="card" />
         <div className="card-img-overlay d-flex justify-content-center align-items-center">
           <h5
-            className="text-center fw-bold fs-4"
+            className="text-center fw-bold fs-5"
             style={{ letterSpacing: "1px" }}
           >
             {sub}
