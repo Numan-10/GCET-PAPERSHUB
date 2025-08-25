@@ -11,7 +11,7 @@ function Content() {
   const [page, setPage] = useState(1);
   const [data, setData] = useState({
     subjects: [],
-    totalPages: "",
+    totalPages: 1,
   });
   const [loading, setLoading] = useState(true);
   const [Error, setError] = useState("");
@@ -22,8 +22,11 @@ function Content() {
   useEffect(() => {
     const ContentData = async () => {
       try {
-        const response = await axios.get(`${BackendUrl}/content?page=${page}`);
+        const response = await axios.get(
+          `${BackendUrl}/content?page=${page}&search=${search}`
+        );
         const { subjects, totalPages } = response.data;
+        console.log(response.data);
         setData({ subjects, totalPages });
       } catch (err) {
         setError(err.message || "Failed to fetch data");
@@ -32,7 +35,7 @@ function Content() {
       }
     };
     ContentData();
-  }, [page]);
+  }, [page, search]);
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
@@ -73,9 +76,13 @@ function Content() {
 
   // filtered content
 
-  const filteredContent = data.subjects.filter((note) =>
-    note.subject.toLowerCase().trim().includes(search.toLowerCase().trim())
-  );
+  // const filteredContent = data.subjects.filter((note) =>
+  //   note.subject.toLowerCase().trim().includes(search.toLowerCase().trim())
+  // );
+  const handleSearch = (searchValue) => {
+    setSearch(searchValue.trim());
+    setPage(1);
+  };
   return (
     <>
       <div className="container">
@@ -112,7 +119,7 @@ function Content() {
                 placeholder="Search papers"
                 className="form-control"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
               />
               <button className="input-group-text btn btn-primary">
                 Search
@@ -132,7 +139,7 @@ function Content() {
         )}
 
         <div className="row">
-          {filteredContent.map((subject, index) => (
+          {data.subjects.map((subject, index) => (
             <Show
               key={index}
               id={subject._id}
@@ -142,7 +149,7 @@ function Content() {
           ))}
         </div>
 
-        {filteredContent.length == 0 && (
+        {data.subjects.length == 0 && (
           <div className="text-center py-4">
             <p className="text-muted">Notes not Found</p>
           </div>

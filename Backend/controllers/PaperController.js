@@ -2,8 +2,20 @@ const Paper = require("../Models/Paper");
 module.exports.Subjects = async (req, res) => {
   try {
     const page = req.query.page || 1;
+    const search = req.query.search || "";
     const perPage = 8;
-    const totalPapers = await Paper.countDocuments();
+    //  $or: [
+    //           { Subject: { $regex: search, $options: "i" } },
+    //           { Title: { $regex: search, $options: "i" } },
+    //         ],
+    let searchCondition = {};
+    if (search) {
+      searchCondition = {
+        Subject: { $regex: search, $options: "i" },
+      };
+    }
+
+    const totalPapers = await Paper.countDocuments(searchCondition);
 
     const totalPages = Math.max(Math.ceil(totalPapers / perPage), 1);
     if (page > totalPages) {
@@ -11,7 +23,7 @@ module.exports.Subjects = async (req, res) => {
         .status(404)
         .json({ message: "Papers Not Found!", success: false });
     }
-    const Papers = await Paper.find()
+    const Papers = await Paper.find(searchCondition)
       .skip((page - 1) * perPage)
       .limit(perPage)
       .exec();
