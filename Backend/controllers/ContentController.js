@@ -124,3 +124,16 @@ module.exports.newUnit = async (req, res) => {
       .json({ message: "An Error Occured!", success: false });
   }
 };
+
+// getAllsubs
+module.exports.fetchSubs = async (req, res, next) => {
+  try {
+    const subjects = await Content.find();
+    if (subjects) {
+      return res.json({ subjects, success: true });
+    }
+  } catch (err) {
+    console.log(err);
+    return res.josn({ err, success: false });
+  }
+};

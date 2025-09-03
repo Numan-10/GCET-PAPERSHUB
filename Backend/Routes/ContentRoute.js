@@ -8,9 +8,11 @@ const {
   Units,
   newSubject,
   newUnit,
+  fetchSubs
 } = require("../controllers/ContentController");
 router.get("/", Content);
-router.get("/:subject",userVerification,AuthorizeRoles("user", "admin"),Units);
+router.get("/fetchSubs", fetchSubs);
+router.get("/:subject",userVerification,AuthorizeRoles("user","admin"),Units);
 router.post("/new", userVerification, AuthorizeRoles("admin"), newSubject);
 router.post("/:sub/new",userVerification,AuthorizeRoles("admin"),upload,newUnit);
 

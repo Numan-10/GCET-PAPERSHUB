@@ -39,8 +39,8 @@ function Reviews() {
     }
     if (comment) {
       const feed = comment.trim();
-      if (feed.length < 120) {
-        return handleError("Comment must be 120+ chars.");
+      if (feed.length < 30) {
+        return handleError("Comment must be 30+ chars.");
       }
     }
     try {
@@ -95,8 +95,8 @@ function Reviews() {
         <div className="container mt-0 pt-2">
           <hr />
           <div className="p-1">
-            <h3>Leave a Review</h3>
-            <p>Rating</p>
+            <h3>Submit Your Feedback</h3>
+            <p className="fst-italic">Rate your experience. Your feedback matters!</p>
           </div>
 
           {/*------------------------> Ratings <---------------------*/}

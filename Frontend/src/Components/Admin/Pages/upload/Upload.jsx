@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+
 import toast, { Toaster } from "react-hot-toast";
-import API_BASE_URL from "../../ApiUrl.js";
+import API_BASE_URL from "../../../../ApiUrl";
+
 function Upload() {
   const [inputValue, setIsInputValue] = useState({
     Title: "",

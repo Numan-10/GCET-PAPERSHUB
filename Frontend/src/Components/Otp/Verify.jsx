@@ -1,10 +1,10 @@
 import OtpInput from "react-otp-input";
 import { useState } from "react";
 import axios from "axios";
-import API_BASE_URL from "../ApiUrl";
+import API_BASE_URL from "../../ApiUrl";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import OtpTimer from "otp-timer";
 const Verify = () => {
   const location = useLocation();
   const email = location.state?.email;
@@ -23,7 +23,7 @@ const Verify = () => {
         email,
       });
       setStatus("success");
-      const { message, Token, success,user,role } = response.data;
+      const { message, Token, success, user, role } = response.data;
       if (success) {
         localStorage.setItem("token", Token);
         localStorage.setItem("user", user);
@@ -39,8 +39,42 @@ const Verify = () => {
       console.log(err);
     }
   };
-  const onClear = async () => {
+  const onClear = () => {
     setOtp("");
+  };
+
+  // setting interval for resendotp
+
+  const [Timer, setTimer] = useState();
+  const [disabled, setDisabled] = useState(false);
+  let count = 30;
+  // const interval = setInterval(() => {
+  //   count--;
+  //   setTimer(count);
+  //   if (count <= 0) {
+  //     clearInterval(interval);
+  //     setDisabled(false);
+  //   }
+  // }, 1000);
+
+  const ResenOtp = async () => {
+    const toastId = toast.loading("Sending OTP...");
+    try {
+      const email = location.state?.email;
+      const response = await axios.post("http://localhost:3000/resend-otp", {
+        email,
+      });
+      // console.log(response);
+      const { message, success } = response.data;
+      if (success) {
+        setDisabled(true);
+        setTimer(30);
+        toast.success(message, { id: toastId });
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Unable to Re-Send Otp!", { id: toastId });
+    }
   };
 
   return (
@@ -50,8 +84,25 @@ const Verify = () => {
     >
       <div className="row w-100 justify-content-center">
         <div className="col-12 col-sm-10 col-md-8 col-lg-6">
-          <h1 className=" mb-3">Enter Verification Code</h1>
-          <p className=""><strong>Email</strong>: <i>{email}</i></p>
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="">
+              <h1 className=" mb-3">Enter Verification Code</h1>
+              <p className="">
+                <strong>Email</strong>: <i>{email}</i>
+              </p>
+            </div>
+            <div className="">
+              <OtpTimer
+                // minutes={1}
+                seconds={30}
+                text="Time:"
+                ButtonText="Resend OTP"
+                resend={ResenOtp}
+                buttonClassName="btn"
+                background={"#6581cf"}
+              />
+            </div>
+          </div>
 
           <div className="d-flex justify-content-center mb-4">
             <OtpInput

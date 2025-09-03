@@ -21,6 +21,7 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [currUser, setcurrUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [checkIsAdmin, setIsAdmin] = useState(false);
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -63,8 +64,16 @@ function Navbar() {
     );
   };
 
+
+
+  // checking role
   const AvatarName = currUser?.charAt(0)?.toUpperCase();
-  const isAdmin = () => localStorage?.getItem("role") === "admin";
+
+  useEffect(() => {
+    const isAdmin = () => localStorage?.getItem("role") === "admin";
+
+    setIsAdmin(isAdmin());
+  }, [location.pathname]);
   return (
     <div className="Navbar d-flex justify-content-between align-items-center">
       {/* Hamburger Menu */}
@@ -114,7 +123,7 @@ function Navbar() {
           <button className="btn btn-success btn-sm">Upload here</button>
         </Link> */}
 
-        {isAdmin() && (
+        {checkIsAdmin && (
           <Link to="/admin/dashboard">
             <button className="btn btn-primary btn-sm">Admin-Dashboard</button>
           </Link>

@@ -6,6 +6,8 @@ import CreateSub from "./Subject/CreateSub";
 import "../Home/pagination.css";
 import { jwtDecode } from "jwt-decode";
 import { FaSearch } from "react-icons/fa";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 function Content() {
   const BackendUrl = API_BASE_URL;
   const [page, setPage] = useState(1);
@@ -71,17 +73,14 @@ function Content() {
     }
   }, []);
 
-  // generating array upto total pages
-  const Pages = Array.from({ length: data.totalPages }, (_, i) => i + 1);
-
-  // filtered content
-
-  // const filteredContent = data.subjects.filter((note) =>
-  //   note.subject.toLowerCase().trim().includes(search.toLowerCase().trim())
-  // );
   const handleSearch = (searchValue) => {
     setSearch(searchValue.trim());
     setPage(1);
+  };
+
+  const handleChange = (event, Value) => {
+    setPage(Value);
+    window.scrollTo(0, 400);
   };
   return (
     <>
@@ -97,12 +96,8 @@ function Content() {
 
         {show && <CreateSub onClose={() => setShow(false)} />}
 
-        {/* <div className="Notes text-center fs-4 fw-bold mt-3 text-decoration-underline mb-3">
-          Notes Section
-        </div> */}
         {/* Search functionality */}
         <div className="row d-flex justify-content-center py-4">
-          {/* <div className="col"></div> */}
           <div className="col-12 col-md-8 col-lg-6">
             <div className="mb-3">
               <h2 className="text-center fw-bold text-primary mb-2 ">
@@ -112,21 +107,17 @@ function Content() {
             </div>
             <div className="search mb-4 colorbg p-2 text-dark  p-3 rounded input-group  ">
               <span class="input-group-text bg-primary border-0">
-                <FaSearch size={24} color="white" />
+                <FaSearch size={20} color="white" />
               </span>
               <input
                 type="text"
-                placeholder="Search papers"
+                placeholder="Search notes"
                 className="form-control"
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
               />
-              <button className="input-group-text btn btn-primary">
-                Search
-              </button>
             </div>
           </div>
-          {/* <div className="col"></div> */}
         </div>
 
         {Error && <p className="text-danger text-center">{Error}</p>}
@@ -139,33 +130,38 @@ function Content() {
         )}
 
         <div className="row">
-          {data.subjects.map((subject, index) => (
-            <Show
-              key={index}
-              id={subject._id}
-              sub={subject.subject}
-              img={Images[index % Images.length]}
-            />
-          ))}
+          {data.subjects && data.subjects.length > 0 ? (
+            data.subjects.map((subject, index) => (
+              <Show
+                key={index}
+                id={subject._id}
+                sub={subject.subject}
+                img={Images[index % Images.length]}
+              />
+            ))
+          ) : (
+            <div className="text-center">
+              <p className="text-muted">
+                {search ? `No results for "${search}"` : "No Papers found"}
+              </p>
+            </div>
+          )}
         </div>
+        {/* -------------pagination------------- */}
 
-        {data.subjects.length == 0 && (
-          <div className="text-center py-4">
-            <p className="text-muted">Notes not Found</p>
+        {data.totalPages > 1 && (
+          <div className="d-flex justify-content-center align-items-center mt-2">
+            <Stack spacing={2}>
+              <Pagination
+                count={data.totalPages}
+                page={page}
+                onChange={handleChange}
+                color="secondary"
+                size="large"
+              />
+            </Stack>
           </div>
         )}
-
-        <div className="pagination">
-          {Pages.map((p) => (
-            <button
-              key={p}
-              onClick={() => setPage(p)}
-              className={p === page ? "active" : ""}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
       </div>
     </>
   );

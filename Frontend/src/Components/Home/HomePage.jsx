@@ -6,8 +6,8 @@ import API_BASE_URL from "../../ApiUrl.js";
 import Reviews from "./Reviews.jsx";
 import "./pagination.css";
 import { FaSearch } from "react-icons/fa";
-// import { set } from "date-fns";
-
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 function HomePage() {
   const [page, setPage] = useState(1);
   const [data, setIsData] = useState({
@@ -55,14 +55,11 @@ function HomePage() {
     setSearch(searchValue.trim());
     setPage(1); // Always gos to page 1 when searching
   };
-  // Generating dynamic array based on total pages
-  let Pages = Array.from({ length: data.totalPages }, (_, i) => i + 1);
 
-  // Filtered papers
-  // const filteredPapers = data.Papers.filter((paper) =>
-  //   paper.Subject.toLowerCase().trim().includes(search.toLowerCase().trim())
-  // );
-
+  const handlePageChange = (event, value) => {
+    setPage(value);
+    window.scrollTo(0, 400);
+  };
   return (
     <>
       <div className="container">
@@ -70,7 +67,6 @@ function HomePage() {
 
         {/* Searching the paper*/}
         <div className="row d-flex justify-content-center  py-4 mt-5">
-          {/* <div className="col"></div> */}
           <div className="col-12 col-md-10 col-lg-8">
             <div className="mb-5">
               <h2 className="text-center fw-bold text-primary mb-2 mt-5">
@@ -78,9 +74,9 @@ function HomePage() {
               </h2>
               <p className="text-center text-muted">Find papers by name</p>
             </div>
-            <div className="search mb-4 bg-gradient-light p-2 text-dark  p-3 rounded input-group  input-group-lg colorbg shadow-sm">
+            <div className="search mb-4 bg-gradient-light p-2 text-dark  p-3 rounded input-group  input-group-md colorbg shadow-sm">
               <span className="input-group-text bg-primary border-0">
-                <FaSearch size={24} color="white" />
+                <FaSearch size={20} color="white" />
               </span>
               <input
                 type="text"
@@ -89,9 +85,6 @@ function HomePage() {
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
               />
-              <button className="input-group-text btn btn-primary">
-                Search
-              </button>
             </div>
           </div>
 
@@ -127,7 +120,6 @@ function HomePage() {
             ))
           ) : (
             <div className="text-center">
-              {/* <h4 className="fs-5">No Paper Found</h4> */}
               <p className="text-muted">
                 {search ? `No results for "${search}"` : "No Papers found"}
               </p>
@@ -137,21 +129,19 @@ function HomePage() {
 
         {/* // <--------------------------- Pagination ----------------------------> */}
         {data.totalPages > 1 && (
-          <div className="pagination">
-            {Pages.map((p, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setPage(() => p);
-                }}
-                className={p === page ? "active" : ""}
-              >
-                {p}
-              </button>
-            ))}
+          <div className="d-flex justify-content-center my-4">
+            <Stack spacing={2}>
+              <Pagination
+                count={data.totalPages}
+                page={page}
+                onChange={handlePageChange}
+                color="primary"
+                size="large"
+                // variant="outlined"
+              />
+            </Stack>
           </div>
         )}
-
         <Reviews />
       </div>
     </>

@@ -6,7 +6,7 @@ import Navbar from "./Components/Navbar.jsx";
 import Footer from "./Components/Footer.jsx";
 import PageNotFound from "./Components/PageNotFound.jsx";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
-import UploadPage from "./Components/upload/UploadPage.jsx";
+// import UploadPage from "./Components/upload/UploadPage.jsx";
 import HomePage from "./Components/Home/HomePage.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Signup from "./Components/Signup/Signup.jsx";
@@ -16,8 +16,11 @@ import SubDetails from "./Components/Details/SubDetails.jsx";
 import ContributePage from "./Components/contributors/ContributePage.jsx";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import SubUnits from "./Components/Content/Subject/SubUnits.jsx";
-import Verify from "./Components/Verify.jsx";
+import Verify from "./Components/Otp/Verify.jsx";
 import AdminRoutes from "./Components/Admin/AdminRoutes/AdminRoutes.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
+import AccessDenied from "./Components/AccessDenied.jsx";
+import PublicRoute from "./PublicRoute.jsx";
 //Googe CliendId
 const cliendId = import.meta.env.VITE_APP_CLIENT_ID;
 
@@ -43,22 +46,41 @@ createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/home/:id" element={<SubDetails />} />
+          <Route path="/home/:id" element={<PrivateRoute><SubDetails /></PrivateRoute>}/>
           <Route path="/Contributors" element={<ContributePage />} />
           <Route path="/updates" element={<UpdatePage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/upload" element={<UploadPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          {/* <Route path="/upload" element={<UploadPage />} /> */}
+          <Route path="/unauthorized" element={<AccessDenied />} />
+          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>}/><Route path="/signup"element={<PublicRoute><Signup /></PublicRoute>}/>
           <Route path="/content" element={<ContentPage />} />
-          <Route path="/content/:subject" element={<SubUnits />} />
-          <Route path="/verify" element={<Verify />} />
-          <Route path="/admin/*" element={<AdminRoutes />} />
+          <Route
+            path="/content/:subject"
+            element={
+              <PrivateRoute requiredRole={["admin", "manager", "user"]}>
+                <SubUnits />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/verify"
+            element={
+              <PublicRoute>
+                <Verify />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateRoute requiredRole={["admin", "manager"]}>
+                <AdminRoutes />
+              </PrivateRoute>
+            }
+          />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>
-
-     
     </BrowserRouter>
   </GoogleOAuthProvider>
 );

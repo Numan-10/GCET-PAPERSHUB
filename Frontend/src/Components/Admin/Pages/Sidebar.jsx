@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import "../admin.css";
-import { FaHome } from "react-icons/fa";       
-import { FaUser } from "react-icons/fa";       
-import { FaCog } from "react-icons/fa";        
-
+import { FaHome } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import { FaFolderOpen } from "react-icons/fa";
+import { FaComments } from "react-icons/fa";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
@@ -44,8 +45,24 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           </Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link text-white p-1" to="/admin/settings">
-            <FaCog /> Settings
+          <Link
+            className="nav-link text-white p-1"
+            to="/admin/upload/uploadpapers"
+          >
+            <FaCloudUploadAlt /> Upload
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
+            className="nav-link text-white p-1"
+            to="/admin/view-content/papers"
+          >
+            <FaFolderOpen /> All Content
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link text-white p-1" to="/admin/feedbacks">
+            <FaComments /> Feedback
           </Link>
         </li>
       </ul>
