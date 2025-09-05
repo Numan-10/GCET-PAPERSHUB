@@ -24,21 +24,21 @@ const Login = () => {
     });
   };
 
-  const handleError = (err) =>
-    toast.error(err, {
-      position: "top-center",
-      duration: 1000,
-    });
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: "top-center",
-      duration: 1500,
-    });
+  // const handleError = (err) =>
+  //   toast.error(err, {
+  //     position: "top-center",
+  //     duration: 1000,
+  //   });
+  // const handleSuccess = (msg) =>
+  //   toast.success(msg, {
+  //     position: "top-center",
+  //     duration: 1500,
+  //   });
 
   const handleSubmit = async (e) => {
+    const toastId = toast.loading("Verifying Credentials");
     e.preventDefault();
     if (!email || !password) {
-      toast.remove();
       return handleError("All fields are required ");
     }
     try {
@@ -56,13 +56,9 @@ const Login = () => {
 
       if (success) {
         setTimeout(() => {
-          handleSuccess(message);
-          navigate("/verify",{state:{email}});
+          toast.success(message, { id: toastId });
+          navigate("/verify", { state: { email } });
         }, 250);
-
-        // localStorage.setItem("token", JwtToken);
-        // localStorage.setItem("user", name);
-        // localStorage.setItem("email", email);
 
         setInputValue({
           ...inputValue,
@@ -70,35 +66,29 @@ const Login = () => {
           password: "",
         });
       } else {
-        toast.remove();
-        return handleError(message);
+        return toast.error(message, { id: toastId });
       }
     } catch (error) {
       setIsLoading(false);
       if (error.response && error.response.data && error.response.data.error) {
         const errorDetails = error.response.data.error.details;
         if (Array.isArray(errorDetails) && errorDetails.length > 0) {
-          toast.remove();
           setIsLoading(false);
-          return handleError(errorDetails[0].message);
+          return toast.error(errorDetails[0].message, { id: toastId });
         } else {
-          toast.remove();
           setIsLoading(false);
-          return handleError("An unexpected error occurred.");
+          return toast.error("An unexpected error occurred.", { id: toastId });
         }
       } else {
-        toast.remove();
         setIsLoading(false);
-        return handleError(error?.response?.data?.message);
+        return toast.error(error?.response?.data?.message, { id: toastId });
       }
     }
   };
 
   return (
     <div className="mt-md-5 mb-md-5 container d-flex justify-content-center align-items-center">
-      {
-
-      }
+      {}
       <div className="row ">
         <div className="col-1 col-md-2"></div>
         <div className="col-10 col-md-8">

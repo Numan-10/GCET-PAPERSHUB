@@ -1,6 +1,7 @@
 const Content = require("../Models/Content");
 const Unit = require("../Models/Unit");
 // const Subject = require("../Models/Paper");
+const { createActivity } = require("./ActivityController");
 module.exports.Content = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -79,6 +80,7 @@ module.exports.newSubject = async (req, res) => {
       semester: semester,
     });
     newSubject.save();
+    // await createActivity("Signed Up", user.username, user.email);
 
     return res.status(200).json({ message: "Subject Created!", success: true });
   } catch (err) {
@@ -114,7 +116,7 @@ module.exports.newUnit = async (req, res) => {
         .status(500)
         .json({ message: "All fields are required", success: false });
     }
-
+    // await createActivity("Signed Up", user.username, user.email);
     return res
       .status(200)
       .json({ message: "Unit added successfully", success: true });

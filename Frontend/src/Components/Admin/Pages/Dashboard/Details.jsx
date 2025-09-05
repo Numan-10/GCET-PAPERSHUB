@@ -12,7 +12,11 @@ const Details = () => {
   });
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await axios.get("http://localhost:3000/user");
+      const response = await axios.get("http://localhost:3000/user", {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
       const { TotalUsers, last7DaysCount, todayCount } = response.data;
 
       setDetails({

@@ -21,6 +21,7 @@ import AdminRoutes from "./Components/Admin/AdminRoutes/AdminRoutes.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import AccessDenied from "./Components/AccessDenied.jsx";
 import PublicRoute from "./PublicRoute.jsx";
+import Report from "./Components/Bug/Report.jsx";
 //Googe CliendId
 const cliendId = import.meta.env.VITE_APP_CLIENT_ID;
 
@@ -46,13 +47,35 @@ createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/home/:id" element={<PrivateRoute><SubDetails /></PrivateRoute>}/>
+          <Route
+            path="/home/:id"
+            element={
+              <PrivateRoute>
+                <SubDetails />
+              </PrivateRoute>
+            }
+          />
           <Route path="/Contributors" element={<ContributePage />} />
           <Route path="/updates" element={<UpdatePage />} />
           <Route path="/about" element={<AboutPage />} />
           {/* <Route path="/upload" element={<UploadPage />} /> */}
           <Route path="/unauthorized" element={<AccessDenied />} />
-          <Route path="/login" element={<PublicRoute><Login /></PublicRoute>}/><Route path="/signup"element={<PublicRoute><Signup /></PublicRoute>}/>
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <PublicRoute>
+                <Signup />
+              </PublicRoute>
+            }
+          />
           <Route path="/content" element={<ContentPage />} />
           <Route
             path="/content/:subject"
@@ -78,6 +101,7 @@ createRoot(document.getElementById("root")).render(
               </PrivateRoute>
             }
           />
+          <Route path="/report" element={<Report />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>

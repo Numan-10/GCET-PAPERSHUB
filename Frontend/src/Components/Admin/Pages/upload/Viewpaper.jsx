@@ -4,6 +4,9 @@ import { FaEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import toast, { Toaster } from "react-hot-toast";
+import { MdPublishedWithChanges } from "react-icons/md";
+import Tooltip from "@mui/material/Tooltip";
 const Viewpaper = () => {
   const [page, setPage] = useState(1);
   const [paper, setPapers] = useState({
@@ -11,20 +14,19 @@ const Viewpaper = () => {
     totalPages: 1,
   });
 
+  // Fetch all papers
   const fetchPapers = async () => {
     try {
       const response = await axios.get(
         `http://localhost:3000/subjects?page=${page}`
       );
-      console.log(response.data);
-      setPapers((prevData) => ({
-        ...prevData,
+      setPapers({
         Papers: response.data.Papers,
-        // page: response.data.page,
         totalPages: response.data.totalPages,
-      }));
+      });
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      toast.error("Failed to fetch papers");
     }
   };
 
@@ -32,20 +34,45 @@ const Viewpaper = () => {
     fetchPapers();
   }, [page]);
 
-  //   URL
-  const MyLink = ({ url, children }) => {
-    return (
-      <a href={url} rel="noopener noreferrer" target="_blank">
-        {children}
-      </a>
-    );
-  };
+  // Simple wrapper for external links
+  const MyLink = ({ url, children }) => (
+    <a href={url} rel="noopener noreferrer" target="_blank">
+      {children}
+    </a>
+  );
+
   const handleChange = (event, value) => {
     setPage(value);
   };
+
+  // Delete paper
+  const handleDelete = async (id, filename) => {
+    const toastId = toast.loading("Deleting paper...");
+    try {
+      const { data } = await axios.delete(
+        `http://localhost:3000/subjects?id=${id}&filename=${filename}`
+      );
+
+      if (data.success) {
+        toast.success(data.message, { id: toastId });
+
+        // Update UI immediately without waiting for refetch
+        setPapers((prev) => ({
+          ...prev,
+          Papers: prev.Papers.filter((p) => p._id !== id),
+        }));
+      } else {
+        toast.error(data.message || "Failed to delete", { id: toastId });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || err.message, { id: toastId });
+    }
+  };
+
   return (
-    <div className="container table-responsive mt-3 ">
-      <table className="table table-hover align-middle ">
+    <div className="container table-responsive mt-3">
+      <table className="table table-hover align-middle">
         <thead className="table-dark">
           <tr>
             <th>Subject</th>
@@ -54,45 +81,43 @@ const Viewpaper = () => {
           </tr>
         </thead>
         <tbody>
-          {paper.Papers.map((paper, index) => {
-            return (
-              <tr key={paper.id}>
-                <td>{paper?.Subject}</td>
-                <td>
-                  {" "}
-                  {/* <button className="btn btn-success btn-sm"> */}
-                  <MyLink url={paper?.Pdf?.Url}>
-                    <FaEye color="aqua" size={18} />
-                  </MyLink>
-                  {/* </button> */}
-                </td>
+          {paper.Papers.map((paper) => (
+            <tr key={paper._id}>
+              <td>{paper.Subject}</td>
+              <td>
+                <MyLink url={paper?.Pdf?.Url}>
+                  <FaEye color="aqua" size={18} />
+                </MyLink>
+              </td>
+              <td className="d-flex gap-3 text-center">
+                <div className="">
+                  <Tooltip title="Update">
+                    <button className="btn btn-success btn-sm">
+                      <MdPublishedWithChanges color="white" size={18} />
+                    </button>
+                  </Tooltip>
+                </div>
 
-                <td>
-                  {/* <div className="d-flex gap-2"> */}
-                  {/* <button
-                      className="btn btn-sm btn-primary"
-                      disabled={!isChanged || loading}
-                      onClick={() => handleRoleSubmit(paper.id)}
-                    >
-                      <FaEye />
-                    </button> */}
+                <div className="">
+                   <Tooltip title="Delete">
                   <button
                     className="btn btn-danger btn-sm"
-                    // disabled={loading}
-                    onClick={() => handleDelete(paper.id)}
+                    onClick={() =>
+                      handleDelete(paper._id, paper?.Pdf?.filename)
+                    }
                   >
-                    {<MdDeleteForever color="white" size={18} />}
-                  </button>
-                  {/* </div> */}
-                </td>
-              </tr>
-            );
-          })}
+                    <MdDeleteForever color="white" size={18} />
+                  </button></Tooltip>
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
-      {/* pagination */}
-      <div className="pagination">
-        {paper.totalPages > 1 && (
+
+      {/* Pagination */}
+      {paper.totalPages > 1 && (
+        <div className="pagination">
           <Stack spacing={2}>
             <Pagination
               count={paper.totalPages}
@@ -102,8 +127,10 @@ const Viewpaper = () => {
               size="large"
             />
           </Stack>
-        )}
-      </div>
+        </div>
+      )}
+
+      <Toaster />
     </div>
   );
 };

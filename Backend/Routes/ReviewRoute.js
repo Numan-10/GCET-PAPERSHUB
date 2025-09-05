@@ -10,7 +10,7 @@ router.get("/", fetchReviews);
 router.post(
   "/",
   userVerification,
-  AuthorizeRoles("user", "admin"),
+  AuthorizeRoles("user","manager", "admin"),
   submitReview
 );
 router.delete("/:id", deleteReview);

@@ -5,7 +5,14 @@ const RecentActivity = () => {
   const [activites, setActivites] = useState([]);
   useEffect(() => {
     const fetchActivites = async () => {
-      const response = await axios.get("http://localhost:3000/user/activities");
+      const response = await axios.get(
+        "http://localhost:3000/user/activities",
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
+      );
       const { success, Activites } = response.data;
       if (success) {
         console.log(Activites);

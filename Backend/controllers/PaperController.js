@@ -1,4 +1,5 @@
 const Paper = require("../Models/Paper");
+const { createActivity } = require("./ActivityController");
 module.exports.Subjects = async (req, res) => {
   try {
     const page = req.query.page || 1;
@@ -48,8 +49,8 @@ module.exports.UploadPaper = async (req, res) => {
       Semester,
     });
     newdata.Pdf = { Url, filename };
-    await newdata
-      .save()
+    await newdata.save()
+      // await createActivity("Signed Up", user.username, user.email);
       .then(() =>
         res
           .status(200)
@@ -74,5 +75,39 @@ module.exports.ShowPaper = async (req, res) => {
     }
   } catch (err) {
     return res.json({ message: "Subject Not Found" });
+  }
+};
+
+// Delete route
+const { cloudinary } = require("../cloudConfig");
+
+module.exports.DeletePaper = async (req, res, next) => {
+  try {
+    const id = req.query.id;
+    const public_id = req.query.filename;
+
+    if (!id || !public_id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing id or filename" });
+    }
+    // console.log(id, public_id);
+    // Delete from cloudinary
+    const result = await cloudinary.uploader.destroy(public_id);
+    // console.log("Cloudinary delete:", result);
+
+    // Delete from DB
+    const deletePaper = await Paper.findByIdAndDelete(id);
+    // console.log("DB delete:", deletePaper);
+
+    if (!deletePaper) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Paper not found" });
+    }
+
+    return res.json({ message: "Paper Deleted!", success: true });
+  } catch (err) {
+    return res.json({ message: err.message, success: false });
   }
 };

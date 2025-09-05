@@ -61,7 +61,7 @@ app.use("/content", ContentRoute);
 app.use("/review",  ReviewRoute);
 // app.use("/review", userVerification, ReviewRoute);
 // Admin
-app.use("/user", AdminRoute);
+app.use("/", AdminRoute);
 
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);

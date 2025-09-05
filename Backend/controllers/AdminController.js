@@ -1,4 +1,5 @@
 const User = require("../Models/User");
+const BugReport = require("../Models/BugReport");
 module.exports.ChangeRole = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -68,5 +69,55 @@ module.exports.DeleteUser = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     return res.json({ message: "Somthing went wrong", success: false });
+  }
+};
+
+module.exports.PostBug = async (req, res, next) => {
+  try {
+    const { title, description, priority, email } = req.body;
+    if (!title) {
+      return res.json({ message: "Title is required", success: false });
+    }
+    if (!description) {
+      return res.json({ message: "Description is required", success: false });
+    }
+    if (!priority) {
+      return res.json({ message: "Priority is required", success: false });
+    }
+    if (!email) {
+      return res.json({ message: "Email is required", success: false });
+    }
+    // console.log(title, description, priority, email);
+    const Bugreport = await BugReport.create({
+      title,
+      description,
+      priority,
+      email,
+    });
+    // console.log(Bugreport);
+    return res.json({ message: "Bug reported!", success: true });
+  } catch (err) {
+    return res.json({ message: err.message, success: false });
+  }
+};
+
+module.exports.FetchBugs = async (req, res, next) => {
+  try {
+    const reports = await BugReport.find();
+    return res.json({ reports, success: true });
+  } catch (err) {
+    return res.json({ message: "Failed to Fetch!", success: false });
+  }
+};
+
+module.exports.DeleteBug = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    // console.log("dletebyg", id);
+    const DeletedBug = await BugReport.findByIdAndDelete({ _id: id });
+    console.log(DeletedBug);
+    return res.json({ message: "Bug Deleted!", success: true });
+  } catch (err) {
+    return res.json({ message: err.message, success: false });
   }
 };

@@ -1,6 +1,6 @@
 const Review = require("../Models/Review");
 const User = require("../Models/User");
-
+const { createActivity } = require("./ActivityController");
 module.exports.submitReview = async (req, res) => {
   try {
     const currUser = req.user;
@@ -23,7 +23,7 @@ module.exports.submitReview = async (req, res) => {
     Existuser.reviews.push(newReview);
     await newReview.save();
     await Existuser.save();
-
+    await createActivity("Review", Existuser.username, Existuser.email);
     return res.status(200).json({
       message: "Your feedback helps us improve!",
       success: true,

@@ -9,7 +9,7 @@ const ShowFeed = () => {
   const fetchReviews = async () => {
     const response = await axios.get("http://localhost:3000/review");
     setFeedbacks(response.data.feedbacks.reverse());
-    // console.log(feedbacks);
+    console.log(feedbacks);
   };
 
   useEffect(() => {

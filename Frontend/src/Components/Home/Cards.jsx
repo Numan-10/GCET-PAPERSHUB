@@ -12,7 +12,7 @@ const Cards = ({ icon, text, bgColor, route }) => {
   return (
     <div
       className={`text-center  p-2 rounded-2`}
-      style={{ background: `${bgColor}`, minWidth: "150px" }}
+      style={{ background: `${bgColor}`, minWidth: "105px" }}
       onClick={(e) => Click(e)}
     >
       {icon}

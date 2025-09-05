@@ -3,6 +3,7 @@ const {
   Subjects,
   UploadPaper,
   ShowPaper,
+  DeletePaper,
 } = require("../controllers/PaperController");
 const { upload } = require("../Middlewares/Upload");
 const userVerification = require("../Middlewares/AuthMiddleware");
@@ -16,6 +17,12 @@ router.post(
   UploadPaper
 );
 router.get("/subjects", Subjects);
-router.get("/subjects/:id", userVerification, AuthorizeRoles("user","admin"),ShowPaper);
+router.get(
+  "/subjects/:id",
+  userVerification,
+  AuthorizeRoles("user", "admin"),
+  ShowPaper
+);
+router.delete("/subjects", DeletePaper);
 
 module.exports = router;

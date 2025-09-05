@@ -5,7 +5,9 @@ import { FaUser } from "react-icons/fa";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa";
 import { FaComments } from "react-icons/fa";
-
+import { MdDashboardCustomize } from "react-icons/md";
+import { FaBug } from "react-icons/fa6";
+import { IoMdNotifications } from "react-icons/io";
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
     <div
@@ -36,7 +38,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       <ul className="nav flex-column gap-3 mt-5 mx-2">
         <li className="nav-item">
           <Link className="nav-link text-white p-1" to="/admin/dashboard">
-            <FaHome /> Dashboard
+            <MdDashboardCustomize /> Dashboard
           </Link>
         </li>
         <li className="nav-item">
@@ -63,6 +65,16 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <li className="nav-item">
           <Link className="nav-link text-white p-1" to="/admin/feedbacks">
             <FaComments /> Feedback
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link text-white p-1" to="/admin/reports">
+            <FaBug /> Bug reports
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link text-white p-1" to="/admin/notifications">
+            <IoMdNotifications size={18} /> Notifications
           </Link>
         </li>
       </ul>

@@ -30,8 +30,30 @@ const loginValidation = (req, res, next) => {
   }
   next();
 };
+// const BugReportsValidation = (req, res, next) => {
+//   const schema = Joi.object({
+//     title: Joi.string().min(4).max(30).required(),
+//     description: Joi.string().min(4).max(300).required(),
+//     priority: Joi.string()
+//       .valid("low", "medium", "high", "critical")
+//       .required(),
+//     email: Joi.string().email().optional(),
+//   });
+
+//   const { error } = schema.validate(req.body);
+
+//   if (error) {
+//     return res.status(400).json({
+//       success: false,
+//       message: error.details[0].message,
+//     });
+//   }
+
+//   next();
+// };
 
 module.exports = {
   signupValidation,
   loginValidation,
+  // BugReportsValidation,
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import toast, { Toaster } from "react-hot-toast";
+import BugReportIcon from "@mui/icons-material/BugReport";
 import {
   Box,
   Avatar,
@@ -13,7 +14,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Logout, Login as LoginIcon } from "@mui/icons-material";
-
+import Settings from "@mui/icons-material/Settings";
+import { IoNotificationsCircleSharp } from "react-icons/io5";
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -64,16 +66,13 @@ function Navbar() {
     );
   };
 
-
-
-  // checking role
   const AvatarName = currUser?.charAt(0)?.toUpperCase();
 
   useEffect(() => {
     const isAdmin = () => localStorage?.getItem("role") === "admin";
-
     setIsAdmin(isAdmin());
   }, [location.pathname]);
+
   return (
     <div className="Navbar d-flex justify-content-between align-items-center">
       {/* Hamburger Menu */}
@@ -117,79 +116,99 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Avatar & Logout */}
+      {/* Avatar & Login/Logout */}
       <div className="d-flex justify-content-center align-items-center">
-        {/* <Link to="/upload">
-          <button className="btn btn-success btn-sm">Upload here</button>
-        </Link> */}
-
         {checkIsAdmin && (
           <Link to="/admin/dashboard">
-            <button className="btn btn-primary btn-sm">Admin-Dashboard</button>
+            <button className="btn btn-primary btn-sm me-2">
+              Admin Dashboard
+            </button>
           </Link>
         )}
+
         <Box
           sx={{ display: "flex", alignItems: "center", textAlign: "center" }}
         >
-          <Tooltip title={currUser ? "Your Account" : "Login"}>
-            <IconButton onClick={handleMenuOpen} size="small" sx={{ ml: 2 }}>
-              <Avatar
-                sx={{
-                  width: 30,
-                  height: 30,
-                  backgroundColor: "#6f6e96",
-                  fontSize: "15px",
-                }}
-              >
-                {AvatarName || ""}
-              </Avatar>
-            </IconButton>
-          </Tooltip>
-        </Box>
-        <Menu
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleMenuClose}
-          transformOrigin={{ horizontal: "right", vertical: "top" }}
-          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-        >
           {currUser ? (
+            // Show Avatar and Menu for logged-in users
             <>
-              <MenuItem>
-                <Avatar />
-                &nbsp;<span className="fw-semibold">{currUser}</span>
-              </MenuItem>
-              <Divider />
-              <MenuItem onClick={logout}>
-                <ListItemIcon>
-                  <Logout fontSize="small" />
-                </ListItemIcon>
-                Logout
-              </MenuItem>
+              <Tooltip title="Your Account">
+                <IconButton
+                  onClick={handleMenuOpen}
+                  size="small"
+                  sx={{ ml: 2 }}
+                >
+                  <Avatar
+                    sx={{
+                      width: 30,
+                      height: 30,
+                      backgroundColor: "#6f6e96",
+                      fontSize: "15px",
+                    }}
+                  >
+                    {AvatarName || ""}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleMenuClose}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <MenuItem>
+                  <Avatar sx={{ width: 24, height: 24, mr: 1 }} />
+                  <span className="fw-semibold">{currUser}</span>
+                </MenuItem>
+                <Divider />
+                {/* <MenuItem onClick={() => navigate("/settings")}>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  Settings
+                </MenuItem> */}
+                <MenuItem onClick={() => navigate("/report")}>
+                  <ListItemIcon>
+                    <BugReportIcon fontSize="small" />
+                  </ListItemIcon>
+                  Report a Bug
+                </MenuItem>
+                <MenuItem onClick={logout}>
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Logout
+                </MenuItem>
+              </Menu>
             </>
           ) : (
-            <>
-              <Divider />
-              <MenuItem onClick={() => navigate("/login")}>
-                <ListItemIcon>
-                  <LoginIcon fontSize="small" />
-                </ListItemIcon>
+            // Show Login button for non-logged-in users
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              <button className="btn btn-success btn-sm d-flex align-items-center">
+                <LoginIcon sx={{ mr: 1, fontSize: "16px" }} />
                 Login
-              </MenuItem>
-            </>
+              </button>
+            </Link>
           )}
-        </Menu>
+        </Box>
 
-        {/* ---------- Notification Icon ---------- */}
-        <button className="p-3 me-2" style={{ border: "none" }}>
+        {/* Notification Icon */}
+        <button
+          className="p-3 me-2"
+          style={{ border: "none", background: "transparent" }}
+        >
           <Tooltip title="View Updates">
             <Link to="/updates">
-              <img
-                src="/Assets/bell-outline.svg"
-                alt="Notification"
-                className="img-fluid"
-                style={{ width: "4rem" }}
-              />
+              <button
+                className="btn btn-primary btn-sm rounded-5 px-2 py-1 border-0"
+                style={{
+                  background:
+                    "linear-gradient(135deg,rgb(188, 199, 41), #7b2ff7)",
+                }}
+              >
+                <IoNotificationsCircleSharp size={26} color="white" />
+              </button>
             </Link>
           </Tooltip>
         </button>
