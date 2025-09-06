@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../ApiUrl";
@@ -111,6 +111,7 @@ const Login = () => {
               >
                 Email Address
               </label>
+              <span className="text-danger"> *</span>
               <input
                 type="email"
                 name="email"
@@ -125,6 +126,7 @@ const Login = () => {
               <label htmlFor="password" className="form-label fw-semibold">
                 Password
               </label>
+              <span className="text-danger"> *</span>
               <input
                 type="password"
                 name="password"
@@ -134,6 +136,9 @@ const Login = () => {
                 id="password"
                 className="form-control"
               />
+              <div className="form-text text-end link-opacity-100">
+                <Link to={"/forgot-password"}>Forgot Password?</Link>
+              </div>
             </div>
 
             <div className="d-grid">

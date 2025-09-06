@@ -2,7 +2,7 @@ const Act = require("../Models/RecentActivity");
 module.exports.createActivity = async (action, username, email) => {
   try {
     const Activity = await Act.create({ action, username, email });
-    console.log(Activity);
+    // console.log(Activity);
   } catch (err) {
     console.error(err.message);
   }

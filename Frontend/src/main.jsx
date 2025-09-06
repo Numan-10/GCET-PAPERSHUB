@@ -22,6 +22,7 @@ import PrivateRoute from "./PrivateRoute.jsx";
 import AccessDenied from "./Components/AccessDenied.jsx";
 import PublicRoute from "./PublicRoute.jsx";
 import Report from "./Components/Bug/Report.jsx";
+import ForgotPass from "./Components/Pass/ForgotPass.jsx";
 //Googe CliendId
 const cliendId = import.meta.env.VITE_APP_CLIENT_ID;
 
@@ -102,6 +103,7 @@ createRoot(document.getElementById("root")).render(
             }
           />
           <Route path="/report" element={<Report />} />
+          <Route path="/forgot-password" element={<ForgotPass />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Layout>

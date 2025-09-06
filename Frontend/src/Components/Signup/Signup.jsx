@@ -4,7 +4,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../ApiUrl.js";
 import Google from "../Google.jsx";
-
+import { FaInfoCircle } from "react-icons/fa";
 const Signup = () => {
   const BackendUrl = API_BASE_URL;
 
@@ -105,6 +105,7 @@ const Signup = () => {
               <label htmlFor="email" className="form-label fw-semibold">
                 Email Address
               </label>
+              <span className="text-danger"> *</span>
               <input
                 type="email"
                 name="email"
@@ -119,6 +120,7 @@ const Signup = () => {
               <label htmlFor="username" className="form-label fw-semibold">
                 Username
               </label>
+              <span className="text-danger"> *</span>
               <input
                 type="text"
                 name="username"
@@ -127,12 +129,17 @@ const Signup = () => {
                 onChange={handleOnChange}
                 id="username"
                 className="form-control"
-              />
+              />{" "}
+              <div className="form-text ">
+                <FaInfoCircle className="me-1" />
+                Choose carefully — not editable later.
+              </div>
             </div>
             <div className="mb-3">
               <label htmlFor="password" className="form-label fw-semibold">
                 Password
               </label>
+              <span className="text-danger"> *</span>
               <input
                 type="password"
                 name="password"
@@ -142,6 +149,7 @@ const Signup = () => {
                 id="password"
                 className="form-control"
               />
+             
             </div>
 
             <div className="d-grid">
