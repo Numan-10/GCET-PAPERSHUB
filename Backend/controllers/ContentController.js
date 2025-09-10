@@ -130,12 +130,12 @@ module.exports.newUnit = async (req, res) => {
 // getAllsubs
 module.exports.fetchSubs = async (req, res, next) => {
   try {
-    const subjects = await Content.find();
+    const subjects = await Content.find().populate("units");
     if (subjects) {
       return res.json({ subjects, success: true });
     }
   } catch (err) {
     console.log(err);
-    return res.josn({ err, success: false });
+    return res.json({ err, success: false });
   }
 };

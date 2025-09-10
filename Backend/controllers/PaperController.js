@@ -49,7 +49,8 @@ module.exports.UploadPaper = async (req, res) => {
       Semester,
     });
     newdata.Pdf = { Url, filename };
-    await newdata.save()
+    await newdata
+      .save()
       // await createActivity("Signed Up", user.username, user.email);
       .then(() =>
         res
@@ -91,14 +92,10 @@ module.exports.DeletePaper = async (req, res, next) => {
         .status(400)
         .json({ success: false, message: "Missing id or filename" });
     }
-    // console.log(id, public_id);
-    // Delete from cloudinary
-    const result = await cloudinary.uploader.destroy(public_id);
-    // console.log("Cloudinary delete:", result);
 
-    // Delete from DB
+    const result = await cloudinary.uploader.destroy(public_id);
+
     const deletePaper = await Paper.findByIdAndDelete(id);
-    // console.log("DB delete:", deletePaper);
 
     if (!deletePaper) {
       return res
@@ -109,5 +106,43 @@ module.exports.DeletePaper = async (req, res, next) => {
     return res.json({ message: "Paper Deleted!", success: true });
   } catch (err) {
     return res.json({ message: err.message, success: false });
+  }
+};
+
+// Update paper
+
+module.exports.UpdatePaper = async (req, res) => {
+  try {
+    const { id, Subject, Semester, Title, filename } = req.body;
+
+    const paper = await Paper.findById(id);
+    if (!paper) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Paper not found" });
+    }
+
+    paper.Subject = Subject || paper.Subject;
+    paper.Semester = Semester || paper.Semester;
+    paper.Title = Title || paper.Title;
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        resource_type: "raw",
+        public_id: filename || paper.Pdf.filename,
+        overwrite: true,
+      });
+
+      paper.Pdf = {
+        Url: result.secure_url,
+        filename: result.public_id,
+      };
+    }
+
+    await paper.save();
+    return res.json({ success: true, message: "Paper updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.json({ success: false, message: error.message });
   }
 };

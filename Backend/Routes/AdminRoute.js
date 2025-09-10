@@ -8,6 +8,10 @@ const {
   PostBug,
   FetchBugs,
   DeleteBug,
+  fetchNotification,
+  createNotification,
+  updateNotification,
+  deleteNotification,
 } = require("../controllers/AdminController");
 const { FetchActivites } = require("../controllers/ActivityController");
 const router = require("express").Router();
@@ -50,4 +54,29 @@ router.delete(
   AuthorizeRoles("admin"),
   DeleteBug
 );
+
+// Notification routes
+router.get("/notifications", fetchNotification);
+
+router.post(
+  "/notifications",
+  userVerification,
+  AuthorizeRoles("admin"),
+  createNotification
+);
+
+router.put(
+  "/notifications/:id",
+  userVerification,
+  AuthorizeRoles("admin"),
+  updateNotification
+);
+
+router.delete(
+  "/notifications/:id",
+  userVerification,
+  AuthorizeRoles("admin"),
+  deleteNotification
+);
+
 module.exports = router;

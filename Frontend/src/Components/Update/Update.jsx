@@ -1,8 +1,31 @@
 import React from "react";
-function Update({ msg }) {
+import { FaExternalLinkAlt } from "react-icons/fa";
+
+function Update({ msg, link }) {
   return (
     <div className="row m-2">
-      <div className="col-12 mt-5 p-3 rounded" style={{color:"white",backgroundColor:"black"}}>{msg}</div>
+      <div 
+        className="col-12 mt-3 p-3 rounded" 
+        style={{ color: "white", backgroundColor: "black" }}
+      >
+        <p className="mb-0" style={{ whiteSpace: "pre-line" }}>
+          {msg}
+        </p>
+        
+        {link && (
+          <div className="mt-2">
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-warning text-decoration-none d-inline-flex align-items-center gap-1"
+            >
+              <FaExternalLinkAlt size={12} />
+              <span className="small">→ Visit Link</span>
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

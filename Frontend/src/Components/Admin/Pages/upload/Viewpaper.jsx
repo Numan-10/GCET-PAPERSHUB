@@ -7,12 +7,23 @@ import Stack from "@mui/material/Stack";
 import toast, { Toaster } from "react-hot-toast";
 import { MdPublishedWithChanges } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
+import { MdOutlineSearchOff } from "react-icons/md";
+import UpdatePaper from "./UpdatePaper";
+
 const Viewpaper = () => {
   const [page, setPage] = useState(1);
   const [paper, setPapers] = useState({
     Papers: [],
     totalPages: 1,
   });
+
+  // Update
+  const [file, setFile] = useState(null);
+  const [show, setShow] = useState(false);
+  const handleOnUpdate = (paper) => {
+    setShow(!show);
+    setFile(paper);
+  };
 
   // Fetch all papers
   const fetchPapers = async () => {
@@ -72,6 +83,12 @@ const Viewpaper = () => {
 
   return (
     <div className="container table-responsive mt-3">
+      {show && (
+        <div className="vh-100 d-flex flex-column justify-content-start align-items-center">
+          <UpdatePaper onClose={() => setShow(!show)} paper={file} />{" "}
+        </div>
+      )}
+
       <table className="table table-hover align-middle">
         <thead className="table-dark">
           <tr>
@@ -93,21 +110,26 @@ const Viewpaper = () => {
                 <div className="">
                   <Tooltip title="Update">
                     <button className="btn btn-success btn-sm">
-                      <MdPublishedWithChanges color="white" size={18} />
+                      <MdPublishedWithChanges
+                        color="white"
+                        size={18}
+                        onClick={() => handleOnUpdate(paper)}
+                      />
                     </button>
                   </Tooltip>
                 </div>
 
                 <div className="">
-                   <Tooltip title="Delete">
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() =>
-                      handleDelete(paper._id, paper?.Pdf?.filename)
-                    }
-                  >
-                    <MdDeleteForever color="white" size={18} />
-                  </button></Tooltip>
+                  <Tooltip title="Delete">
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() =>
+                        handleDelete(paper._id, paper?.Pdf?.filename)
+                      }
+                    >
+                      <MdDeleteForever color="white" size={18} />
+                    </button>
+                  </Tooltip>
                 </div>
               </td>
             </tr>
@@ -131,6 +153,16 @@ const Viewpaper = () => {
       )}
 
       <Toaster />
+
+      {paper.Papers.length === 0 && (
+        <div className="text-center py-5">
+          <MdOutlineSearchOff color="red" size={70} opacity={0.8} />
+          <h3 className="text-muted">No Papers Found</h3>
+          <p className="text-muted">
+            Your Papers will appear here once they're added
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -4,6 +4,7 @@ const {
   UploadPaper,
   ShowPaper,
   DeletePaper,
+  UpdatePaper,
 } = require("../controllers/PaperController");
 const { upload } = require("../Middlewares/Upload");
 const userVerification = require("../Middlewares/AuthMiddleware");
@@ -24,5 +25,6 @@ router.get(
   ShowPaper
 );
 router.delete("/subjects", DeletePaper);
+router.put("/subjects/update", upload, UpdatePaper);
 
 module.exports = router;

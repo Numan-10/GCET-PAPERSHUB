@@ -1,5 +1,6 @@
 const User = require("../Models/User");
 const BugReport = require("../Models/BugReport");
+const Notification = require("../Models/Notification");
 module.exports.ChangeRole = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -117,6 +118,101 @@ module.exports.DeleteBug = async (req, res, next) => {
     const DeletedBug = await BugReport.findByIdAndDelete({ _id: id });
     console.log(DeletedBug);
     return res.json({ message: "Bug Deleted!", success: true });
+  } catch (err) {
+    return res.json({ message: err.message, success: false });
+  }
+};
+
+// GET /notifications - This will serve as updates for users
+// Improved fetch with sorting
+module.exports.fetchNotification = async (req, res, next) => {
+  try {
+    const notifications = await Notification.find();
+
+    return res.json({
+      notifications,
+      success: true,
+    });
+  } catch (error) {
+    return res.json({
+      message: "Failed to fetch notifications",
+      success: false,
+    });
+  }
+};
+
+// Create notification - remove pdf handling
+module.exports.createNotification = async (req, res, next) => {
+  try {
+    const { message, link } = req.body;
+
+    if (!message || !message.trim()) {
+      return res.json({ message: "Message is required", success: false });
+    }
+
+    const notification = await Notification.create({
+      message: message.trim(),
+      link: link || "",
+    });
+
+    return res.json({
+      message: "Notification created successfully!",
+      success: true,
+      notification,
+    });
+  } catch (err) {
+    return res.json({ message: err.message, success: false });
+  }
+};
+
+// Update notification - remove pdf handling
+module.exports.updateNotification = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { message, link } = req.body;
+
+    if (!message || !message.trim()) {
+      return res.json({ message: "Message is required", success: false });
+    }
+
+    const updatedNotification = await Notification.findByIdAndUpdate(
+      id,
+      {
+        message: message.trim(),
+        link: link || "",
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedNotification) {
+      return res.json({ message: "Notification not found", success: false });
+    }
+
+    return res.json({
+      message: "Notification updated successfully!",
+      success: true,
+      notification: updatedNotification,
+    });
+  } catch (err) {
+    return res.json({ message: err.message, success: false });
+  }
+};
+
+// Delete notification
+module.exports.deleteNotification = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const deletedNotification = await Notification.findByIdAndDelete(id);
+
+    if (!deletedNotification) {
+      return res.json({ message: "Notification not found", success: false });
+    }
+
+    return res.json({
+      message: "Notification deleted successfully!",
+      success: true,
+    });
   } catch (err) {
     return res.json({ message: err.message, success: false });
   }

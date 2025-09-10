@@ -215,6 +215,9 @@ const Reports = () => {
           {filteredReports.length === 0 && (
             <div className="text-center py-4">
               <p className="text-muted">
+                <FaBug size={60} color="grey" opacity={0.8} />
+              </p>
+              <p className="text-muted">
                 No bug reports found{" "}
                 {priorityFilter && `with "${priorityFilter}" priority`}.
               </p>

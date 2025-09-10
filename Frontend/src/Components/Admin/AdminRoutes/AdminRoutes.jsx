@@ -8,8 +8,8 @@ import ViewContent from "../ViewContent";
 import PageNotFound from "../../PageNotFound";
 import FeedbackPage from "../Pages/Feeback/FeedbackPage";
 import Reports from "../Pages/Reports/Reports";
+import Notification from "../Pages/Notifications/Notifications";
 const AdminRoutes = () => {
-  
   return (
     <DashboardLayout>
       <Routes>
@@ -20,6 +20,7 @@ const AdminRoutes = () => {
         <Route path="/view-content/*" element={<ViewContent />} />
         <Route path="/feedbacks" element={<FeedbackPage />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/notifications" element={<Notification />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </DashboardLayout>
