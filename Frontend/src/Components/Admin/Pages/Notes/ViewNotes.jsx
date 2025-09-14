@@ -6,6 +6,7 @@ import { MdOutlineSearchOff } from "react-icons/md";
 import { FaBook } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
 import { FaSearch } from "react-icons/fa";
+import toast, { Toaster } from "react-hot-toast";
 const ViewNotes = () => {
   const [Notes, setNotes] = useState({
     Notes: [],
@@ -32,16 +33,76 @@ const ViewNotes = () => {
     console.log("Update note:", noteId);
   };
 
-  const handleDeleteNote = (noteId) => {
-    console.log("Delete note:", noteId);
+  // Deleting ntoes
+  const handleDeleteNote = async (id) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this subject?"
+    );
+    if (!confirm) return;
+
+    const toastId = toast.loading("Deleting Subject...");
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/content/${id}`
+      );
+      const { message, success } = response.data;
+
+      if (success) {
+        toast.success(message, { id: toastId });
+
+        // 🔥 Remove the deleted note from state
+        setNotes((prev) => ({
+          ...prev,
+          Notes: prev.Notes.filter((note) => note._id !== id),
+        }));
+      } else {
+        toast.error(message, { id: toastId });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.message || "Something Went Wrong!", { id: toastId });
+    }
   };
 
   const handleUpdateUnit = (unitId, noteId) => {
     console.log("Update unit:", unitId, "in note:", noteId);
   };
 
-  const handleDeleteUnit = (unitId, noteId) => {
-    console.log("Delete unit:", unitId, "from note:", noteId);
+  const handleDeleteUnit = async (unitId, noteId) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this unit?"
+    );
+    if (!confirm) return;
+
+    const toastId = toast.loading("Deleting Unit...");
+    try {
+      const response = await axios.delete(
+        `http://localhost:3000/content/unit/${unitId}`
+      );
+      const { message, success } = response.data;
+
+      if (success) {
+        toast.success(message, { id: toastId });
+
+        // ✅ Remove the unit from the correct note
+        setNotes((prev) => ({
+          ...prev,
+          Notes: prev.Notes.map((note) =>
+            note._id === noteId
+              ? {
+                  ...note,
+                  units: note.units.filter((unit) => unit._id !== unitId),
+                }
+              : note
+          ),
+        }));
+      } else {
+        toast.error(message, { id: toastId });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.message || "Something Went Wrong!", { id: toastId });
+    }
   };
 
   useEffect(() => {

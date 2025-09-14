@@ -3,7 +3,7 @@ import { MdAdd, MdEdit, MdDelete, MdLink } from "react-icons/md";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import API_BASE_URL from "../../../../ApiUrl";
-
+import { IoNotificationsOffCircleOutline } from "react-icons/io5";
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -125,7 +125,12 @@ const Notifications = () => {
 
       {/* List */}
       {notifications.length === 0 ? (
-        <p className="text-center text-muted py-4">No notifications yet.</p>
+        <div className="text-center text-muted py-4">
+          <p>
+            <IoNotificationsOffCircleOutline size={70}/>
+          </p>
+          <p className="">No notifications yet.</p>
+        </div>
       ) : (
         notifications.map((item) => (
           <div key={item._id} className="card mb-3">

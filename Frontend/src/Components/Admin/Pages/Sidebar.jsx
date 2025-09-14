@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../admin.css";
 import { FaHome } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
@@ -9,6 +9,7 @@ import { MdDashboardCustomize } from "react-icons/md";
 import { FaBug } from "react-icons/fa6";
 import { IoMdNotifications } from "react-icons/io";
 const Sidebar = ({ isOpen, toggleSidebar }) => {
+  const navigate = useNavigate();
   return (
     <div
       className={`sidebar text-white p-3 ${
@@ -19,11 +20,18 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       <div className="d-flex align-items-center mb-4">
         <img
           src="/Assets/codeclubW.svg"
-          className="img-fluid"
-          style={{ width: "50px" }}
+          className="img-fluid pointer"
+          style={{ width: "50px", cursor: "pointer" }}
           alt="log"
+          onClick={() => navigate("/home")}
         />
-        <span className="ms-2 fw-bolder">Paper's Hub</span>
+        <span
+          className="ms-2 fw-bolder"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/home")}
+        >
+          Paper's Hub
+        </span>
 
         {/* close button only on mobile */}
         <button

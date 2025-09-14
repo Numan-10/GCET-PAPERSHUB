@@ -1,12 +1,13 @@
 const Content = require("../Models/Content");
 const Unit = require("../Models/Unit");
+const { cloudinary } = require("../cloudConfig");
 // const Subject = require("../Models/Paper");
 const { createActivity } = require("./ActivityController");
 module.exports.Content = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const search = req.query.search || "";
-    console.log(search);
+    // console.log(search);
     const perPage = 8;
 
     let searchCondition = {};
@@ -137,5 +138,48 @@ module.exports.fetchSubs = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     return res.json({ err, success: false });
+  }
+};
+
+// Delete notes
+module.exports.DeleteContent = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const Subject = await Content.findById(id).populate("units");
+    for (const unit of Subject.units) {
+      // console.log(unit);
+      if (unit.pdf?.filename) {
+        await cloudinary.uploader.destroy(unit.pdf.filename);
+      }
+    }
+    await Unit.deleteMany({ _id: { $in: Subject.units.map((u) => u._id) } });
+
+    await Content.findByIdAndDelete(id);
+    // console.log(Subject);
+    return res.json({ message: "Subject Deleted!", success: true });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message, success: false });
+  }
+};
+// Delete Unit
+module.exports.DeleteUnit = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const existingUnit = await Unit.findById(id);
+    if (!Unit) {
+      return res.json({ message: "Unit not found", success: false });
+    }
+
+    if (existingUnit.pdf?.filename) {
+      await cloudinary.uploader.destroy(existingUnit.pdf.filename);
+    }
+    await Content.updateMany({}, { $pull: { units: id } });
+    await Unit.findByIdAndDelete(id);
+
+    return res.json({ message: "Unit Deleted!", success: true });
+  } catch (error) {
+    console.log(error);
+    return res.json({ message: error.message, success: false });
   }
 };

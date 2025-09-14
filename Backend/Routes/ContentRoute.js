@@ -9,6 +9,8 @@ const {
   newSubject,
   newUnit,
   fetchSubs,
+  DeleteContent,
+  DeleteUnit,
 } = require("../controllers/ContentController");
 router.get("/", Content);
 router.get("/fetchSubs", fetchSubs);
@@ -27,4 +29,9 @@ router.post(
   newUnit
 );
 //  update,delete content or individual notes and update individual notes
+
+// Delete (whole conetnt + units)
+router.delete("/:id", DeleteContent);
+// delte single unit
+router.delete("/unit/:id", DeleteUnit);
 module.exports = router;
