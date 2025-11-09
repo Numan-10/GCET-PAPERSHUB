@@ -43,25 +43,19 @@ const Verify = () => {
     setOtp("");
   };
 
-  // setting interval for resendotp
+
 
   const [Timer, setTimer] = useState();
   const [disabled, setDisabled] = useState(false);
   let count = 30;
-  // const interval = setInterval(() => {
-  //   count--;
-  //   setTimer(count);
-  //   if (count <= 0) {
-  //     clearInterval(interval);
-  //     setDisabled(false);
-  //   }
-  // }, 1000);
+
 
   const ResenOtp = async () => {
     const toastId = toast.loading("Sending OTP...");
     try {
       const email = location.state?.email;
-      const response = await axios.post("http://localhost:3000/resend-otp", {
+      
+      const response = await axios.post(`${API_BASE_URL}/resend-otp`, {
         email,
       });
       // console.log(response);

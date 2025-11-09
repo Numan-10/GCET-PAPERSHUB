@@ -9,7 +9,7 @@ import { MdPublishedWithChanges } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import { MdOutlineSearchOff } from "react-icons/md";
 import UpdatePaper from "./UpdatePaper";
-
+import API_BASE_URL from "../../../../ApiUrl";
 const Viewpaper = () => {
   const [page, setPage] = useState(1);
   const [paper, setPapers] = useState({
@@ -29,7 +29,7 @@ const Viewpaper = () => {
   const fetchPapers = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/subjects?page=${page}`
+        `${API_BASE_URL}/subjects?page=${page}`
       );
       setPapers({
         Papers: response.data.Papers,
@@ -60,24 +60,32 @@ const Viewpaper = () => {
   const handleDelete = async (id, filename) => {
     const toastId = toast.loading("Deleting paper...");
     try {
-      const { data } = await axios.delete(
-        `http://localhost:3000/subjects?id=${id}&filename=${filename}`
+      const response = await axios.delete(
+        `${API_BASE_URL}/subjects?id=${id}&filename=${filename}`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        }
       );
 
-      if (data.success) {
-        toast.success(data.message, { id: toastId });
-
-        // Update UI immediately without waiting for refetch
+      const { success, message } = response.data;
+      if (success) {
+        toast.success(message || "Paper deleted", { id: toastId });
         setPapers((prev) => ({
           ...prev,
           Papers: prev.Papers.filter((p) => p._id !== id),
         }));
       } else {
-        toast.error(data.message || "Failed to delete", { id: toastId });
+        toast.error(message || "You’re not authorized to delete this", {
+          id: toastId,
+        });
       }
     } catch (err) {
       console.error(err);
-      toast.error(err.response?.data?.message || err.message, { id: toastId });
+      toast.error(err.response?.data?.message || "Sign in to continue", {
+        id: toastId,
+      });
     }
   };
 

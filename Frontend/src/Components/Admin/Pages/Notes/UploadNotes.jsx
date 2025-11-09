@@ -17,9 +17,7 @@ function UploadNotes() {
 
   const fetchSubs = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/content/fetchSubs"
-      );
+      const response = await axios.get(`${API_BASE_URL}/content/fetchSubs`);
       const { subjects, success, err } = response.data;
       // console.log(response.data);
       if (success) {

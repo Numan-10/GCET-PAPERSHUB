@@ -7,6 +7,8 @@ import {
 } from "react-icons/fa";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import API_BASE_URL from "../../ApiUrl";
+
 const Report = () => {
   const [formData, setFormData] = useState({
     title: "",
@@ -31,7 +33,7 @@ const Report = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/bug-report",
+        `${API_BASE_URL}/bug-report`,
         formData,
         {
           headers: {

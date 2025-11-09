@@ -17,7 +17,7 @@ const ActivitySchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    index: { expires: "10d" }, // usin mongo TTL for auto deltion after 30 dys
+    index: { expires: "5d" }, // usin mongo TTL for auto deltion after 30 dys
   },
 });
 

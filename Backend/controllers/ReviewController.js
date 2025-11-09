@@ -47,11 +47,11 @@ module.exports.fetchReviews = async (req, res, next) => {
 module.exports.deleteReview = async (req, res, next) => {
   try {
     const { id } = req.params;
-    // console.log(id);
+    console.log(id);
 
     const deletedReview = await Review.findByIdAndDelete({ _id: id });
     if (deletedReview) {
-      return res.json({ message: "Review deleted!", success: true });
+      return res.json({ message: "Feedback deleted!", success: true });
     }
   } catch (err) {
     // console.log(err);

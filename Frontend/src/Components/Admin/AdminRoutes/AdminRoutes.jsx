@@ -9,6 +9,7 @@ import PageNotFound from "../../PageNotFound";
 import FeedbackPage from "../Pages/Feeback/FeedbackPage";
 import Reports from "../Pages/Reports/Reports";
 import Notification from "../Pages/Notifications/Notifications";
+import AdminContributions from "../Pages/Contributions/AdminContributions"
 const AdminRoutes = () => {
   return (
     <DashboardLayout>
@@ -21,6 +22,8 @@ const AdminRoutes = () => {
         <Route path="/feedbacks" element={<FeedbackPage />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/notifications" element={<Notification />} />
+        <Route path="/check-contributions" element={<AdminContributions />} />
+        
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </DashboardLayout>

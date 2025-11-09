@@ -3,11 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-// const multer = require("multer");
-// const { storage } = require("./cloudConfig");
-// const upload = multer({
-//   storage,
-// }).single("Pdf");
 const cookieParser = require("cookie-parser");
 const userVerification = require("./Middlewares/AuthMiddleware");
 const AuthRouter = require("./Routes/AuthRoute");
@@ -16,7 +11,7 @@ const ReviewRoute = require("./Routes/ReviewRoute");
 const ContentRoute = require("./Routes/ContentRoute");
 const PaperRoute = require("./Routes/PaperRoute");
 const AdminRoute=require("./Routes/AdminRoute")
-
+const contributeRoutes = require("./Routes/contributeRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -27,9 +22,8 @@ console.log(PROD_URL, LOCAL_URL);
 app.use(express.json());
 app.use(
   cors({
-    // "https://gcet-papershub.vercel.app"
-    origin: ["http://localhost:5173"],
-    // origin: [LOCAL_URL],
+    "https://gcet-papershub.vercel.app"،
+    // origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
     credentials: true,
   })
@@ -62,6 +56,7 @@ app.use("/review",  ReviewRoute);
 // app.use("/review", userVerification, ReviewRoute);
 // Admin
 app.use("/", AdminRoute);
+app.use("/", contributeRoutes);
 
 app.listen(PORT, (req, res) => {
   console.log(`App listing on port ${PORT}`);

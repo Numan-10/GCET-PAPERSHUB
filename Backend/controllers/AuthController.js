@@ -2,13 +2,16 @@ const User = require("../Models/User");
 const { createSecretToken } = require("../utils/SecretToken");
 const bcrypt = require("bcrypt");
 const speakeasy = require("speakeasy");
-const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
-// const Activity = require("../Models/RecentActivity");
+const { sendEmail } = require("../utils/emailService");
 const { createActivity } = require("./ActivityController");
 
 dotenv.config();
-module.exports.Signup = async (req, res, next) => {
+
+let totpStore = {}; // TEMP in-memory storage
+
+// ---------------- Signup ----------------
+module.exports.Signup = async (req, res) => {
   try {
     const { email, password, username, createdAt, role } = req.body;
 
@@ -35,35 +38,37 @@ module.exports.Signup = async (req, res, next) => {
     });
     await user.save();
 
-    //Tracking Activity
     await createActivity("Signed Up", user.username, user.email);
 
     return res
       .status(201)
       .json({ message: "Signup successful", success: true });
   } catch (error) {
-    console.log(error);
+    console.error("Signup Error:", error);
     return res
       .status(500)
       .json({ message: "Internal Server Error", success: false });
   }
 };
 
-let totpStore = {};
-module.exports.Login = async (req, res, next) => {
+// ---------------- Login ----------------
+module.exports.Login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     if (!email || !password) {
       return res
         .status(400)
         .json({ message: "All fields are required", success: false });
     }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res
         .status(403)
         .json({ message: "Incorrect password or email", success: false });
     }
+
     const auth = await bcrypt.compare(password, user.password);
     if (!auth) {
       return res
@@ -76,69 +81,60 @@ module.exports.Login = async (req, res, next) => {
       digits: 4,
       step: 300,
     });
-
     totpStore[email] = totp;
-    // totpStore[email] = email;
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Your OTP Code",
-      html: `
-    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 550px; margin: auto; background: linear-gradient(135deg, #f0f7ff, #ffffff); border: 1px solid #e0e6ed; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); padding: 25px;">
 
+    await sendEmail(
+      email,
+      "Your OTP Code",
+      `<div style="font-family:'Segoe UI', Arial, sans-serif; max-width:560px; margin:auto; background:linear-gradient(135deg,#f0f7ff,#ffffff); border:1px solid #e0e6ed; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.08); padding:26px;">
   <!-- Header -->
-  <div style="text-align: center; margin-bottom: 20px;">
-    <img src="https://gcet-papershub.vercel.app/Assets/codeclubW.jpg" alt="GCET Papers Hub" style="width: 70px; margin-bottom: 10px;" />
-    <h2 style="color: #1a237e; margin: 0; font-size: 22px; font-weight: 700;">
-      📘 GCET Paper's Hub
-    </h2>
-    <p style="color: #555; font-size: 14px; margin: 5px 0 0;">
-      Your trusted hub for notes & previous year papers
-    </p>
+  <div style="text-align:center; margin-bottom:18px;">
+    <img src="https://gcet-papershub.vercel.app/Assets/codeclubW.jpg" alt="GCET Papers Hub" width="72" height="72" style="width:72px;border-radius:6px; height:72px; object-fit:cover; margin-bottom:10px;" />
+    <h2 style="color:#1a237e; margin:0; font-size:22px; font-weight:700;">📘 GCET Paper's Hub</h2>
+    <p style="color:#586174; font-size:14px; margin:6px 0 0;">Your trusted hub for notes & previous year papers</p>
   </div>
 
+  <!-- Greeting -->
+  <p style="font-size:15px; color:#2f3949; line-height:1.6; text-align:center; margin:10px 0;">
+    Hello 👋, use the One-Time Password below to continue securely.
+  </p>
+
   <!-- OTP Box -->
-  <div style="background: #1a73e8; color: white; padding: 15px 20px; border-radius: 8px; text-align: center; margin: 20px 0; font-size: 26px; font-weight: bold; letter-spacing: 6px;">
+  <div style="background:#1a73e8; color:#ffffff; padding:16px 22px; border-radius:10px; text-align:center; margin:18px 0; font-size:28px; font-weight:800; letter-spacing:8px;">
     ${totp}
   </div>
 
-  <!-- Message -->
-  <p style="font-size: 16px; color: #333; line-height: 1.6; text-align: center;">
-    Hello 👋,  
-    Use the above One-Time Password (OTP) to log in securely to your <b>GCET Paper’s Hub</b> account.
+  <!-- Warning -->
+  <p style="font-size:14px; color:#e53935; text-align:center; margin:14px 0 0;">
+    ⚠️ This OTP expires in <b>5 minutes</b>. Do not share it with anyone.
   </p>
 
-  <!-- Warning -->
-  <p style="font-size: 14px; color: #e53935; text-align: center; margin-top: 10px;">
-    ⚠️ This OTP will expire in <b>5 minutes</b>. Do not share it with anyone!
-  </p>
+  <!-- Tips (optional) -->
+  <div style="background:#f7fafc; border:1px solid #e6ecf2; border-radius:10px; padding:12px 14px; margin:18px 0;">
+    <p style="margin:0; color:#475569; font-size:13px; line-height:1.6; text-align:center;">
+      Didn’t request this? You can ignore this email, or secure the account by changing the password.
+    </p>
+  </div>
 
   <!-- Footer -->
-  <hr style="margin: 25px 0; border: none; border-top: 1px solid #ddd;" />
-  <p style="font-size: 12px; text-align: center; color: #777;">
-    &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved.  
-    Built with ❤️ for GCET students.
+  <hr style="margin:24px 0; border:none; border-top:1px solid #e3e8ef;" />
+  <p style="font-size:12px; text-align:center; color:#6b7280; margin:0;">
+    &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved. Built with ❤️ for GCET students.
   </p>
 </div>
+`
+    );
 
-  `,
-    });
     return res.json({ message: "OTP sent to your email", success: true });
   } catch (err) {
-    console.log(err);
+    console.error("Login Error:", err);
     return res
       .status(500)
       .json({ message: "Internal Server Error", success: false });
   }
 };
 
+// ---------------- Verify Login OTP ----------------
 module.exports.Verify = async (req, res) => {
   try {
     const { otp, email } = req.body;
@@ -146,7 +142,7 @@ module.exports.Verify = async (req, res) => {
       secret: process.env.TOKEN_KEY,
       token: otp,
       step: 300,
-      window: 0, //doesn't accept the token from 1 step before or after
+      window: 0,
       digits: 4,
     });
 
@@ -162,16 +158,17 @@ module.exports.Verify = async (req, res) => {
         .status(400)
         .json({ message: "User not found", success: false });
     }
+
     delete totpStore[email];
-    // email = null;
+
     const Token = createSecretToken(existingUser._id, existingUser.role);
 
-    //Tracking Activity
     await createActivity(
       "Logged in",
       existingUser.username,
       existingUser.email
     );
+
     return res.json({
       message: "Successfully logged in",
       Token,
@@ -180,158 +177,141 @@ module.exports.Verify = async (req, res) => {
       role: existingUser.role,
     });
   } catch (err) {
+    console.error("Verify OTP Error:", err);
     return res.json({ message: `${err.message}`, success: false });
   }
 };
 
-// Resendotp
+// ---------------- Resend OTP ----------------
 module.exports.ResendOtp = async (req, res) => {
   try {
     const { email } = req.body;
+
     const totp = speakeasy.totp({
       secret: process.env.TOKEN_KEY,
       digits: 4,
       step: 300,
     });
-
     totpStore[email] = totp;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    await sendEmail(
+      email,
+      "Resent OTP Code",
+      `<div style="font-family:'Segoe UI', Arial, sans-serif; max-width:560px;  margin:auto; background:linear-gradient(135deg,#f0f7ff,#ffffff); border:1px solid #e0e6ed; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.08); padding:26px;">
+  <!-- Header -->
+  <div style="text-align:center; margin-bottom:18px;">
+    <img src="https://gcet-papershub.vercel.app/Assets/codeclubW.jpg" alt="GCET Papers Hub" width="72" height="72" style="width:72px; height:72px; object-fit:cover;border-radius:6px; margin-bottom:10px;" />
+    <h2 style="color:#1a237e; margin:0; font-size:22px; font-weight:700;">📘 GCET Paper's Hub</h2>
+    <p style="color:#586174; font-size:14px; margin:6px 0 0;">Your trusted hub for notes & previous year papers</p>
+  </div>
 
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Your Resent OTP Code",
-      html: `
-  <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 550px; margin: auto; background: linear-gradient(135deg, #f9fbff, #ffffff); border: 1px solid #e0e6ed; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); padding: 25px;">
+  <!-- Greeting -->
+  <p style="font-size:15px; color:#2f3949; line-height:1.6; text-align:center; margin:10px 0;">
+    Hello 👋, use the One-Time Password below to continue securely.
+  </p>
 
-    <!-- Header -->
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://gcet-papershub.vercel.app/Assets/codeclubW.jpg" alt="GCET Papers Hub" style="width: 70px; margin-bottom: 10px;" />
-      <h2 style="color: #1a237e; margin: 0; font-size: 22px; font-weight: 700;">
-        🔄 Resent OTP - GCET Paper's Hub
-      </h2>
-      <p style="color: #555; font-size: 14px; margin: 5px 0 0;">
-        Here’s your new OTP to continue securely.
-      </p>
-    </div>
+  <!-- OTP Box -->
+  <div style="background:#1a73e8; color:#ffffff; padding:16px 22px; border-radius:10px; text-align:center; margin:18px 0; font-size:28px; font-weight:800; letter-spacing:8px;">
+    ${totp}
+  </div>
 
-    <!-- OTP Box -->
-    <div style="background: #1a73e8; color: white; padding: 15px 20px; border-radius: 8px; text-align: center; margin: 20px 0; font-size: 26px; font-weight: bold; letter-spacing: 6px;">
-      ${totp}
-    </div>
 
-    <!-- Message -->
-    <p style="font-size: 16px; color: #333; line-height: 1.6; text-align: center;">
-      Hi 👋,  
-      As requested, we’ve resent your <b>One-Time Password (OTP)</b>.  
-      Use it to log in securely to your <b>GCET Paper’s Hub</b> account.
-    </p>
+  <!-- Warning -->
+  <p style="font-size:14px; color:#e53935; text-align:center; margin:14px 0 0;">
+    ⚠️ This OTP expires in <b>5 minutes</b>. Do not share it with anyone.
+  </p>
 
-    <!-- Warning -->
-    <p style="font-size: 14px; color: #e53935; text-align: center; margin-top: 10px;">
-      ⚠️ This OTP will expire in <b>5 minutes</b>. If you didn’t request this, please ignore this email.
-    </p>
-
-    <!-- Footer -->
-    <hr style="margin: 25px 0; border: none; border-top: 1px solid #ddd;" />
-    <p style="font-size: 12px; text-align: center; color: #777;">
-      &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved.  
-      Built with ❤️ for GCET students.
+  <!-- Tips (optional) -->
+  <div style="background:#f7fafc; border:1px solid #e6ecf2; border-radius:10px; padding:12px 14px; margin:18px 0;">
+    <p style="margin:0; color:#475569; font-size:13px; line-height:1.6; text-align:center;">
+      Didn’t request this? You can ignore this email, or secure the account by changing the password.
     </p>
   </div>
-  `,
-    });
+
+  <!-- Footer -->
+  <hr style="margin:24px 0; border:none; border-top:1px solid #e3e8ef;" />
+  <p style="font-size:12px; text-align:center; color:#6b7280; margin:0;">
+    &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved. Built with ❤️ for GCET students.
+  </p>
+</div>
+`
+    );
+
     return res.json({ message: "OTP Sent!", success: true });
   } catch (err) {
-    console.log(err);
+    console.error("Resend OTP Error:", err);
     return res
       .status(500)
       .json({ message: "Internal Server Error", success: false });
   }
 };
-// REset password
-module.exports.SendCode = async (req, res, next) => {
+
+// ---------------- Reset Password Flow ----------------
+module.exports.SendCode = async (req, res) => {
   try {
     const { email } = req.body;
-    if (!email) {
-      return res.json({ message: "Email is required!", successs: false });
-    }
+    if (!email)
+      return res.json({ message: "Email is required!", success: false });
 
-    const existingUser = await User.findOne({ email: email });
-    // console.log(existingUser);
-    if (!existingUser) {
+    const existingUser = await User.findOne({ email });
+    if (!existingUser)
       return res.json({ message: "User doesn't exist!", success: false });
-    }
+
     const totp = speakeasy.totp({
       secret: process.env.TOKEN_KEY,
       digits: 4,
       step: 300,
     });
-
     totpStore[email] = totp;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Reset Your Password - GCET Paper's Hub",
-      html: `
-  <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 550px; margin: auto; background: linear-gradient(135deg, #f9fbff, #ffffff); border: 1px solid #e0e6ed; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.1); padding: 25px;">
+    await sendEmail(
+      email,
+      "Reset Your Password - GCET Paper's Hub",
+      `<div style="font-family:'Segoe UI', Arial, sans-serif; max-width:560px; margin:auto; background:linear-gradient(135deg,#f0f7ff,#ffffff); border:1px solid #e0e6ed;  box-shadow:0 8px 24px rgba(0,0,0,0.08); padding:26px;">
+  <!-- Header -->
+  <div style="text-align:center; margin-bottom:18px;">
+    <img src="https://gcet-papershub.vercel.app/Assets/codeclubW.jpg" alt="GCET Papers Hub" width="72" height="72" border-radius:6px; style="width:72px; height:72px; object-fit:cover; margin-bottom:10px;" />
+    <h2 style="color:#1a237e; margin:0; font-size:22px; font-weight:700;">📘 GCET Paper's Hub</h2>
+    <p style="color:#586174; font-size:14px; margin:6px 0 0;">Your trusted hub for notes & previous year papers</p>
+  </div>
 
-    <!-- Header -->
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img src="https://gcet-papershub.vercel.app/Assets/codeclubW.jpg" alt="GCET Papers Hub" style="width: 70px; margin-bottom: 10px;" />
-      <h2 style="color: #1a237e; margin: 0; font-size: 22px; font-weight: 700;">
-        🔒 Password Reset - GCET Paper's Hub
-      </h2>
-      <p style="color: #555; font-size: 14px; margin: 5px 0 0;">
-        You requested to reset your password. Use the code below to proceed.
-      </p>
-    </div>
+  <!-- Greeting -->
+  <p style="font-size:15px; color:#2f3949; line-height:1.6; text-align:center; margin:10px 0;">
+    Hello 👋, use the One-Time Password below to continue securely.
+  </p>
 
-    <!-- OTP / Reset Code Box -->
-    <div style="background: #1a73e8; color: white; padding: 15px 20px; border-radius: 8px; text-align: center; margin: 20px 0; font-size: 26px; font-weight: bold; letter-spacing: 6px;">
-      ${totp}
-    </div>
+  <!-- OTP Box -->
+  <div style="background:#1a73e8; color:#ffffff; padding:16px 22px; border-radius:10px; text-align:center; margin:18px 0; font-size:28px; font-weight:800; letter-spacing:8px;">
+    ${totp}
+  </div>
 
-    <!-- Message -->
-    <p style="font-size: 16px; color: #333; line-height: 1.6; text-align: center;">
-      Hi 👋,  
-      Use the above <b>Reset Code</b> to securely change your password for your <b>GCET Paper’s Hub</b> account.  
-      Enter this code on the reset password page to continue.
-    </p>
+ 
 
-    <!-- Warning -->
-    <p style="font-size: 14px; color: #e53935; text-align: center; margin-top: 10px;">
-      ⚠️ This code will expire in <b>5 minutes</b>. If you didn’t request a password reset, please ignore this email.
-    </p>
+  <!-- Warning -->
+  <p style="font-size:14px; color:#e53935; text-align:center; margin:14px 0 0;">
+    ⚠️ This OTP expires in <b>5 minutes</b>. Do not share it with anyone.
+  </p>
 
-    <!-- Footer -->
-    <hr style="margin: 25px 0; border: none; border-top: 1px solid #ddd;" />
-    <p style="font-size: 12px; text-align: center; color: #777;">
-      &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved.  
-      Built with ❤️ for GCET students.
+  <!-- Tips (optional) -->
+  <div style="background:#f7fafc; border:1px solid #e6ecf2; border-radius:10px; padding:12px 14px; margin:18px 0;">
+    <p style="margin:0; color:#475569; font-size:13px; line-height:1.6; text-align:center;">
+      Didn’t request this? You can ignore this email, or secure the account by changing the password.
     </p>
   </div>
-  `,
-    });
 
-    return res.json({ message: "OTP  Sent!", success: true });
+  <!-- Footer -->
+  <hr style="margin:24px 0; border:none; border-top:1px solid #e3e8ef;" />
+  <p style="font-size:12px; text-align:center; color:#6b7280; margin:0;">
+    &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved. Built with ❤️ for GCET students.
+  </p>
+</div>
+`
+    );
+
+    return res.json({ message: "OTP Sent!", success: true });
   } catch (err) {
-    return res.json({ message: err?.message, success: false });
+    console.error("SendCode Error:", err);
+    return res.json({ message: err.message, success: false });
   }
 };
 
@@ -353,41 +333,38 @@ module.exports.VerifyResetOtp = async (req, res) => {
     }
 
     const existingUser = await User.findOne({ email });
-    if (!existingUser) {
-      return res.status(400).json({ success: false });
-    }
+    if (!existingUser)
+      return res
+        .status(400)
+        .json({ message: "User not found", success: false });
+
     delete totpStore[email];
 
-    return res.json({
-      message: "Verfied!",
-
-      success: true,
-    });
+    return res.json({ message: "Verified!", success: true });
   } catch (err) {
+    console.error("VerifyResetOtp Error:", err);
     return res.json({ message: `${err.message}`, success: false });
   }
 };
 
-module.exports.ChangePass = async (req, res, next) => {
-  const { email, newPassword } = req.body;
-  if (!email || !newPassword)
-    return res.json({ success: false, message: "Missing fields" });
+module.exports.ChangePass = async (req, res) => {
   try {
+    const { email, newPassword } = req.body;
+    if (!email || !newPassword)
+      return res.json({ success: false, message: "Missing fields" });
+
     const user = await User.findOne({ email });
     if (!user) return res.json({ success: false, message: "User not found" });
-    const hashedPass = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPass;
 
+    user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
-    //Tracking Activity
-    await createActivity(
-      "Reseted Password",
-      user.username,
-      user.email
-    );
+
+    delete totpStore[email];
+    await createActivity("Reseted Password", user.username, user.email);
+
     res.json({ success: true, message: "Password changed successfully!" });
   } catch (err) {
-    console.error(err);
+    console.error("ChangePass Error:", err);
     res.json({ success: false, message: "Error changing password" });
   }
 };

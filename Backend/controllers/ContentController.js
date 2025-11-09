@@ -183,3 +183,103 @@ module.exports.DeleteUnit = async (req, res, next) => {
     return res.json({ message: error.message, success: false });
   }
 };
+
+// Update Subject
+module.exports.UpdateSubject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { subject, semester } = req.body;
+
+    if (!subject || !semester) {
+      return res.status(400).json({
+        success: false,
+        message: "Subject name and semester are required",
+      });
+    }
+
+    const updatedSubject = await Content.findByIdAndUpdate(
+      id,
+      { subject, semester },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedSubject) {
+      return res.status(404).json({
+        success: false,
+        message: "Subject not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Subject updated successfully",
+      data: updatedSubject,
+    });
+  } catch (err) {
+    console.error("Error updating subject:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update subject",
+      error: err.message,
+    });
+  }
+};
+
+// Update Unit
+
+module.exports.UpdateUnit = async (req, res) => {
+  try {
+    const { unitId } = req.params;
+    const { unit, name } = req.body;
+
+    if (!unit || !name) {
+      return res.status(400).json({
+        success: false,
+        message: "Unit number and name are required",
+      });
+    }
+
+    const existingUnit = await Unit.findById(unitId);
+    if (!existingUnit) {
+      return res.status(404).json({
+        success: false,
+        message: "Unit not found",
+      });
+    }
+
+    existingUnit.unit = unit;
+    existingUnit.name = name;
+
+    if (req.file) {
+      if (existingUnit.pdf?.filename) {
+        try {
+          await cloudinary.uploader.destroy(existingUnit.pdf.filename, {
+            resource_type: "raw",
+          });
+        } catch (err) {
+          console.log("Error deleting old PDF:", err);
+        }
+      }
+
+      existingUnit.pdf = {
+        Url: req.file.path,
+        filename: req.file.filename,
+      };
+    }
+
+    await existingUnit.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Unit updated successfully",
+      data: existingUnit,
+    });
+  } catch (err) {
+    console.error("Error updating unit:", err);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update unit",
+      error: err.message,
+    });
+  }
+};

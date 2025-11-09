@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Social from "./Social.jsx";
 import Subject from "./Subject.jsx";
 import axios from "axios";

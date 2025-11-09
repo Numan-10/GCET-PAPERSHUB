@@ -24,17 +24,6 @@ const Login = () => {
     });
   };
 
-  // const handleError = (err) =>
-  //   toast.error(err, {
-  //     position: "top-center",
-  //     duration: 1000,
-  //   });
-  // const handleSuccess = (msg) =>
-  //   toast.success(msg, {
-  //     position: "top-center",
-  //     duration: 1500,
-  //   });
-
   const handleSubmit = async (e) => {
     const toastId = toast.loading("Verifying Credentials");
     e.preventDefault();

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
+import API_BASE_URL from "../../ApiUrl";
 
 const ForgotPass = () => {
   const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ const ForgotPass = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/verify-reset-otp",
+        `${API_BASE_URL}/verify-reset-otp`,
         {
           email,
           otp,
@@ -64,7 +65,7 @@ const ForgotPass = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/SendCode", {
+      const response = await axios.post(`${API_BASE_URL}/SendCode`, {
         email,
       });
 
@@ -100,7 +101,7 @@ const ForgotPass = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/changePass", {
+      const response = await axios.post(`${API_BASE_URL}/changePass`, {
         email,
         newPassword,
       });

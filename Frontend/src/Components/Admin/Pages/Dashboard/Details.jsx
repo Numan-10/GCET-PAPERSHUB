@@ -4,6 +4,8 @@ import { FaUserPlus } from "react-icons/fa";
 import StatCard from "./StatCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import API_BASE_URL from "../../../../ApiUrl";
+
 const Details = () => {
   const [Details, setDetails] = useState({
     TotalUsers: "",
@@ -12,7 +14,7 @@ const Details = () => {
   });
   useEffect(() => {
     const fetchUsers = async () => {
-      const response = await axios.get("http://localhost:3000/user", {
+      const response = await axios.get(`${API_BASE_URL}/user`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },

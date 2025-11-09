@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaBug, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import API_BASE_URL from "../../../../ApiUrl";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
@@ -14,7 +15,7 @@ const Reports = () => {
 
   const fetchReports = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/FetchBugs", {
+      const response = await axios.get(`${API_BASE_URL}/FetchBugs`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
@@ -36,21 +37,21 @@ const Reports = () => {
     const toastId = toast.loading("Deleting report...");
     try {
       const response = await axios.delete(
-        `http://localhost:3000/delete/${id}`,
+        `${API_BASE_URL}/delete/${id}`,
         {
           headers: {
-            Authorization: localStorage?.getItem("token"),
+            Authorization: localStorage.getItem("token"),
           },
         }
       );
-
-      if (response.data.success) {
+      const { success } = response.data;
+      if (success) {
         setReports(reports.filter((report) => report._id !== id));
         toast.success("Report deleted", { id: toastId });
       }
     } catch (error) {
       console.log(error);
-      toast.error("Failed to delete", { id: toastId });
+      toast.error(error.response.data?.message, { id: toastId });
       setLoading(false);
     }
   };

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import axios from "axios";
+import API_BASE_URL from "../../../../ApiUrl";
+
 const RecentActivity = () => {
   const [activites, setActivites] = useState([]);
   useEffect(() => {
     const fetchActivites = async () => {
       const response = await axios.get(
-        "http://localhost:3000/user/activities",
+        `${API_BASE_URL}/user/activities`,
         {
           headers: {
             Authorization: localStorage.getItem("token"),

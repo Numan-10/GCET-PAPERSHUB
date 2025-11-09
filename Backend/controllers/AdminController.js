@@ -1,6 +1,8 @@
 const User = require("../Models/User");
 const BugReport = require("../Models/BugReport");
 const Notification = require("../Models/Notification");
+const Review = require("../Models/Review");
+
 module.exports.ChangeRole = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -67,6 +69,7 @@ module.exports.DeleteUser = async (req, res, next) => {
     }
     // console.log(deletedUser);
     return res.json({ message: "User deleted.", success: true });
+    next();
   } catch (err) {
     console.log(err);
     return res.json({ message: "Somthing went wrong", success: false });
@@ -119,6 +122,7 @@ module.exports.DeleteBug = async (req, res, next) => {
     console.log(DeletedBug);
     return res.json({ message: "Bug Deleted!", success: true });
   } catch (err) {
+    console.log(err);
     return res.json({ message: err.message, success: false });
   }
 };
@@ -215,5 +219,21 @@ module.exports.deleteNotification = async (req, res, next) => {
     });
   } catch (err) {
     return res.json({ message: err.message, success: false });
+  }
+};
+
+// Growth
+module.exports.getGrowthData = async (req, res) => {
+  try {
+    const totalBugs = await BugReport.countDocuments();
+    const totalReviews = await Review.countDocuments();
+
+    res.status(200).json({
+      totalBugs,
+      totalReviews
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Error fetching data" });
   }
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-
+import API_BASE_URL from "../../../../ApiUrl";
 const UpdatePaper = ({ paper, onClose }) => {
   const [Data, setData] = useState({
     Subject: paper?.Subject || "",
@@ -47,7 +47,7 @@ const UpdatePaper = ({ paper, onClose }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/subjects/update`,
+        `${API_BASE_URL}/subjects/update`,
         form,
         {
           headers: {

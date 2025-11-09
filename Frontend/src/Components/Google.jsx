@@ -16,11 +16,10 @@ function Google() {
 
       const { message, success } = response.data;
       if (success) {
-        const Token = response.data.token;
-        const { email, image, username } = response.data.user;
-        localStorage.setItem("token", Token);
-        localStorage.setItem("email", email);
-        localStorage.setItem("user", username);
+        const { role, token, user } = response.data;
+        localStorage.setItem("token", token);
+        localStorage.setItem("role", role);
+        localStorage.setItem("user", user);
 
         Navigate("/home");
 

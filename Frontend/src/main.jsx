@@ -23,6 +23,8 @@ import AccessDenied from "./Components/AccessDenied.jsx";
 import PublicRoute from "./PublicRoute.jsx";
 import Report from "./Components/Bug/Report.jsx";
 import ForgotPass from "./Components/Pass/ForgotPass.jsx";
+import ContributeNotes from "./Components/Contribute/ContributePage.jsx";
+import ContributeGuidelines from "./Components/Contribute/ContributeGuidelines.jsx";
 //Googe CliendId
 const cliendId = import.meta.env.VITE_APP_CLIENT_ID;
 
@@ -49,6 +51,15 @@ createRoot(document.getElementById("root")).render(
           <Route path="/" element={<Landing />} />
           <Route path="/home" element={<HomePage />} />
           <Route
+            path="/contribute/*"
+            element={
+              <PrivateRoute requiredRole={["admin", "manager", "user"]}>
+                <ContributeNotes />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
             path="/home/:id"
             element={
               <PrivateRoute>
@@ -56,7 +67,7 @@ createRoot(document.getElementById("root")).render(
               </PrivateRoute>
             }
           />
-          <Route path="/Contributors" element={<ContributePage />} />
+          <Route path="/Author" element={<ContributePage />} />
           <Route path="/updates" element={<UpdatePage />} />
           <Route path="/about" element={<AboutPage />} />
           {/* <Route path="/upload" element={<UploadPage />} /> */}
@@ -102,7 +113,14 @@ createRoot(document.getElementById("root")).render(
               </PrivateRoute>
             }
           />
-          <Route path="/report" element={<Report />} />
+          <Route
+            path="/report"
+            element={
+              <PrivateRoute requiredRole={["admin", "manager", "user"]}>
+                <Report />
+              </PrivateRoute>
+            }
+          />
           <Route path="/forgot-password" element={<ForgotPass />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

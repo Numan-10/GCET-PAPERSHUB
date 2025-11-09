@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FaUsers, FaSave, FaTrash } from "react-icons/fa";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import API_BASE_URL from "../../../../ApiUrl";
 
 const UsersPage = () => {
   const [search, setSearch] = useState("");
@@ -20,12 +21,12 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/user", {
+        const response = await axios.get(`${API_BASE_URL}/user`, {
           headers: {
             Authorization: localStorage?.getItem("token"),
           },
         });
-        const { Users, success } = response.data;
+        const { Users, success, message } = response.data;
         console.log(Users);
         if (success) {
           setLoading(false);
@@ -36,6 +37,8 @@ const UsersPage = () => {
             role: user.role,
           }));
           setUsers(showUsers);
+        } else {
+          toast.error(message);
         }
       } catch (err) {
         console.error(err);
@@ -56,7 +59,7 @@ const UsersPage = () => {
     const toastId = toast.loading("Updating role...");
     try {
       const response = await axios.patch(
-        `http://localhost:3000/user/${id}`,
+        `${API_BASE_URL}/user/${id}`,
         {
           role: newRole,
         },
@@ -66,7 +69,7 @@ const UsersPage = () => {
           },
         }
       );
-      const { success } = response.data;
+      const { success, message } = response.data;
       if (success) {
         toast.success("Role Updated!", { id: toastId });
         setUsers(
@@ -74,10 +77,12 @@ const UsersPage = () => {
             user.id === id ? { ...user, role: newRole } : user
           )
         );
+      } else {
+        toast.error(message || "You are not authorized!", { id: toastId });
       }
     } catch (err) {
       console.log(err);
-      toast.error("Failed to update.", { id: toastId });
+      toast.error(err.response?.data?.message || "Failed to update.", { id: toastId });
     } finally {
       setLoading(false);
     }
@@ -87,18 +92,20 @@ const UsersPage = () => {
     setLoading(true);
     const toastId = toast.loading("Deleting user...");
     try {
-      const response = await axios.delete(`http://localhost:3000/user/${id}`, {
+      const response = await axios.delete(`${API_BASE_URL}/user/${id}`, {
         headers: {
           Authorization: localStorage?.getItem("token"),
         },
       });
-      const { success } = response.data;
+      const { success, message } = response.data;
       if (success) {
         toast.success("User deleted.", { id: toastId });
         setUsers((prev) => prev.filter((user) => user.id !== id));
+      } else {
+        toast.error(message || "You are not authorized!", { id: toastId });
       }
-    } catch {
-      toast.error("Failed to delete.", { id: toastId });
+    } catch(err) {
+      toast.error( err.response?.data?.message ||"Failed to delete.", { id: toastId });
     } finally {
       setLoading(false);
     }

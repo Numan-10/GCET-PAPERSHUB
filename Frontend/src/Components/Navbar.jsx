@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import toast, { Toaster } from "react-hot-toast";
 import BugReportIcon from "@mui/icons-material/BugReport";
+// import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import DescriptionIcon from "@mui/icons-material/Description";
 import {
   Box,
   Avatar,
@@ -14,7 +16,6 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Logout, Login as LoginIcon } from "@mui/icons-material";
-import Settings from "@mui/icons-material/Settings";
 import { IoNotificationsCircleSharp } from "react-icons/io5";
 function Navbar() {
   const location = useLocation();
@@ -65,12 +66,15 @@ function Navbar() {
       800
     );
   };
+  const contribute = () => {
+    navigate("/contribute");
+  };
 
   const AvatarName = currUser?.charAt(0)?.toUpperCase();
 
   useEffect(() => {
-    const isAdmin = () => localStorage?.getItem("role") === "admin";
-    setIsAdmin(isAdmin());
+    const role = localStorage.getItem("role");
+    setIsAdmin(role === "admin" || role === "manager");
   }, [location.pathname]);
 
   return (
@@ -93,7 +97,7 @@ function Navbar() {
             ✕
           </button>
           <ul>
-            {["Home", "Content", "Contributors"].map((item) => (
+            {["Home", "Content", "Author"].map((item) => (
               <Link
                 key={item}
                 to={`/${item}`}
@@ -173,6 +177,12 @@ function Navbar() {
                     <BugReportIcon fontSize="small" />
                   </ListItemIcon>
                   Report a Bug
+                </MenuItem>
+                <MenuItem onClick={contribute}>
+                  <ListItemIcon>
+                    <DescriptionIcon fontSize="small" />
+                  </ListItemIcon>
+                  Contribute
                 </MenuItem>
                 <MenuItem onClick={logout}>
                   <ListItemIcon>

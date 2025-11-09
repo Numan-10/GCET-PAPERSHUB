@@ -19,6 +19,7 @@ module.exports.GoogleAuth = async (req, res) => {
       const { email, name, picture } = UserData.data;
 
       let user = await UserModel.findOne({ email });
+      console.log(user);
       if (!user) {
         user = await UserModel.create({
           email,
@@ -27,15 +28,22 @@ module.exports.GoogleAuth = async (req, res) => {
         });
       }
 
-      const { _id } = user;
-      const token = createSecretToken({ _id, email, name });
+      const token = createSecretToken(user._id, user.role);
 
-      res.status(200).json({
+      return res.json({
         message: "Google Login Successful!",
-        success: true,
         token,
-        user,
+        success: true,
+        user: user.username,
+        role: user.role,
       });
+
+      // res.status(200).json({
+      //   message: "Google Login Successful!",
+      //   success: true,
+      //   token,
+      //   user,
+      // });
     }
   } catch (err) {
     res.status(500).json({ message: "Internal Server Error", success: false });

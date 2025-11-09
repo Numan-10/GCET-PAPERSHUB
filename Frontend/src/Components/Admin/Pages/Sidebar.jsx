@@ -8,6 +8,7 @@ import { FaComments } from "react-icons/fa";
 import { MdDashboardCustomize } from "react-icons/md";
 import { FaBug } from "react-icons/fa6";
 import { IoMdNotifications } from "react-icons/io";
+import { FiCheckSquare } from "react-icons/fi";
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const navigate = useNavigate();
   return (
@@ -83,6 +84,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <li className="nav-item">
           <Link className="nav-link text-white p-1" to="/admin/notifications">
             <IoMdNotifications size={18} /> Notifications
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link text-white p-1" to="/admin/check-contributions">
+            <FiCheckSquare size={18} /> Check Contributions
           </Link>
         </li>
       </ul>

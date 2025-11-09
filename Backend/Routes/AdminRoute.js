@@ -1,6 +1,6 @@
 const userVerification = require("../Middlewares/AuthMiddleware");
 const { AuthorizeRoles } = require("../Middlewares/AuthorizeRoles");
-// const { BugReportsValidation } = require("../Middlewares/ValidationMiddleware");
+
 const {
   ChangeRole,
   FetchUsers,
@@ -12,6 +12,7 @@ const {
   createNotification,
   updateNotification,
   deleteNotification,
+  getGrowthData
 } = require("../controllers/AdminController");
 const { FetchActivites } = require("../controllers/ActivityController");
 const router = require("express").Router();
@@ -61,22 +62,32 @@ router.get("/notifications", fetchNotification);
 router.post(
   "/notifications",
   userVerification,
-  AuthorizeRoles("admin"),
+  AuthorizeRoles("manager", "admin"),
   createNotification
 );
 
 router.put(
   "/notifications/:id",
   userVerification,
-  AuthorizeRoles("admin"),
+  AuthorizeRoles("manager", "admin"),
   updateNotification
 );
 
 router.delete(
   "/notifications/:id",
   userVerification,
-  AuthorizeRoles("admin"),
+  AuthorizeRoles("manager", "admin"),
   deleteNotification
 );
+
+// Growth Dashboard
+router.get(
+  "/growth",
+  userVerification,
+  AuthorizeRoles("admin", "manager"),
+  getGrowthData
+);
+
+
 
 module.exports = router;
