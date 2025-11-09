@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { LineChart, Line, ResponsiveContainer, Tooltip } from "recharts";
+import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { FaBug, FaStar } from "react-icons/fa";
 import API_BASE_URL from "../../../../ApiUrl";
 
@@ -41,10 +41,10 @@ const Growth = () => {
   ];
 
   return (
-    <div className="container-fluid p-3">
+    <div className="container-fluid ">
       {/* Stat Cards */}
       <div className="row g-3 mb-3">
-        <div className="col-6">
+        <div className="col-12 col-md-6">
           <div className="bg-white rounded shadow p-3">
             <div className="d-flex justify-content-between align-items-center">
               <div>
@@ -56,7 +56,7 @@ const Growth = () => {
           </div>
         </div>
 
-        <div className="col-6">
+        <div className="col-12 col-md-6">
           <div className="bg-white rounded shadow p-3">
             <div className="d-flex justify-content-between align-items-center">
               <div>
