@@ -10,7 +10,7 @@ const GoogleAuth = require("./Routes/GoogleAuth");
 const ReviewRoute = require("./Routes/ReviewRoute");
 const ContentRoute = require("./Routes/ContentRoute");
 const PaperRoute = require("./Routes/PaperRoute");
-const AdminRoute=require("./Routes/AdminRoute")
+const AdminRoute = require("./Routes/AdminRoute");
 const contributeRoutes = require("./Routes/contributeRoutes");
 const app = express();
 
@@ -22,9 +22,9 @@ console.log(PROD_URL, LOCAL_URL);
 app.use(express.json());
 app.use(
   cors({
-    "https://gcet-papershub.vercel.app"،
+    origin: "https://gcet-papershub.vercel.app",
     // origin: ["http://localhost:5173"],
-    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
 );
@@ -52,7 +52,7 @@ app.use("/auth", GoogleAuth);
 //Content
 app.use("/content", ContentRoute);
 //Review
-app.use("/review",  ReviewRoute);
+app.use("/review", ReviewRoute);
 // app.use("/review", userVerification, ReviewRoute);
 // Admin
 app.use("/", AdminRoute);
