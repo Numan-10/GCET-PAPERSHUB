@@ -1,19 +1,41 @@
-const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND_API_KEY);
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
-async function sendEmail(to, subject, html) {
+const sendEmail = async (to, subject, html) => {
   try {
-    const { data, error } = await resend.emails.send({
-      from: "GCET-Unofficial <onboarding@resend.dev>",
+    const transporter = nodemailer.createTransport({
+      host: process.env.BREVO_HOST,
+      port: process.env.BREVO_PORT,
+      auth: {
+        user: process.env.BREVO_USER,
+        pass: process.env.BREVO_PASS,
+      },
+      tls: { rejectUnauthorized: false },
+    });
+
+    const mailData = {
+      from: '"GCET Paper\'s Hub" <mohammadnuman7788@gmail.com>',
       to,
       subject,
       html,
+    };
+
+    const info = await new Promise((resolve, reject) => {
+      transporter.sendMail(mailData, (err, info) => {
+        if (err) {
+          console.error("❌ Email send error:", err);
+          reject(err);
+        } else {
+          resolve(info);
+        }
+      });
     });
-    if (error) throw error;
-    console.log("Email sent successfully:", data.id);
-  } catch (err) {
-    console.error("Email Sending Failed:", err);
+
+    console.log("✅ Email sent:", info.response);
+    return true;
+  } catch (error) {
+    return false;
   }
-}
+};
 
 module.exports = { sendEmail };
