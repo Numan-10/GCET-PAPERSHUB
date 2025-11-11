@@ -4,17 +4,21 @@ require("dotenv").config();
 const sendEmail = async (to, subject, html) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: process.env.BREVO_HOST,
-      port: process.env.BREVO_PORT,
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
       auth: {
-        user: process.env.BREVO_USER,
-        pass: process.env.BREVO_PASS,
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
-      tls: { rejectUnauthorized: false },
+      tls: {
+        rejectUnauthorized: true,
+      },
     });
 
     const mailData = {
-      from: '"GCET Paper\'s Hub" <mohammadnuman7788@gmail.com>',
+      from: `"GCET Paper's Hub" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
@@ -23,7 +27,7 @@ const sendEmail = async (to, subject, html) => {
     const info = await new Promise((resolve, reject) => {
       transporter.sendMail(mailData, (err, info) => {
         if (err) {
-          console.error("❌ Email send error:", err);
+          console.error("Email send error:", err);
           reject(err);
         } else {
           resolve(info);
@@ -31,9 +35,10 @@ const sendEmail = async (to, subject, html) => {
       });
     });
 
-    console.log("✅ Email sent:", info.response);
+    console.log("Email sent:", info.response);
     return true;
   } catch (error) {
+    console.error("Unexpected error:", error);
     return false;
   }
 };
