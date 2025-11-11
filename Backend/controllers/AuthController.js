@@ -3,7 +3,7 @@ const { createSecretToken } = require("../utils/SecretToken");
 const bcrypt = require("bcrypt");
 const speakeasy = require("speakeasy");
 const dotenv = require("dotenv");
-const { sendEmail } = require("../utils/emailService");
+const sendEmail  = require("../utils/emailService");
 const { createActivity } = require("./ActivityController");
 
 dotenv.config();

@@ -1,46 +1,26 @@
 const nodemailer = require("nodemailer");
-require("dotenv").config();
-
-const sendEmail = async (to, subject, html) => {
+require("dotenv").config;
+async function sendEmail(email, title, body) {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
       host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-      tls: {
-        rejectUnauthorized: true,
-      },
     });
 
-    const mailData = {
-      from: `"GCET Paper's Hub" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      html,
-    };
-
-    const info = await new Promise((resolve, reject) => {
-      transporter.sendMail(mailData, (err, info) => {
-        if (err) {
-          console.error("Email send error:", err);
-          reject(err);
-        } else {
-          resolve(info);
-        }
-      });
+    const info = await transporter.sendMail({
+      from: "GCET Paper's Hub || By Numan_10",
+      to: email,
+      subject: title,
+      html: body,
     });
 
-    console.log("Email sent:", info.response);
-    return true;
+    return info;
   } catch (error) {
-    console.error("Unexpected error:", error);
-    return false;
+    console.error("Email send error:", error);
   }
-};
+}
 
-module.exports = { sendEmail };
+module.exports = sendEmail;

@@ -42,7 +42,6 @@ main()
     console.log(err);
   });
 
-// app.post("/upload");
 //Subjects
 app.use("/", PaperRoute);
 //Auth
@@ -53,9 +52,9 @@ app.use("/auth", GoogleAuth);
 app.use("/content", ContentRoute);
 //Review
 app.use("/review", ReviewRoute);
-// app.use("/review", userVerification, ReviewRoute);
 // Admin
 app.use("/", AdminRoute);
+// Contribute Papers/Notes
 app.use("/", contributeRoutes);
 
 app.listen(PORT, (req, res) => {
