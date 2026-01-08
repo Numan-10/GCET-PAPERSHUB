@@ -22,7 +22,7 @@ function SubDetails() {
       try {
         const { data } = await axios.get(`${BackendUrl}/content/${subject}`, {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: localStorage?.getItem("token"),
           },
         });
 
@@ -42,7 +42,7 @@ function SubDetails() {
       }
     };
     data();
-  }, [subDetails]);
+  }, []);
 
   const Images = [
     "/Assets/Frame 77 (1).svg",
