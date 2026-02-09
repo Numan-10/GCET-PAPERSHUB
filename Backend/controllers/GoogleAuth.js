@@ -3,6 +3,7 @@ const axios = require("axios");
 const UserModel = require("../Models/User");
 const jwt = require("jsonwebtoken");
 const { createSecretToken } = require("../utils/SecretToken");
+const { createActivity } = require("./ActivityController");
 module.exports.GoogleAuth = async (req, res) => {
   const GoogleUrl = process.env.GOOGLE_SCOPE;
   try {
@@ -30,6 +31,7 @@ module.exports.GoogleAuth = async (req, res) => {
 
       const token = createSecretToken(user._id, user.role);
 
+      await createActivity("Google Login", user.username, user.email);
       return res.json({
         message: "Google Login Successful!",
         token,
@@ -38,12 +40,6 @@ module.exports.GoogleAuth = async (req, res) => {
         role: user.role,
       });
 
-      // res.status(200).json({
-      //   message: "Google Login Successful!",
-      //   success: true,
-      //   token,
-      //   user,
-      // });
     }
   } catch (err) {
     res.status(500).json({ message: "Internal Server Error", success: false });

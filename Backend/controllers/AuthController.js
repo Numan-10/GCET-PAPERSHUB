@@ -1,14 +1,14 @@
 const User = require("../Models/User");
 const { createSecretToken } = require("../utils/SecretToken");
 const bcrypt = require("bcrypt");
-const speakeasy = require("speakeasy");
+
 const dotenv = require("dotenv");
-const sendEmail  = require("../utils/emailService");
+const sendEmail = require("../utils/emailService");
 const { createActivity } = require("./ActivityController");
+const OtpSchema = require("../Models/Otp");
+const Otp = require("../Models/Otp");
 
 dotenv.config();
-
-let totpStore = {}; // TEMP in-memory storage
 
 // ---------------- Signup ----------------
 module.exports.Signup = async (req, res) => {
@@ -66,9 +66,10 @@ module.exports.Login = async (req, res) => {
     if (!user) {
       return res
         .status(403)
-        .json({ message: "Incorrect password or email", success: false });
+        .json({ message: "User not found!", success: false });
     }
-    if (!password || !user.password) {
+
+    if (!password) {
       return res.status(400).json({ message: "Password missing or invalid" });
     }
 
@@ -76,15 +77,22 @@ module.exports.Login = async (req, res) => {
     if (!auth) {
       return res
         .status(403)
-        .json({ message: "Incorrect password or email", success: false });
+        .json({ message: "Incorrect password", success: false });
     }
 
-    const totp = speakeasy.totp({
-      secret: process.env.TOKEN_KEY,
-      digits: 4,
-      step: 300,
-    });
-    totpStore[email] = totp;
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    console.log(otp);
+    const hashedOtp = await bcrypt.hash(otp.toString(), 12);
+    console.log(hashedOtp);
+    await OtpSchema.findOneAndUpdate(
+      { email: user.email, type: "Login" },
+      {
+        otpHash: hashedOtp,
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5min
+        attempts: 0,
+      },
+      { upsert: true },
+    );
 
     await sendEmail(
       email,
@@ -104,7 +112,7 @@ module.exports.Login = async (req, res) => {
 
   <!-- OTP Box -->
   <div style="background:#1a73e8; color:#ffffff; padding:16px 22px; border-radius:10px; text-align:center; margin:18px 0; font-size:28px; font-weight:800; letter-spacing:8px;">
-    ${totp}
+    ${otp}
   </div>
 
   <!-- Warning -->
@@ -125,7 +133,7 @@ module.exports.Login = async (req, res) => {
     &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved. Built with ❤️ for GCET students.
   </p>
 </div>
-`
+`,
     );
 
     return res.json({ message: "OTP sent to your email", success: true });
@@ -141,19 +149,28 @@ module.exports.Login = async (req, res) => {
 module.exports.Verify = async (req, res) => {
   try {
     const { otp, email } = req.body;
-    const verified = speakeasy.totp.verify({
-      secret: process.env.TOKEN_KEY,
-      token: otp,
-      step: 300,
-      window: 0,
-      digits: 4,
-    });
+    console.log(otp);
 
-    if (!verified || totpStore[email] != otp) {
+    const record = await Otp.findOne({ email, type: "Login" });
+
+    if (!record) {
+      return res.status(400).json({ message: "Expired OTP", success: false });
+    }
+    if (record.attempts > 5) {
       return res
         .status(400)
-        .json({ message: "Invalid or expired OTP", success: false });
+        .json({ message: "Too many attempts, Try later", success: false });
     }
+    if (record.expiresAt < Date.now()) {
+      return res.status(400).json({ message: "Expired OTP", success: false });
+    }
+    const Verified = await bcrypt.compare(otp.toString(), record.otpHash);
+    if (!Verified) {
+      record.attempts += 1;
+      await record.save();
+      return res.status(400).json({ message: "Invalid OTP", success: false });
+    }
+    await Otp.deleteOne({ email });
 
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
@@ -162,14 +179,12 @@ module.exports.Verify = async (req, res) => {
         .json({ message: "User not found", success: false });
     }
 
-    delete totpStore[email];
-
     const Token = createSecretToken(existingUser._id, existingUser.role);
 
     await createActivity(
       "Logged in",
       existingUser.username,
-      existingUser.email
+      existingUser.email,
     );
 
     return res.json({
@@ -190,12 +205,19 @@ module.exports.ResendOtp = async (req, res) => {
   try {
     const { email } = req.body;
 
-    const totp = speakeasy.totp({
-      secret: process.env.TOKEN_KEY,
-      digits: 4,
-      step: 300,
-    });
-    totpStore[email] = totp;
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    console.log(otp);
+    const hashedOtp = await bcrypt.hash(otp.toString(), 12);
+    console.log(hashedOtp);
+    await OtpSchema.findOneAndUpdate(
+      { email: email, type: "Login" },
+      {
+        otpHash: hashedOtp,
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5min
+        attempts: 0,
+      },
+      { upsert: true },
+    );
 
     await sendEmail(
       email,
@@ -215,7 +237,7 @@ module.exports.ResendOtp = async (req, res) => {
 
   <!-- OTP Box -->
   <div style="background:#1a73e8; color:#ffffff; padding:16px 22px; border-radius:10px; text-align:center; margin:18px 0; font-size:28px; font-weight:800; letter-spacing:8px;">
-    ${totp}
+    ${otp}
   </div>
 
 
@@ -237,7 +259,7 @@ module.exports.ResendOtp = async (req, res) => {
     &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved. Built with ❤️ for GCET students.
   </p>
 </div>
-`
+`,
     );
 
     return res.json({ message: "OTP Sent!", success: true });
@@ -260,13 +282,19 @@ module.exports.SendCode = async (req, res) => {
     if (!existingUser)
       return res.json({ message: "User doesn't exist!", success: false });
 
-    const totp = speakeasy.totp({
-      secret: process.env.TOKEN_KEY,
-      digits: 4,
-      step: 300,
-    });
-    totpStore[email] = totp;
-
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    console.log("Otp sent at reset: " + otp);
+    const hashedOtp = await bcrypt.hash(otp.toString(), 12);
+    // console.log(hashedOtp);
+    await OtpSchema.findOneAndUpdate(
+      { email: email, type: "reset_Pass" },
+      {
+        otpHash: hashedOtp,
+        expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5min
+        attempts: 0,
+      },
+      { upsert: true },
+    );
     await sendEmail(
       email,
       "Reset Your Password - GCET Paper's Hub",
@@ -285,7 +313,7 @@ module.exports.SendCode = async (req, res) => {
 
   <!-- OTP Box -->
   <div style="background:#1a73e8; color:#ffffff; padding:16px 22px; border-radius:10px; text-align:center; margin:18px 0; font-size:28px; font-weight:800; letter-spacing:8px;">
-    ${totp}
+    ${otp}
   </div>
 
  
@@ -308,7 +336,7 @@ module.exports.SendCode = async (req, res) => {
     &copy; ${new Date().getFullYear()} GCET Paper's Hub. All rights reserved. Built with ❤️ for GCET students.
   </p>
 </div>
-`
+`,
     );
 
     return res.json({ message: "OTP Sent!", success: true });
@@ -321,29 +349,22 @@ module.exports.SendCode = async (req, res) => {
 module.exports.VerifyResetOtp = async (req, res) => {
   try {
     const { otp, email } = req.body;
-    const verified = speakeasy.totp.verify({
-      secret: process.env.TOKEN_KEY,
-      token: otp,
-      step: 300,
-      window: 0,
-      digits: 4,
-    });
-
-    if (!verified || totpStore[email] != otp) {
-      return res
-        .status(400)
-        .json({ message: "Invalid or expired OTP", success: false });
-    }
-
+    const cleanOtp = otp.toString().trim();
+    console.log("otp revc from user: " + otp);
     const existingUser = await User.findOne({ email });
     if (!existingUser)
       return res
         .status(400)
         .json({ message: "User not found", success: false });
-
-    delete totpStore[email];
-
-    return res.json({ message: "Verified!", success: true });
+    const record = await Otp.findOne({ email, type: "reset_Pass" });
+    console.log(record);
+    const Verified = await bcrypt.compare(cleanOtp, record?.otpHash);
+    console.log(Verified);
+    if (Verified) {
+      return res.json({ message: "Verified!", success: true });
+    } else {
+      return res.json({ message: "OTP invalid or expired!", success: false });
+    }
   } catch (err) {
     console.error("VerifyResetOtp Error:", err);
     return res.json({ message: `${err.message}`, success: false });
@@ -359,10 +380,8 @@ module.exports.ChangePass = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.json({ success: false, message: "User not found" });
 
-    user.password = await bcrypt.hash(newPassword, 10);
+    user.password = await bcrypt.hash(newPassword, 12);
     await user.save();
-
-    delete totpStore[email];
     await createActivity("Reseted Password", user.username, user.email);
 
     res.json({ success: true, message: "Password changed successfully!" });

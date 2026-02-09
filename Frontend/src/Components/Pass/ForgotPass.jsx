@@ -44,7 +44,7 @@ const ForgotPass = () => {
       const { message, success } = response.data;
       if (success) {
         toast.success(message, { id: toastId });
-        setOtpVerified(true); // ✅ switch to password reset form
+        setOtpVerified(true); // switch to password reset form
       } else {
         toast.error(message, { id: toastId });
       }
@@ -74,9 +74,8 @@ const ForgotPass = () => {
       if (success) {
         toast.success(message, { id: toastId });
         setCodeSent(true);
-      } else {
+      } else{
         toast.error(message, { id: toastId });
-        setEmail("");
         setCodeSent(false);
       }
     } catch (err) {
@@ -109,7 +108,7 @@ const ForgotPass = () => {
       const { message, success } = response.data;
       if (success) {
         toast.success(message, { id: toastId });
-        navigate("/login"); // ✅ redirect after success
+        navigate("/login"); // redirect after success
       } else {
         toast.error(message, { id: toastId });
       }

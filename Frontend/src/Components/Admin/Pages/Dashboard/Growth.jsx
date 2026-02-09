@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-import { FaBug, FaStar } from "react-icons/fa";
+import { FaBug, FaStar, FaBookOpen } from "react-icons/fa";
 import API_BASE_URL from "../../../../ApiUrl";
 
 const Growth = () => {
@@ -36,19 +36,20 @@ const Growth = () => {
 
   // Create simple chart data
   const chartData = [
-    { name: 'Bug Reports', value: data.totalBugs, color: '#ef4444' },
-    { name: 'Reviews', value: data.totalReviews, color: '#3b82f6' }
+    { name: "Bug Reports", value: data.totalBugs, color: "#ef4444" },
+    { name: "Reviews", value: data.totalReviews, color: "#3b82f6" },
   ];
 
   return (
     <div className="container-fluid ">
       {/* Stat Cards */}
       <div className="row g-3 mb-3">
-        <div className="col-12 col-md-6">
-          <div className="bg-white rounded shadow p-3">
+        {/* Bug Reports */}
+        <div className="col-12 col-md-4 col-xs-2">
+          <div className="rounded shadow p-3 bg-danger bg-opacity-10">
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <small className="text-muted">Bug Reports</small>
+                <small className="text-danger fw-semibold">Bug Reports</small>
                 <h3 className="mb-0 fw-bold text-danger">{data.totalBugs}</h3>
               </div>
               <FaBug size={32} className="text-danger" />
@@ -56,14 +57,34 @@ const Growth = () => {
           </div>
         </div>
 
-        <div className="col-12 col-md-6">
-          <div className="bg-white rounded shadow p-3">
+        {/* Reviews */}
+        <div className="col-12 col-md-4 col-xs-2">
+          <div className="rounded shadow p-3 bg-primary bg-opacity-10">
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                <small className="text-muted">Reviews</small>
-                <h3 className="mb-0 fw-bold text-primary">{data.totalReviews}</h3>
+                <small className="text-primary fw-semibold">Reviews</small>
+                <h3 className="mb-0 fw-bold text-primary">
+                  {data.totalReviews}
+                </h3>
               </div>
               <FaStar size={32} className="text-warning" />
+            </div>
+          </div>
+        </div>
+
+        {/* Contributions */}
+        <div className="col-12 col-md-4 col-xs-2">
+          <div className="rounded shadow p-3 bg-success bg-opacity-10">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <small className="text-success fw-semibold">
+                  Contributions
+                </small>
+                <h3 className="mb-0 fw-bold text-success">
+                  {data.totalContributions}
+                </h3>
+              </div>
+              <FaBookOpen size={32} className="text-success" />
             </div>
           </div>
         </div>
@@ -72,15 +93,15 @@ const Growth = () => {
       {/* Simple Visual Graph */}
       <div className="bg-white rounded shadow p-3">
         <h5 className="mb-3 fw-bold">Overview</h5>
-        
+
         <div className="row align-items-center">
           {chartData.map((item, index) => (
             <div key={index} className="col-6 text-center">
               <ResponsiveContainer width="100%" height={150}>
                 <LineChart data={[{ value: 0 }, { value: item.value }]}>
-                  <Line 
-                    type="monotone" 
-                    dataKey="value" 
+                  <Line
+                    type="monotone"
+                    dataKey="value"
                     stroke={item.color}
                     strokeWidth={3}
                     dot={false}

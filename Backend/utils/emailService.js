@@ -60,7 +60,7 @@ async function sendEmail(email, title, body) {
     return info;
   } catch (error) {
     console.error("Email send error:", error);
-    throw error;
+    // throw error;
   }
 }
 

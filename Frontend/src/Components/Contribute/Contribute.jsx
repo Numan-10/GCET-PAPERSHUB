@@ -40,6 +40,9 @@ function Contribute() {
       const res = await fetch(`${API_BASE_URL}/contributeNotes`, {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
       });
 
       if (res.ok) {
@@ -96,7 +99,7 @@ function Contribute() {
                   Contribute to GCET
                 </h2>
                 <p style={{ color: "#64748b", fontSize: 15 }}>
-                  Upload your notes or papers for  review.&nbsp;
+                  Upload your notes or papers for review.&nbsp;
                   <a
                     href="/contribute/guidelines"
                     style={{
@@ -198,6 +201,9 @@ function Contribute() {
                     <p className="mb-2" style={{ color: "#475569" }}>
                       Click to browse and select your PDF file
                     </p>
+                    <i className="mb-2" style={{ color: "#0a5025ff" }}>
+                      Size limit upto 10 Mb
+                    </i>
                     <input
                       id="pdf-upload"
                       type="file"

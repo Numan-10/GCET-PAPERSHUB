@@ -2,6 +2,7 @@ const User = require("../Models/User");
 const BugReport = require("../Models/BugReport");
 const Notification = require("../Models/Notification");
 const Review = require("../Models/Review");
+const Contributors = require("../Models/ContributeNotes");
 
 module.exports.ChangeRole = async (req, res, next) => {
   try {
@@ -11,7 +12,7 @@ module.exports.ChangeRole = async (req, res, next) => {
       id,
       { $set: { role: newRole } }, // $set: user fo changing one doucment--good prtc
       { new: true }, //return new doc
-      { runValidators: true } //ensures validation during updation
+      { runValidators: true }, //ensures validation during updation
     );
     if (!UpdatedUser) {
       return res.json({ success: false });
@@ -185,7 +186,7 @@ module.exports.updateNotification = async (req, res, next) => {
         message: message.trim(),
         link: link || "",
       },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!updatedNotification) {
@@ -227,10 +228,12 @@ module.exports.getGrowthData = async (req, res) => {
   try {
     const totalBugs = await BugReport.countDocuments();
     const totalReviews = await Review.countDocuments();
+    const totalContributions = await Contributors.countDocuments();
 
     res.status(200).json({
       totalBugs,
-      totalReviews
+      totalReviews,
+      totalContributions,
     });
   } catch (error) {
     console.error("Error:", error);
