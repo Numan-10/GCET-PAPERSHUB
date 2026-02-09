@@ -22,7 +22,7 @@ console.log(PROD_URL, LOCAL_URL);
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://gcet-papershub-frontend.onrender.com/",
+    origin: "https://gcet-papershub-frontend.onrender.com",
     // origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
