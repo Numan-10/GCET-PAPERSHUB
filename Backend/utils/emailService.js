@@ -4,13 +4,15 @@ const nodemailer = require("nodemailer");
 async function sendEmail(email, title, body) {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, 
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PASS, 
       },
     });
-
+    await transporter.verify();
     const info = await transporter.sendMail({
       from: "GCET Paper's Hub || By Numan_10",
       to: email,
@@ -18,9 +20,12 @@ async function sendEmail(email, title, body) {
       html: body,
     });
 
-    return info;
+    console.log("Email sent successfully:", info.messageId);
+    return true;
+
   } catch (error) {
-    console.error("Email send error:", error);
+    console.error("Email sending failed:", error.message);
+    return false;
   }
 }
 
