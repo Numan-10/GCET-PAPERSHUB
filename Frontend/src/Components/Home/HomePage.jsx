@@ -8,6 +8,7 @@ import "./pagination.css";
 import { FaSearch } from "react-icons/fa";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import toast, { Toaster } from "react-hot-toast";
 function HomePage() {
   const [page, setPage] = useState(1);
   const [data, setIsData] = useState({
@@ -25,6 +26,15 @@ function HomePage() {
   ];
 
   const BackendUrl = API_BASE_URL;
+  useEffect(() => {
+    const provider = sessionStorage.getItem("oauthLoginProvider");
+    if (!provider) return;
+
+    const label = provider === "google" ? "Google" : "GitHub";
+    toast.success(`${label} login successful`);
+    sessionStorage.removeItem("oauthLoginProvider");
+  }, []);
+
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
@@ -63,6 +73,7 @@ function HomePage() {
   return (
     <>
       <div className="container">
+        <Toaster />
         <Social />
 
         {/* Searching the paper*/}

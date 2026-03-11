@@ -54,5 +54,11 @@ router.delete(
   DeleteUnit
 );
 // update unit pdf, name, unit name
-router.put("/unit/:unitId", upload, UpdateUnit);
+router.put(
+  "/unit/:unitId",
+  userVerification,
+  AuthorizeRoles("admin", "manager"),
+  upload,
+  UpdateUnit
+);
 module.exports = router;

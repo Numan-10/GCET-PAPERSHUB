@@ -5,20 +5,24 @@ module.exports.submitReview = async (req, res) => {
   try {
     const currUser = req.user;
 
-    const { value, comment, user, createdAt } = req.body;
+    const { value, comment } = req.body;
 
     const Existuser = await User.findById(currUser.id);
-
-    if (!comment && !value && !user) {
+    if (!Existuser) {
       return res
-        .status(500)
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+
+    if (!comment || !comment.trim() || !value) {
+      return res
+        .status(400)
         .json({ message: "All fields are required!", success: false });
     }
     const newReview = new Review({
       comment,
       rating: value,
-      author: user,
-      createdAt,
+      author: Existuser.username,
     });
     Existuser.reviews.push(newReview);
     await newReview.save();

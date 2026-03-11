@@ -11,8 +11,7 @@ module.exports.ChangeRole = async (req, res, next) => {
     const UpdatedUser = await User.findByIdAndUpdate(
       id,
       { $set: { role: newRole } }, // $set: user fo changing one doucment--good prtc
-      { new: true }, //return new doc
-      { runValidators: true }, //ensures validation during updation
+      { new: true, runValidators: true } //return new doc + validate
     );
     if (!UpdatedUser) {
       return res.json({ success: false });

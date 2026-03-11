@@ -2,7 +2,6 @@ const Content = require("../Models/Content");
 const Unit = require("../Models/Unit");
 const { cloudinary } = require("../cloudConfig");
 // const Subject = require("../Models/Paper");
-const { createActivity } = require("./ActivityController");
 module.exports.Content = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -46,15 +45,15 @@ module.exports.Units = async (req, res) => {
     const { subject } = req.params;
     if (!subject) {
       return res
-        .status(500)
-        .json({ message: "Subject isn't Valid!", success: false });
+        .status(400)
+        .json({ message: "Subject isn't valid!", success: false });
     }
 
     const sub = await Content.findOne({ subject }).populate("units");
     if (!sub) {
       return res
-        .status(500)
-        .json({ message: "Subject Not Found!", success: false });
+        .status(404)
+        .json({ message: "Subject not found!", success: false });
     }
 
     return res
@@ -71,16 +70,18 @@ module.exports.Units = async (req, res) => {
 module.exports.newSubject = async (req, res) => {
   try {
     const { subject, semester } = req.body;
-    if (!subject || !semester) {
+    const subjectValue = subject?.trim();
+    const semesterValue = semester?.trim();
+    if (!subjectValue || !semesterValue) {
       return res
-        .status(500)
+        .status(400)
         .json({ message: "All fields are required", success: false });
     }
     const newSubject = new Content({
-      subject: subject,
-      semester: semester,
+      subject: subjectValue,
+      semester: semesterValue,
     });
-    newSubject.save();
+    await newSubject.save();
     // await createActivity("Signed Up", user.username, user.email);
 
     return res.status(200).json({ message: "Subject Created!", success: true });
@@ -95,28 +96,47 @@ module.exports.newSubject = async (req, res) => {
 module.exports.newUnit = async (req, res) => {
   try {
     const subject = req.params.sub;
-    const Url = req.file.path;
-    const filename = req.file.filename;
-    const { name, unit } = req.body.Unit;
+    const bodyUnit =
+      req.body?.Unit && typeof req.body.Unit === "object"
+        ? req.body.Unit
+        : {
+            name: req.body["Unit[name]"] || req.body.name,
+            unit: req.body["Unit[unit]"] || req.body.unit,
+          };
+    const name = bodyUnit?.name?.trim();
+    const unit = bodyUnit?.unit?.trim();
 
-    const content = await Content.findOne({ subject });
-
-    if (content && Url) {
-      const newUnit = new Unit({
-        name,
-        unit,
-        pdf: { Url, filename },
-      });
-      await newUnit.save();
-      content.units.push(newUnit);
-      await content.save();
-    }
-
-    if (!name || !unit) {
+    if (!subject || !name || !unit) {
       return res
-        .status(500)
+        .status(400)
         .json({ message: "All fields are required", success: false });
     }
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ message: "PDF file is required", success: false });
+    }
+
+    const Url = req.file.path;
+    const filename = req.file.filename;
+
+    const content = await Content.findOne({ subject });
+    if (!content) {
+      return res
+        .status(404)
+        .json({ message: "Subject not found", success: false });
+    }
+
+    const newUnit = new Unit({
+      name,
+      unit,
+      pdf: { Url, filename },
+    });
+    await newUnit.save();
+    content.units.push(newUnit);
+    await content.save();
+
     // await createActivity("Signed Up", user.username, user.email);
     return res
       .status(200)
@@ -146,10 +166,15 @@ module.exports.DeleteContent = async (req, res, next) => {
   try {
     const { id } = req.params;
     const Subject = await Content.findById(id).populate("units");
+    if (!Subject) {
+      return res.status(404).json({ message: "Subject not found", success: false });
+    }
     for (const unit of Subject.units) {
       // console.log(unit);
       if (unit.pdf?.filename) {
-        await cloudinary.uploader.destroy(unit.pdf.filename);
+        await cloudinary.uploader.destroy(unit.pdf.filename, {
+          resource_type: "raw",
+        });
       }
     }
     await Unit.deleteMany({ _id: { $in: Subject.units.map((u) => u._id) } });
@@ -167,12 +192,14 @@ module.exports.DeleteUnit = async (req, res, next) => {
   try {
     const { id } = req.params;
     const existingUnit = await Unit.findById(id);
-    if (!Unit) {
-      return res.json({ message: "Unit not found", success: false });
+    if (!existingUnit) {
+      return res.status(404).json({ message: "Unit not found", success: false });
     }
 
     if (existingUnit.pdf?.filename) {
-      await cloudinary.uploader.destroy(existingUnit.pdf.filename);
+      await cloudinary.uploader.destroy(existingUnit.pdf.filename, {
+        resource_type: "raw",
+      });
     }
     await Content.updateMany({}, { $pull: { units: id } });
     await Unit.findByIdAndDelete(id);

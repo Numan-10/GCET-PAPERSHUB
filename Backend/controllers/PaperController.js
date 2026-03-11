@@ -1,8 +1,7 @@
 const Paper = require("../Models/Paper");
-const { createActivity } = require("./ActivityController");
 module.exports.Subjects = async (req, res) => {
   try {
-    const page = req.query.page || 1;
+    const page = parseInt(req.query.page, 10) || 1;
     const search = req.query.search || "";
     const perPage = 8;
     //  $or: [
@@ -31,8 +30,8 @@ module.exports.Subjects = async (req, res) => {
     return res.status(200).json({ Papers, page, totalPages });
   } catch (err) {
     return res
-      .status(404)
-      .json({ message: "Papers Not Found!", success: false });
+      .status(500)
+      .json({ message: "Failed to fetch papers", success: false });
   }
 };
 
@@ -40,7 +39,31 @@ module.exports.Subjects = async (req, res) => {
 
 module.exports.UploadPaper = async (req, res) => {
   try {
-    const { Title, Subject, Semester } = req.body.paper;
+    const paperPayload =
+      req.body?.paper && typeof req.body.paper === "object"
+        ? req.body.paper
+        : {
+            Title: req.body["paper[Title]"] || req.body.Title,
+            Subject: req.body["paper[Subject]"] || req.body.Subject,
+            Semester: req.body["paper[Semester]"] || req.body.Semester,
+          };
+
+    const Title = paperPayload?.Title?.trim();
+    const Subject = paperPayload?.Subject?.trim();
+    const Semester = paperPayload?.Semester?.trim();
+
+    if (!Title || !Subject || !Semester) {
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
+    }
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "PDF file is required" });
+    }
+
     let Url = req.file.path;
     let filename = req.file.filename;
     const newdata = new Paper({
@@ -49,14 +72,11 @@ module.exports.UploadPaper = async (req, res) => {
       Semester,
     });
     newdata.Pdf = { Url, filename };
-    await newdata
-      .save()
-      // await createActivity("Signed Up", user.username, user.email);
-      .then(() =>
-        res
-          .status(200)
-          .json({ success: true, message: "Data Uploaded Successfully" })
-      );
+    await newdata.save();
+    // await createActivity("Signed Up", user.username, user.email);
+    return res
+      .status(200)
+      .json({ success: true, message: "Data Uploaded Successfully" });
   } catch (err) {
     return res
       .status(500)
@@ -93,7 +113,7 @@ module.exports.DeletePaper = async (req, res, next) => {
         .json({ success: false, message: "Missing id or filename" });
     }
 
-    const result = await cloudinary.uploader.destroy(public_id);
+    await cloudinary.uploader.destroy(public_id, { resource_type: "raw" });
 
     const deletePaper = await Paper.findByIdAndDelete(id);
 
@@ -113,7 +133,7 @@ module.exports.DeletePaper = async (req, res, next) => {
 
 module.exports.UpdatePaper = async (req, res) => {
   try {
-    const { id, Subject, Semester, Title, filename } = req.body;
+    const { id, Subject, Semester, Title } = req.body;
 
     const paper = await Paper.findById(id);
     if (!paper) {
@@ -127,15 +147,14 @@ module.exports.UpdatePaper = async (req, res) => {
     paper.Title = Title || paper.Title;
 
     if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        resource_type: "raw",
-        public_id: filename || paper.Pdf.filename,
-        overwrite: true,
-      });
-
+      if (paper.Pdf?.filename) {
+        await cloudinary.uploader.destroy(paper.Pdf.filename, {
+          resource_type: "raw",
+        });
+      }
       paper.Pdf = {
-        Url: result.secure_url,
-        filename: result.public_id,
+        Url: req.file.path,
+        filename: req.file.filename,
       };
     }
 
