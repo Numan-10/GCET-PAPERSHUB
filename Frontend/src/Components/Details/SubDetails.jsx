@@ -14,9 +14,6 @@ function SubDetails() {
     const fetchData = async () => {
       try {
         const response = await axios.get(`${BackendUrl}/subjects/${id}`, {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         });
 
         setSubject(response.data);
@@ -75,3 +72,5 @@ function SubDetails() {
 }
 
 export default SubDetails;
+
+

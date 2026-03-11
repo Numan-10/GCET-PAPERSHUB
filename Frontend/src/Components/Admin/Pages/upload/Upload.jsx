@@ -63,7 +63,6 @@ function Upload() {
       const { data } = await axios.post(` ${BackendUrl}/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: localStorage.getItem("token"),
         },
       });
 
@@ -177,3 +176,4 @@ function Upload() {
 }
 
 export default Upload;
+

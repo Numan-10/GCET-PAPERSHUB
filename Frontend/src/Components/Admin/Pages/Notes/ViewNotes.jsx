@@ -236,9 +236,6 @@ const ViewNotes = () => {
       const response = await axios.delete(
         `${API_BASE_URL}/content/${deleteNoteId}`,
         {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
       const { message, success } = response.data;
@@ -274,9 +271,6 @@ const ViewNotes = () => {
       const response = await axios.delete(
         `${API_BASE_URL}/content/unit/${deleteUnitData.unitId}`,
         {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
       const { message, success } = response.data;
@@ -869,3 +863,5 @@ const ViewNotes = () => {
 };
 
 export default ViewNotes;
+
+

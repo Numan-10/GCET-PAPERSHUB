@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Testimonials from "./Testimonial.jsx";
+
 const arr = [
   {
     Text: "This is top-tier work by Numan. The site looks professional and will be super helpful for GCET students. Amazing effort!",
@@ -49,16 +50,19 @@ const arr = [
 ];
 
 function TestimonialsPage() {
+  const items = [...arr, ...arr];
   return (
     <div className="review-slide">
-      {arr.map((item, index) => (
-        <Testimonials
-          key={index}
-          Text={item.Text}
-          Name={item.Name}
-          Value={item.Value}
-        />
-      ))}
+      <div className="review-track">
+        {items.map((item, index) => (
+          <Testimonials
+            key={`testimonial-${index}`}
+            Text={item.Text}
+            Name={item.Name}
+            Value={item.Value}
+          />
+        ))}
+      </div>
     </div>
   );
 }

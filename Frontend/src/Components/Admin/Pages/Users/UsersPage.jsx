@@ -16,7 +16,7 @@ const UsersPage = () => {
     const fetchUsers = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/user`, {
-          headers: { Authorization: localStorage?.getItem("token") },
+          
         });
         const { Users, success, message } = res.data;
         if (success) {
@@ -51,7 +51,7 @@ const UsersPage = () => {
       const res = await axios.patch(
         `${API_BASE_URL}/user/${id}`,
         { role: newRole },
-        { headers: { Authorization: localStorage.getItem("token") } }
+        {  }
       );
       const { success, message } = res.data;
       if (success) {
@@ -79,7 +79,7 @@ const UsersPage = () => {
     setLoading(true);
     try {
       const res = await axios.delete(`${API_BASE_URL}/user/${id}`, {
-        headers: { Authorization: localStorage?.getItem("token") },
+        
       });
       const { success, message } = res.data;
       if (success) {
@@ -247,3 +247,5 @@ const UsersPage = () => {
 };
 
 export default UsersPage;
+
+

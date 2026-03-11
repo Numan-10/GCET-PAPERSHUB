@@ -1,71 +1,24 @@
-import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import API_BASE_URL from "../ApiUrl";
-import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
-function Google() {
-  const BackendUrl = API_BASE_URL;
-  const Navigate = useNavigate();
-  const responseGoogle = async (res) => {
-    try {
-      let code = res["code"];
-      const response = await axios.get(
-        `${BackendUrl}/auth/google?code=${code}`
-      );
+function Google({ label = "Continue with Google" }) {
+  const googleAuthUrl = `${API_BASE_URL}/auth/google`;
 
-      const { message, success } = response.data;
-      if (success) {
-        const { role, token, user } = response.data;
-        localStorage.setItem("token", token);
-        localStorage.setItem("role", role);
-        localStorage.setItem("user", user);
-
-        Navigate("/home");
-
-        setTimeout(() => {
-          toast.success(message, {
-            position: "top-center",
-            duration: 2100,
-            icon: "🎉",
-          });
-        }, 800);
-      }
-    } catch (err) {
-      toast.error(err?.response?.data?.message || err);
-    }
-  };
-  const GoogleAuth = useGoogleLogin({
-    onSuccess: responseGoogle,
-    onError: responseGoogle,
-    flow: "auth-code",
-  });
   return (
-    <>
-      <div className="d-flex justify-content-center align-items-center mt-3">
-        <div className="lines p-3">
-          <hr />
-        </div>
-        <p className="px-3 pt-3 break">or continue with</p>
-        <div className="lines p-3">
-          <hr />
-        </div>
-      </div>
-      <button
-        onClick={GoogleAuth}
-        className="text-center d-flex justify-content-around border rounded-2 google p-2"
-      >
-        <div>
-          <img
-            src="/Assets/google.svg"
-            alt="Google Icon"
-            className="google-icon"
-          />
-        </div>
-        <div className="fw-medium">Sign in with Google</div>
-      </button>
-      <Toaster />
-    </>
+    <button
+      type="button"
+      onClick={() => {
+        if (!googleAuthUrl) {
+          toast.error("Google login is not available");
+          return;
+        }
+        window.location.href = googleAuthUrl;
+      }}
+      className="auth-btn auth-btn-google"
+    >
+      <img src="/Assets/google.svg" alt="Google" className="auth-btn-icon" />
+      <span>{label}</span>
+    </button>
   );
 }
 

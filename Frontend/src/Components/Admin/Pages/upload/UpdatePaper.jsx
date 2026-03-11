@@ -52,7 +52,6 @@ const UpdatePaper = ({ paper, onClose }) => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: localStorage.getItem("token"),
           },
         }
       );
@@ -144,3 +143,4 @@ const UpdatePaper = ({ paper, onClose }) => {
 };
 
 export default UpdatePaper;
+

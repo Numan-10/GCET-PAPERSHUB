@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import BugReportIcon from "@mui/icons-material/BugReport";
 // import NoteAddIcon from '@mui/icons-material/NoteAdd';
@@ -17,6 +17,13 @@ import {
 } from "@mui/material";
 import { Logout, Login as LoginIcon } from "@mui/icons-material";
 import { IoNotificationsCircleSharp } from "react-icons/io5";
+import API_BASE_URL from "../ApiUrl";
+import {
+  clearReadableAuthCookies,
+  getAuthRole,
+  getAuthUser,
+} from "../utils/authCookies";
+
 function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,32 +35,19 @@ function Navbar() {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-
-    if (user && token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        if (decodedToken.exp * 1000 < Date.now()) {
-          localStorage.clear();
-          setcurrUser(null);
-        } else {
-          setcurrUser(user);
-        }
-      } catch (err) {
-        localStorage.clear();
-        setcurrUser(null);
-      }
-    } else {
-      setcurrUser(null);
-    }
+    setcurrUser(getAuthUser() || null);
   }, [location.pathname]);
 
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 
-  const logout = () => {
-    localStorage.clear();
+  const logout = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+    } catch (err) {
+      // Ignore logout API errors and still clear client state
+    }
+    clearReadableAuthCookies();
     setcurrUser(null);
     navigate("/home");
     handleMenuClose();
@@ -73,7 +67,7 @@ function Navbar() {
   const AvatarName = currUser?.charAt(0)?.toUpperCase();
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
+    const role = getAuthRole();
     setIsAdmin(role === "admin" || role === "manager");
   }, [location.pathname]);
 
@@ -195,7 +189,7 @@ function Navbar() {
           ) : (
             // Show Login button for non-logged-in users
             <Link to="/login" style={{ textDecoration: "none" }}>
-              <button className="btn btn-success btn-sm d-flex align-items-center">
+              <button className="btn btn-dark btn-sm d-flex align-items-center">
                 <LoginIcon sx={{ mr: 1, fontSize: "16px" }} />
                 Login
               </button>

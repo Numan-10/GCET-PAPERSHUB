@@ -32,9 +32,6 @@ function CreateNotes({ onClose }) {
     e.preventDefault();
     try {
       const response = await axios.post(`${API_BASE_URL}/content/new`, form, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
       });
 
       console.log(response.data);
@@ -94,3 +91,5 @@ function CreateNotes({ onClose }) {
 }
 
 export default CreateNotes;
+
+

@@ -6,7 +6,6 @@ import axios from "axios";
 import ShowUnits from "./ShowUnits";
 import UploadUnits from "./UploadUnits";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 const BackendUrl = API_BASE_URL;
 function SubDetails() {
@@ -20,11 +19,7 @@ function SubDetails() {
   useEffect(() => {
     const data = async () => {
       try {
-        const { data } = await axios.get(`${BackendUrl}/content/${subject}`, {
-          headers: {
-            Authorization: localStorage?.getItem("token"),
-          },
-        });
+        const { data } = await axios.get(`${BackendUrl}/content/${subject}`);
 
         const { message, success, subDetails } = data;
         if (!success) {
@@ -52,32 +47,23 @@ function SubDetails() {
 
   //-------------> Showing the + sign to the specific User-> for adding Subjects <-------------------
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedEmail = localStorage.getItem("email");
-    const token = localStorage.getItem("token");
-
-    if (storedUser && storedEmail && token) {
+    const loadSession = async () => {
       try {
-        const decodedToken = jwtDecode(token);
-
-        if (decodedToken.exp * 1000 < Date.now()) {
-          localStorage.clear();
+        const { data } = await axios.get(`${BackendUrl}/session`);
+        if (data?.success) {
+          setUserData({
+            User: data.user,
+            Email: data.email,
+            id: data.id || null,
+          });
+        } else {
           setUserData(null);
-          return;
         }
-
-        setUserData({
-          User: storedUser,
-          Email: storedEmail,
-          id: decodedToken.id || null,
-        });
       } catch (error) {
-        localStorage.clear();
         setUserData(null);
       }
-    } else {
-      setUserData(null);
-    }
+    };
+    loadSession();
   }, []);
   // ------------------------------------->End!<------------------------------------
   return (

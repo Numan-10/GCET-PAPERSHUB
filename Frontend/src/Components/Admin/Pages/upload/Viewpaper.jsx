@@ -63,9 +63,6 @@ const Viewpaper = () => {
       const response = await axios.delete(
         `${API_BASE_URL}/subjects?id=${id}&filename=${filename}`,
         {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
 
@@ -176,3 +173,5 @@ const Viewpaper = () => {
 };
 
 export default Viewpaper;
+
+

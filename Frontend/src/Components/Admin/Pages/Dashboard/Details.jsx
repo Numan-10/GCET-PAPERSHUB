@@ -15,9 +15,6 @@ const Details = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const response = await axios.get(`${API_BASE_URL}/user`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
       });
       const { TotalUsers, last7DaysCount, todayCount } = response.data;
 
@@ -55,3 +52,5 @@ const Details = () => {
 };
 
 export default Details;
+
+

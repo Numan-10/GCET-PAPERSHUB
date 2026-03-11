@@ -14,7 +14,7 @@ const ShowFeed = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(`${API_BASE_URL}/review`, {
-        headers: { Authorization: localStorage.getItem("token") },
+        
       });
       setFeedbacks(data.feedbacks.reverse());
     } catch (err) {
@@ -33,7 +33,7 @@ const ShowFeed = () => {
     const toastId = toast.loading("Deleting Feedback...");
     try {
       const { data } = await axios.delete(`${API_BASE_URL}/review/${id}`, {
-        headers: { Authorization: localStorage.getItem("token") },
+        
       });
 
       if (data.success) {
@@ -107,3 +107,5 @@ const ShowFeed = () => {
 };
 
 export default ShowFeed;
+
+

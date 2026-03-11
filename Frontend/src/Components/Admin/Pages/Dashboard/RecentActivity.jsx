@@ -10,9 +10,6 @@ const RecentActivity = () => {
       const response = await axios.get(
         `${API_BASE_URL}/user/activities`,
         {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
       const { success, Activites } = response.data;
@@ -72,3 +69,5 @@ const RecentActivity = () => {
   );
 };
 export default RecentActivity;
+
+

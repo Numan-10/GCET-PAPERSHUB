@@ -24,9 +24,7 @@ function AdminContributions() {
     setLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/admin/contributions`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
+        credentials: "include",
       });
       const data = await response.json();
 
@@ -77,9 +75,7 @@ function AdminContributions() {
         `${API_BASE_URL}/admin/contributions/delete/${selectedId}`,
         {
           method: "DELETE",
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
+          credentials: "include",
         }
       );
       const data = await response.json();

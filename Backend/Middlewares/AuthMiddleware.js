@@ -1,18 +1,25 @@
 require("dotenv").config();
-const User = require("../Models/User");
-
-require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const userVerification = (req, res, next) => {
-  const Auth = req.headers["authorization"];
-  if (!Auth) {
+  const cookieToken = req.cookies?.token;
+  const authHeader = req.headers["authorization"];
+
+  let token = cookieToken;
+  if (!token && authHeader) {
+    token = authHeader.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : authHeader;
+  }
+
+  if (!token || token === "null" || token === "undefined") {
     return res
       .status(403)
       .json({ message: "Please sign in to continue.", success: false });
   }
+
   try {
-    const decoded = jwt.verify(Auth, process.env.TOKEN_KEY);
+    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
 
     req.user = decoded;
     next();

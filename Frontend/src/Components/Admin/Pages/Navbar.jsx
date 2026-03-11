@@ -3,20 +3,28 @@ import "../admin.css";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import API_BASE_URL from "../../../ApiUrl";
+import { clearReadableAuthCookies, getAuthUser } from "../../../utils/authCookies";
 
 export default function Navbar({ toggleSidebar }) {
   const navigate = useNavigate();
 
   const [user, setUser] = useState("");
   //logout funcitonality
-  const logout = () => {
-    localStorage.clear();
+  const logout = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/logout`, {}, { withCredentials: true });
+    } catch (err) {
+      // Ignore logout API errors and still clear client state
+    }
+    clearReadableAuthCookies();
     navigate("/home");
     toast.success("Logout Successfully");
   };
 
   useEffect(() => {
-    const User = localStorage?.getItem("user");
+    const User = getAuthUser();
     setUser(User);
   }, []);
 

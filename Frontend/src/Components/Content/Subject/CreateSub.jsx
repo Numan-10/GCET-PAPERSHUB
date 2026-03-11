@@ -35,9 +35,6 @@ function CreateSub({ onClose }) {
         `${API_BASE_URL}/content/new`,
         form,
         {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
 
@@ -98,3 +95,5 @@ function CreateSub({ onClose }) {
 }
 
 export default CreateSub;
+
+

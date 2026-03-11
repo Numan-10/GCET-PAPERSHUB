@@ -17,7 +17,7 @@ const Notifications = () => {
   const fetchNotifications = async () => {
     try {
       const { data } = await axios.get(`${API_BASE_URL}/notifications`, {
-        headers: { Authorization: localStorage.getItem("token") },
+        
       });
       if (data.success) setNotifications(data.notifications.reverse());
       else setNotifications([]);
@@ -32,7 +32,7 @@ const Notifications = () => {
     if (!form.message.trim()) return toast.error("Message required");
 
     const config = {
-      headers: { Authorization: localStorage.getItem("token") },
+      
     };
 
     try {
@@ -61,7 +61,7 @@ const Notifications = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`${API_BASE_URL}/notifications/${id}`, {
-        headers: { Authorization: localStorage.getItem("token") },
+        
       });
       toast.success("Deleted!");
       fetchNotifications();
@@ -177,3 +177,5 @@ const Notifications = () => {
 };
 
 export default Notifications;
+
+

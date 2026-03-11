@@ -3,6 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { FiUploadCloud, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import { MdCloudUpload, MdInfo } from "react-icons/md";
 import API_BASE_URL from "../../ApiUrl";
+import { getAuthUser } from "../../utils/authCookies";
 function Contribute() {
   const [file, setFile] = useState(null);
   const [tag, setTag] = useState("notes");
@@ -34,15 +35,13 @@ function Contribute() {
     formData.append("tag", tag);
     formData.append("semester", semester);
     formData.append("subject", subject);
-    formData.append("uploadedBy", localStorage.getItem("user"));
+    formData.append("uploadedBy", getAuthUser());
 
     try {
       const res = await fetch(`${API_BASE_URL}/contributeNotes`, {
         method: "POST",
         body: formData,
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
+        credentials: "include",
       });
 
       if (res.ok) {

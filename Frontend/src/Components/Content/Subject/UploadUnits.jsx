@@ -50,7 +50,6 @@ function UploadUnits({ onClose, sub }) {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: localStorage.getItem("token"),
           },
         }
       );
@@ -135,3 +134,4 @@ function UploadUnits({ onClose, sub }) {
 }
 
 export default UploadUnits;
+

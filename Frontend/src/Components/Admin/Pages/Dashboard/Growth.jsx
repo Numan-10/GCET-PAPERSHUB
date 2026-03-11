@@ -12,7 +12,7 @@ const Growth = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/growth`, {
-          headers: { Authorization: localStorage.getItem("token") },
+          
         });
         setData(res.data);
       } catch (err) {
@@ -121,3 +121,5 @@ const Growth = () => {
 };
 
 export default Growth;
+
+

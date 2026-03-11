@@ -1,9 +1,11 @@
 import { Navigate } from "react-router-dom";
-const PrivateRoute = ({ children, requiredRole }) => {
-  const role = localStorage?.getItem("role");
-  const token = localStorage?.getItem("token");
+import { getAuthRole, isAuthenticated } from "./utils/authCookies";
 
-  if (!token) {
+const PrivateRoute = ({ children, requiredRole }) => {
+  const role = getAuthRole();
+  const authenticated = isAuthenticated();
+
+  if (!authenticated) {
     return <Navigate to={"/login"} replace />;
   }
 

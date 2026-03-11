@@ -36,9 +36,6 @@ const Report = () => {
         `${API_BASE_URL}/bug-report`,
         formData,
         {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
 
@@ -214,3 +211,5 @@ const Report = () => {
 };
 
 export default Report;
+
+

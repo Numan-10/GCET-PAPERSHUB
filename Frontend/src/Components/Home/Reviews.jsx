@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import TestimonialsPage from "../Testimonials/TestimonialsPage";
 import API_BASE_URL from "../../ApiUrl";
+import { getAuthUser } from "../../utils/authCookies";
 const BackendUrl = API_BASE_URL;
 function Reviews() {
   const [value, setValue] = useState(1);
@@ -15,7 +16,7 @@ function Reviews() {
   const location = useLocation();
   useEffect(() => {
     try {
-      const currUser = localStorage.getItem("user");
+      const currUser = getAuthUser();
       setuser(currUser);
     } catch (err) {
       console.log(err);
@@ -50,11 +51,6 @@ function Reviews() {
           value,
           comment,
           user,
-        },
-        {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
 

@@ -4,7 +4,6 @@ import API_BASE_URL from "../../ApiUrl";
 import Show from "./Show";
 import CreateSub from "./Subject/CreateSub";
 import "../Home/pagination.css";
-import { jwtDecode } from "jwt-decode";
 import { FaSearch } from "react-icons/fa";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -47,30 +46,23 @@ function Content() {
 
   // Showing the + sign to the speific User
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const storedEmail = localStorage.getItem("email");
-    const token = localStorage.getItem("token");
-
-    if (storedUser && storedEmail && token) {
+    const loadSession = async () => {
       try {
-        const decodedToken = jwtDecode(token);
-        if (decodedToken.exp * 1000 < Date.now()) {
-          localStorage.clear();
+        const { data } = await axios.get(`${BackendUrl}/session`);
+        if (data?.success) {
+          setUserData({
+            User: data.user,
+            Email: data.email,
+            id: data.id || null,
+          });
+        } else {
           setUserData(null);
-          return;
         }
-        setUserData({
-          User: storedUser,
-          Email: storedEmail,
-          id: decodedToken.id || null,
-        });
       } catch (error) {
-        localStorage.clear();
         setUserData(null);
       }
-    } else {
-      setUserData(null);
-    }
+    };
+    loadSession();
   }, []);
 
   const handleSearch = (searchValue) => {

@@ -1,25 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {
-  Signup,
-  Login,
-  Verify,
-  ResendOtp,
-  SendCode,
-  VerifyResetOtp,
-  ChangePass,
-} = require("../controllers/AuthController");
-const {
-  loginValidation,
-  signupValidation,
-} = require("../Middlewares/ValidationMiddleware");
+const { Session, Logout } = require("../controllers/AuthController");
+const userVerification = require("../Middlewares/AuthMiddleware");
 
-router.post("/login", loginValidation, Login);
-router.post("/signup", signupValidation, Signup);
-router.post("/verify", Verify);
-router.post("/resend-otp", ResendOtp);
-router.post("/SendCode", SendCode);
-router.post("/verify-reset-otp", VerifyResetOtp);
-router.post("/changePass", ChangePass);
+router.get("/session", userVerification, Session);
+router.post("/logout", Logout);
 
 module.exports = router;

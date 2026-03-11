@@ -16,9 +16,6 @@ const Reports = () => {
   const fetchReports = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/FetchBugs`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
       });
       const { reports, success } = response.data;
       if (success) {
@@ -39,9 +36,6 @@ const Reports = () => {
       const response = await axios.delete(
         `${API_BASE_URL}/delete/${id}`,
         {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
         }
       );
       const { success } = response.data;
@@ -231,3 +225,5 @@ const Reports = () => {
 };
 
 export default Reports;
+
+

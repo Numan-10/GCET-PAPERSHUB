@@ -72,7 +72,6 @@ function UploadNotes() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: localStorage.getItem("token"),
           },
         }
       );
@@ -173,3 +172,4 @@ function UploadNotes() {
 }
 
 export default UploadNotes;
+

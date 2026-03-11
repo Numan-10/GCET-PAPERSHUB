@@ -234,24 +234,84 @@
 
 /*---------------------------------> Testimonials <---------------------------------- */
 .review-slide {
-  /* width: 100%; */
-  display: flex;
-  width: max-content;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding: 1rem 0 2.5rem;
 }
-.review-slide:hover .logo-card {
+
+.review-slide::before,
+.review-slide::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 90px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.review-slide::before {
+  left: 0;
+  background: linear-gradient(90deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.review-slide::after {
+  right: 0;
+  background: linear-gradient(270deg, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.review-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: testimonial-marquee 40s linear infinite;
+}
+
+.review-slide:hover .review-track {
   animation-play-state: paused;
 }
 
-.review-slide .logo-card {
-  margin-right: 50px;
-  animation: slide 20s ease-in-out infinite alternate;
+.logo-card {
+  flex: 0 0 auto;
 }
-@keyframes slide {
+
+.testimonial-card {
+  width: 18.5rem;
+  border-radius: 18px;
+  padding: 1.25rem 1.25rem 1rem;
+  border: 1px solid rgba(245, 124, 7, 0.35);
+  background: linear-gradient(135deg, #fff7ed 0%, #ffffff 55%);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+}
+
+.testimonial-text {
+  color: #334155;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  min-height: 5.5rem;
+}
+
+.testimonial-name {
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+@keyframes testimonial-marquee {
   0% {
-    transform: translateX(0%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-350%);
+    transform: translateX(-50%);
   }
 }
 
@@ -282,4 +342,142 @@
 .Testimonial-text {
   transform-origin: top center; /* makes it swing from the top */
   animation: TestimonialSlide 4s ease-in-out infinite;
+}
+
+/*---------------------------------> Auth Page <---------------------------------- */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  /* background: radial-gradient(circle at top, #20242c 0%, #0f1115 55%, #0b0d10 100%); */
+  padding: 2.5rem 1.5rem;
+}
+
+.auth-card {
+  width: min(520px, 100%);
+  background: linear-gradient(145deg, #1a1d24 0%, #14161b 100%);
+  border-radius: 24px;
+  padding: 2.5rem 2.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+
+.auth-header {
+  margin-bottom: 2rem;
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #f8fafc;
+}
+
+.auth-title span {
+  color: #6ea8ff;
+}
+
+.auth-subtitle {
+  font-size: 1rem;
+  color: #cbd5f5;
+  margin: 0;
+}
+
+.auth-links {
+  margin-top: 0.75rem;
+}
+
+.auth-link {
+  color: #9fc2ff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.auth-link:hover {
+  color: #cfe0ff;
+  text-decoration: underline;
+}
+
+.auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-btn {
+  border: none;
+  border-radius: 14px;
+  padding: 0.9rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-btn-icon {
+  width: 22px;
+  height: 22px;
+  filter: brightness(0) invert(1);
+}
+
+.auth-btn-google,
+.auth-btn-github {
+  background: linear-gradient(180deg, #5e9eff 0%, #2d5be8 100%);
+  box-shadow: 0 10px 20px rgba(45, 91, 232, 0.35);
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(45, 91, 232, 0.4);
+}
+
+.auth-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 2rem 0 1.5rem;
+}
+
+.auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.auth-brand-logo {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(110, 168, 255, 0.6);
+  object-position: center 10%;
+}
+
+.auth-brand-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #6ea8ff;
+}
+
+.auth-brand-subtitle {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+}
+
+@media (max-width: 540px) {
+  .auth-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .auth-title {
+    font-size: 1.6rem;
+  }
 }
