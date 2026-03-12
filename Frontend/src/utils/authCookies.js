@@ -18,6 +18,25 @@ export const getAuthEmail = () => getCookieValue("email");
 
 export const isAuthenticated = () => Boolean(getAuthUser());
 
+const buildCookieOptions = (maxAgeSeconds = 3 * 60 * 60) => {
+  const options = [
+    `max-age=${maxAgeSeconds}`,
+    "path=/",
+    "samesite=lax",
+  ];
+  if (window.location.protocol === "https:") {
+    options.push("secure");
+  }
+  return options.join("; ");
+};
+
+export const setReadableAuthCookies = ({ user, role, email }, maxAgeSeconds) => {
+  const options = buildCookieOptions(maxAgeSeconds);
+  document.cookie = `user=${encodeURIComponent(user || "")}; ${options}`;
+  document.cookie = `role=${encodeURIComponent(role || "")}; ${options}`;
+  document.cookie = `email=${encodeURIComponent(email || "")}; ${options}`;
+};
+
 export const clearReadableAuthCookies = () => {
   const expires = "expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
   document.cookie = `user=; ${expires}`;

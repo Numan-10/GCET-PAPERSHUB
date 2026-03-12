@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import API_BASE_URL from "../../ApiUrl";
 import Google from "../Google";
 import Github from "../Github";
+import { setReadableAuthCookies } from "../../utils/authCookies";
 
 const parseOAuthParams = (location) => {
   const rawParams = location.hash?.startsWith("#")
@@ -27,8 +30,31 @@ const Login = () => {
     const label = provider === "google" ? "Google" : "GitHub";
     if (success) {
       sessionStorage.setItem("oauthLoginProvider", provider);
-      navigate("/home", { replace: true });
-      toast.dismiss();
+      const syncSession = async () => {
+        try {
+          const { data } = await axios.get(`${API_BASE_URL}/session`, {
+            withCredentials: true,
+          });
+
+          if (data?.authenticated) {
+            setReadableAuthCookies({
+              user: data.user,
+              role: data.role,
+              email: data.email,
+            });
+            toast.dismiss();
+            navigate("/home", { replace: true });
+            return;
+          }
+        } catch (err) {
+          // Fall through to error handling below
+        }
+
+        toast.error("Login session not established. Please try again.");
+        navigate("/login", { replace: true });
+      };
+
+      syncSession();
       return;
     }
 
