@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from "../../ApiUrl";
 import Show from "./Show";
-import CreateSub from "./Subject/CreateSub";
 import "../Home/pagination.css";
 import { FaSearch } from "react-icons/fa";
 import Pagination from "@mui/material/Pagination";
@@ -16,8 +15,6 @@ function Content() {
   });
   const [loading, setLoading] = useState(true);
   const [Error, setError] = useState("");
-  const [show, setShow] = useState(false);
-  const [userData, setUserData] = useState(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -44,27 +41,6 @@ function Content() {
     "/Assets/Frame 80.svg",
   ];
 
-  // Showing the + sign to the speific User
-  useEffect(() => {
-    const loadSession = async () => {
-      try {
-        const { data } = await axios.get(`${BackendUrl}/session`);
-        if (data?.success) {
-          setUserData({
-            User: data.user,
-            Email: data.email,
-            id: data.id || null,
-          });
-        } else {
-          setUserData(null);
-        }
-      } catch (error) {
-        setUserData(null);
-      }
-    };
-    loadSession();
-  }, []);
-
   const handleSearch = (searchValue) => {
     setSearch(searchValue.trim());
     setPage(1);
@@ -77,17 +53,6 @@ function Content() {
   return (
     <>
       <div className="container">
-        {userData?.id === import.meta.env.VITE_APP_ID && (
-          <div className="text-center">
-            <i
-              className="fa-solid fa-circle-plus fa-2x"
-              onClick={() => setShow(!show)}
-            ></i>
-          </div>
-        )}
-
-        {show && <CreateSub onClose={() => setShow(false)} />}
-
         {/* Search functionality */}
         <div className="row d-flex justify-content-center py-4">
           <div className="col-12 col-md-8 col-lg-6">
