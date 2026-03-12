@@ -11,7 +11,7 @@ const getFrontendUrl = () =>
   trimTrailingSlash(
     process.env.FRONTEND_URL ||
       process.env.LOCAL_FRONTEND_URL ||
-      "http://localhost:5173",
+      "https://gcet-papershub-frontend.onrender.com",
   );
 
 const getBackendUrl = () =>
